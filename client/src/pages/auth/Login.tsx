@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useDebugValue, useState } from "react";
 import api from "../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import type { LoginData, AuthResponse } from "../../types/auth.types";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
+import { useDispatch } from "react-redux";
+import { LoginAction } from "./redux";
 
 const Login = () => {
   // const navigate = useNavigate();
-  const { login,goTo } = useAuth();
+  const { goTo } = useAuth();
+  const dispatch = useDispatch()
   const [form, setForm] = useState<LoginData>({
     email: "",
     password: "",
@@ -17,34 +20,40 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     // const res = await api.post<AuthResponse>("/auth/login", form);
+  //     // toast.success(res.data.message);
+  //     // login(res.data.token, res.data.user.role);
+
+  //     // localStorage.setItem("token", res.data.token);
+  //     // localStorage.setItem("role", res.data.user.role);
+  //     dispatch(LoginAction(form));
+  //     const role = res.data.user.role;
+
+  //     if (role === "seller") {
+  //       goTo("/seller/dashboard",true)
+  //       // navigate("/seller/dashboard");
+  //     } else {
+  //       // navigate("/home");
+  //       goTo("/home", true);
+  //     }
+  //     setForm({
+  //       email: "",
+  //       password: "",
+  //     });
+  //   } catch (error: any) {
+  //     toast.error(error.response?.data?.message || "Login Failed");
+  //   }
+  // };
+  const auth = useAuth();
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const res = await api.post<AuthResponse>("/auth/login", form);
-      toast.success(res.data.message);
-      login(res.data.token, res.data.user.role);
-
-      // localStorage.setItem("token", res.data.token);
-      // localStorage.setItem("role", res.data.user.role);
-      const role = res.data.user.role;
-
-      if (role === "seller") {
-        goTo("/seller/dashboard",true)
-        // navigate("/seller/dashboard");
-      } else {
-        // navigate("/home");
-        goTo("/home", true);
-      }
-      setForm({
-        email: "",
-        password: "",
-      });
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Login Failed");
-    }
+    LoginAction(form, auth)(dispatch);
   };
-
   return (
     <div>
       <h1>Login</h1>
