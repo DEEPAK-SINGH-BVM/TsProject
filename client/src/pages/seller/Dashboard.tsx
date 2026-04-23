@@ -1,8 +1,7 @@
-import Logout from "../../components/common/Logout";
+
 import { useAuth } from "../../context/AuthContext";
 
 const Dashboard = () => {
-  const {logout} = useAuth();
   return (
     <div>
       <div>Dashboard</div>

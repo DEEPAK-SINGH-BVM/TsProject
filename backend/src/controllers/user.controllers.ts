@@ -30,10 +30,13 @@ export const signup = async (req: Request, res: Response) => {
       { expiresIn: "1d" }
     );
 
+    const userData = user.toObject() as any;
+    delete userData.password;
+
     return res.status(201).json({
       message: "Signup Successful",
       token,
-      user,
+      user: userData,
     });
   } catch (error) {
     return res.status(500).json({
@@ -63,10 +66,13 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
+    const userData = user.toObject() as any;
+    delete userData.password;
+
     return res.status(201).json({
       message: "Login successful",
       token,
-      user,
+      user: userData,
     });
   } catch (error) {
     return res.status(500).json({

@@ -1,7 +1,6 @@
 import {
     LOGIN_USER,
     SIGNUP_USER,
-    LOGOUT_USER,
     AUTH_ERROR,
   } from "./constant";
   
@@ -21,14 +20,6 @@ import {
           token: action.payload.token,
           error: null,
         };
-  
-      case LOGOUT_USER:
-        return {
-          user: null,
-          token: null,
-          error: null,
-        };
-  
       case AUTH_ERROR:
         return {
           ...state,

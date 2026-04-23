@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 const Navbar = () => {
-  const { token, role, logout } = useAuth();
+  const { token, role } = useAuth();
   const [open, setOpen] = useState(false);
   return (
     <nav className="bg-gray-800 text-white p-4">
@@ -65,12 +65,12 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
-              <button
+              {/* <button
                 onClick={logout}
                 className="bg-red-500 text-white p-2 rounded"
               >
                 Logout
-              </button>
+              </button> */}
             </>
           ) : (
             <>

@@ -1,91 +1,183 @@
-import { useDebugValue, useState } from "react";
-import api from "../../api/axios";
-import { Link, useNavigate } from "react-router-dom";
-import type { LoginData, AuthResponse } from "../../types/auth.types";
-import { toast } from "react-toastify";
+
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useDispatch } from "react-redux";
 import { LoginAction } from "./redux";
+import { useAppDispatch } from "../../hook/useAuth";
+import { useState } from "react";
+import type { LoginData } from "../../types/auth.types";
+
 
 const Login = () => {
-  // const navigate = useNavigate();
-  const { goTo } = useAuth();
-  const dispatch = useDispatch()
-  const [form, setForm] = useState<LoginData>({
-    email: "",
-    password: "",
-  });
+  const auth = useAuth();
+  const dispatch = useAppDispatch();
+  const [form, setForm] = useState<LoginData>({ email: "", password: "" });
+  const [focused, setFocused] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     // const res = await api.post<AuthResponse>("/auth/login", form);
-  //     // toast.success(res.data.message);
-  //     // login(res.data.token, res.data.user.role);
-
-  //     // localStorage.setItem("token", res.data.token);
-  //     // localStorage.setItem("role", res.data.user.role);
-  //     dispatch(LoginAction(form));
-  //     const role = res.data.user.role;
-
-  //     if (role === "seller") {
-  //       goTo("/seller/dashboard",true)
-  //       // navigate("/seller/dashboard");
-  //     } else {
-  //       // navigate("/home");
-  //       goTo("/home", true);
-  //     }
-  //     setForm({
-  //       email: "",
-  //       password: "",
-  //     });
-  //   } catch (error: any) {
-  //     toast.error(error.response?.data?.message || "Login Failed");
-  //   }
-  // };
-  const auth = useAuth();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    LoginAction(form, auth)(dispatch);
+    dispatch(LoginAction(form, auth));
   };
+
   return (
-    <div>
-      <h1>Login</h1>
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <div style={styles.header}>
+          <h1 style={styles.title}>Welcome back</h1>
+          <p style={styles.subtitle}>
+            Sign in to access your storefront, orders, and dashboard tools.
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={form.email}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <div style={styles.field}>
+            <label htmlFor="email" style={styles.label}>
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
+              onFocus={() => setFocused("email")}
+              onBlur={() => setFocused(null)}
+              style={{
+                ...styles.input,
+                ...(focused === "email" ? styles.inputFocus : {}),
+              }}
+              required
+            />
+          </div>
 
-        <br />
-        <br />
+          <div style={styles.field}>
+            <label htmlFor="password" style={styles.label}>
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={handleChange}
+              onFocus={() => setFocused("password")}
+              onBlur={() => setFocused(null)}
+              style={{
+                ...styles.input,
+                ...(focused === "password" ? styles.inputFocus : {}),
+              }}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter Password"
-          value={form.password}
-          onChange={handleChange}
-        />
+          <button
+            type="submit"
+            style={{
+              ...styles.button,
+            }}
 
-        <br />
-        <br />
+          >
+            Login
+          </button>
+        </form>
 
-        <button type="submit">Login</button>
-        <Link to="/signup">Create new Account</Link>
-      </form>
+        <div style={styles.footer}>
+          New here?{" "}
+          <Link to="/signup" style={styles.link}>
+            Create an account
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
-
+const styles = {
+  page: {
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "24px",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "440px",
+    backgroundColor: "#ffffff",
+    border: "1px solid rgba(15, 23, 42, 0.08)",
+    boxShadow: "0 20px 40px rgba(15, 23, 42, 0.08)",
+    borderRadius: "28px",
+    padding: "32px",
+  },
+  header: {
+    marginBottom: "28px",
+  },
+  title: {
+    margin: 0,
+    fontSize: "1.75rem",
+    lineHeight: 1.2,
+    color: "#1f2937",
+  },
+  subtitle: {
+    marginTop: "10px",
+    color: "#6b7280",
+    fontSize: "0.95rem",
+    lineHeight: 1.6,
+  },
+  field: {
+    width: "100%",
+    marginBottom: "18px",
+  },
+  label: {
+    display: "block",
+    marginBottom: "8px",
+    fontSize: "0.95rem",
+    color: "#4b5563",
+  },
+  input: {
+    width: "100%",
+    padding: "14px 16px",
+    borderRadius: "16px",
+    border: "1px solid #d1d5db",
+    backgroundColor: "#ffffff",
+    color: "#111827",
+    fontSize: "1rem",
+    outline: "none",
+    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  } as const,
+  inputFocus: {
+    borderColor: "#9ca3af",
+    boxShadow: "0 0 0 4px rgba(148, 163, 184, 0.12)",
+  },
+    button: {
+    width: "100%",
+    padding: "14px 16px",
+    borderRadius: "16px",
+    border: "none",
+    backgroundColor: "#111827",
+    color: "#ffffff",
+    fontWeight: 600,
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background-color 0.2s ease, transform 0.2s ease",
+  } as const,
+  buttonHover: {
+    backgroundColor: "#0f172a",
+  },
+  footer: {
+    marginTop: "20px",
+    textAlign: "center",
+    color: "#6b7280",
+    fontSize: "0.95rem",
+  },
+  link: {
+    color: "#111827",
+    textDecoration: "none",
+    fontWeight: 600,
+  },
+} as const;
 export default Login;

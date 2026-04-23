@@ -11,16 +11,15 @@ import Products from "./pages/seller/Products";
 import AddProducts from "./pages/seller/AddProducts";
 import EditProducts from "./pages/seller/EditProduct";
 import Order from "./pages/seller/Order.js";
-import SellerProfile from "./pages/seller/SellerProfile.js";
 // buyer
 import Home from "./pages/buyer/Home.js";
 import ProductDetails from "./pages/buyer/ProductDetails.js";
 import Cart from "./pages/buyer/Cart.js";
 import Checkout from "./pages/buyer/Checkout.js";
 import Orders from "./pages/buyer/Orders.js";
-import BuyerProfile from "./pages/buyer/BuyerProfile.js";
 import PublicRoute from "./components/guard/PublicRoute.js";
 import Navbar from "./components/layout/Navbar.js";
+import Profile from "./pages/shared/Profile.js";
 function App() {
   return (
     <div>
@@ -89,7 +88,7 @@ function App() {
           path="/seller/profile"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
-              <SellerProfile />
+              <Profile />
             </ProtectedRoute>
           }
         />
@@ -138,7 +137,7 @@ function App() {
           path="/buyer-profile"
           element={
             <ProtectedRoute allowedRoles={["buyer"]}>
-              <BuyerProfile />
+              <Profile />
             </ProtectedRoute>
           }
         />
