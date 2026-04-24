@@ -5,6 +5,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: "seller" | "buyer";
+  address?: string;
+  profileImage?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -32,6 +34,14 @@ const userSchema = new Schema<IUser>({
     enum: ["buyer", "seller"],
     default: "buyer",
   },
+  address: {
+    type: String,
+    default: "",
+  },
+  profileImage:{
+    type: String,
+    default: "",
+  }
 });
 const User = mongoose.model<IUser>("User",userSchema)
 export default User;

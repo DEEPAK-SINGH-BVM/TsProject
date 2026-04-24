@@ -24,16 +24,20 @@ import { authReducer } from "../pages/auth/redux";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"], 
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  // user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistedReducer, applyMiddleware(thunk as any));
+export const store = createStore(
+  persistedReducer,
+  applyMiddleware(thunk as any),
+);
 
 export const persistor = persistStore(store);
 

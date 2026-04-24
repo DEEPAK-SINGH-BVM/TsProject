@@ -19,7 +19,7 @@ import Checkout from "./pages/buyer/Checkout.js";
 import Orders from "./pages/buyer/Orders.js";
 import PublicRoute from "./components/guard/PublicRoute.js";
 import Navbar from "./components/layout/Navbar.js";
-import Profile from "./pages/shared/Profile.js";
+import Profile from "./pages/user/Profile.jsx";
 function App() {
   return (
     <div>

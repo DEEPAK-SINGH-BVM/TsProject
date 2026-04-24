@@ -3,7 +3,11 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 dotenv.config();
+
+type AuthRequest = Request & { user?: { id?: string } };
+
 export const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
@@ -81,3 +85,52 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+export const updateAddress = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const { address } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { address },
+      { new: true }
+    );  
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ message: "Address updated successfully", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating address", error });
+  }
+
+}
+export const uploadProfileImage = async(req:any,res:any)=>{
+  try{
+    const userId = req.user?.id;
+    console.log("uploadProfileImage", userId);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const result = await uploadToCloudinary(req.file.buffer);
+    console.log("result", result);
+    
+    const imageUrl = result.secure_url;
+    console.log("imageUrl", imageUrl);
+    
+    const user = await User.findByIdAndUpdate(userId,{profileImage: imageUrl },{new:true});
+    console.log("updatedUser", user);
+    return res
+      .status(200)
+      .json({ message: "Profile image uploaded successfully", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Error uploading profile image", error });
+  }
+}

@@ -1,19 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
+import { uploadProfileImageAction } from "../auth/redux/action";
+import { useAppDispatch } from "../../hook/useAuth";
+import { UpdateAddressAction } from "../auth/redux/action";
 const Profile = () => {
   const { logout } = useAuth();
   const user = useSelector((state: RootState) => state.auth.user);
   console.log("ProfileUser", user);
   const [address, setAddress] = useState("");
-
+  const dispatch = useAppDispatch();
+  const handleSaveAddress = () => {
+    dispatch(UpdateAddressAction(address));
+  };
+  useEffect(() => {
+    if (user?.address) {
+      setAddress(user.address || "");
+    }
+  }, [user?.address]);
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6 bg-gray-50 min-h-screen mt-11">
+    <div className="max-w-3xl mx-auto p-6 space-y-6 bg-gray-50  mt-11">
       <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex items-center gap-4">
-        <FaUserCircle size={70} className="text-gray-400" />
+        <label className="cursor-pointer">
+          <img
+            src={user?.profileImage || "https://i.pravatar.cc/300"}
+            className="w-20 h-20 rounded-full object-cover border"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              console.log("filefile", file);
 
+              if (!file) return;
+
+              const formData = new FormData();
+              formData.append("image", file);
+              dispatch(uploadProfileImageAction(formData));
+            }}
+          />
+        </label>
         <div>
           <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
 
@@ -34,9 +63,12 @@ const Profile = () => {
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        <button className="px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition">
+        <button
+          onClick={handleSaveAddress}
+          className="px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
+        >
           Save Address
-        </button>   
+        </button>
       </div>
       <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6">
         <button
