@@ -6,19 +6,17 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center bg-white p-10 rounded-2xl shadow-sm border border-gray-100 max-w-md w-full">
-        {/* BIG ERROR CODE */}
+
         <h1 className="text-7xl font-bold text-gray-800">404</h1>
 
-        {/* MESSAGE */}
         <h2 className="text-xl font-semibold mt-4 text-gray-700">
           Page Not Found
         </h2>
 
         <p className="text-gray-500 mt-2">
-          The page you are looking for doesn’t exist or has been moved.
+          The page you are looking for doesn't exist or has been moved.
         </p>
 
-        {/* BUTTONS */}
         <div className="mt-6 flex flex-col gap-3">
           {/* <button
             onClick={() => navigate("/")}

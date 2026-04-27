@@ -6,7 +6,8 @@ const api = axios.create({
   //   "Content-Type": "application/json",
   // },
 });
-
+// An Axios request interceptor is a function that runs before every API call.
+// It automatically adds the saved login token to the request header if it exists.
 api.interceptors.request.use((config:any)=>{
   const token = localStorage.getItem("token");
   if(token){

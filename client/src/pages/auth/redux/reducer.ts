@@ -9,6 +9,7 @@ import {
 const initialState = {
   user: null,
   token: null,
+  shop: null,
   error: null,
 };
 
@@ -20,6 +21,7 @@ const authReducer = (state = initialState, action: any) => {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
+        shop: action.payload.shop || null,
         error: null,
       };
     case AUTH_ERROR:

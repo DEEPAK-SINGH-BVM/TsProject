@@ -10,6 +10,19 @@ import {
 import { AppDispatch } from "../../../store";
 import endpoint from "../../../api/endPoint";
 
+export type Shop = {
+  _id: string;
+  name: string;
+  description: string;
+  category: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  logo: string;
+  owner: string;
+};
+
 export type User = {
   name: string;
   email: string;
@@ -20,7 +33,8 @@ export type User = {
 export type AuthResponse = {
   user: User;
   token: string;
-  message: string;
+  message?: string;
+  shop?: Shop | null;
 };
 
 export type LoginData = {
@@ -77,15 +91,33 @@ export const LoginAction =
   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
     try {
       const res = await api.post(endpoint.auth.login, data);
+      const token = res.data.token;
+      
       console.log("LoginActionResponse", res);
-      dispatch(loginSuccess(res.data));
+      // dispatch(loginSuccess(res.data));
 
       toast.success(res.data.message);
 
       auth.login(res.data.token, res.data.user.role);
 
-      if (res.data.user.role === "seller") {
-        auth.goTo("/seller/dashboard", true);
+      const shopRes = await api.get(endpoint.auth.shop);
+      console.log('shopRes', shopRes);
+
+      const { user, shop } = shopRes.data;
+      dispatch(
+        loginSuccess({
+          user,
+          token,
+          shop,
+          message: res.data.message
+        }),
+      );
+      if (user.role === "seller") {
+        if (shop) {
+          auth.goTo("/seller/dashboard", true);
+        } else {
+          auth.goTo("/seller/create-shop", true);
+        }
       } else {
         auth.goTo("/home", true);
       }
@@ -110,7 +142,7 @@ export const SignupAction =
       auth.login(res.data.token, res.data.user.role);
 
       if (res.data.user.role === "seller") {
-        auth.goTo("/seller/dashboard", true);
+        auth.goTo("/seller/create-shop", true);
       } else {
         auth.goTo("/home", true);
       }

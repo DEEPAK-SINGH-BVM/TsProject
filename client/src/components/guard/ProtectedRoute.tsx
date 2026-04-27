@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useSelector } from "react-redux";
 
 interface Props {
   children: ReactNode;
@@ -11,20 +12,27 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   // console.log("children", children);
   // const token = localStorage.getItem("token");
   // const role = localStorage.getItem("role");
-  const {token,role} = useAuth();
+  const { token, role } = useAuth();
+  const { shop } = useSelector((state: any) => state.auth.shop) || {};
+  console.log("ProtectedRouteShopssss", shop);
+
   console.log("ProtectedRouteToken", token);
-  console.log("ProtectedRouteRole",role);
-  
+  console.log("ProtectedRouteRole", role);
+
   console.log("role", role);
 
   if (!token) {
     return <Navigate to="/login" replace />;
-  } 
+  }
 
   if (allowedRoles && role && !allowedRoles.includes(role)) {
     if (role === "seller") {
-      return <Navigate to="/seller/dashboard" replace />;
-    } else {
+      if (shop == undefined) {
+        return <Navigate to="/seller/create-shop" replace />;
+      } else {
+        return <Navigate to="/seller/dashboard" replace />;
+      }
+    } else if (role === "buyer") {
       return <Navigate to="/home" replace />;
     }
   }

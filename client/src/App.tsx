@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./pages/auth/Signup.js";
 import Login from "./pages/auth/Login.js";
-import ProtectedRoute from "./components/guard/PrivateRoute.js";
+import ProtectedRoute from "./components/guard/ProtectedRoute.js";
 import NotFound from "./pages/shared/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,134 +13,76 @@ import EditProducts from "./pages/seller/EditProduct";
 import Order from "./pages/seller/Order.js";
 // buyer
 import Home from "./pages/buyer/Home.js";
-import ProductDetails from "./pages/buyer/ProductDetails.js";
+import ProductDetails from "./pages/buyer/ProductDetails";
 import Cart from "./pages/buyer/Cart.js";
-import Checkout from "./pages/buyer/Checkout.js";
+import Checkout from "./pages/buyer/Checkout";
 import Orders from "./pages/buyer/Orders.js";
-import PublicRoute from "./components/guard/PublicRoute.js";
-import Navbar from "./components/layout/Navbar.js";
+import PublicRoute from "./components/guard/PublicRoute";
+import Navbar from "./components/layout/Navbar";
 import Profile from "./pages/user/Profile.jsx";
+
+// layout
+import AuthLayout from "./components/layout/AuthLayout";
+import SellerLayout from "./components/layout/SellerLayout";
+import BuyerLayout from "./components/layout/BuyerLayout";
+import CreateShop from "./pages/seller/CreateShop";
 function App() {
   return (
     <div>
       <ToastContainer position="top-right" autoClose={2000} />
-      <Navbar />
       <Routes>
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
+        <Route element={<AuthLayout />}>
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+        </Route>
         <Route path="*" element={<NotFound />} />
         {/* Seller */}
         <Route
-          path="/seller/dashboard"
+          path="/seller"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
-              <Dashboard />
+              <SellerLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/seller/products"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <Products />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/seller/add-products"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <AddProducts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/seller/edit-product"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <EditProducts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/seller/order"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <Order />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/seller/profile"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="create-shop" element={<CreateShop />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="add-products" element={<AddProducts />} />
+          <Route path="edit-product" element={<EditProducts />} />
+          <Route path="orders" element={<Order />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
         {/* Buyer */}
         <Route
-          path="/home"
+          path="/"
           element={
             <ProtectedRoute allowedRoles={["buyer"]}>
-              <Home />
+              <BuyerLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/product-details"
-          element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
-              <ProductDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
-              <Cart />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
-              <Checkout />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/buyer-profile"
-          element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="home" element={<Home />} />
+          <Route path="product-details" element={<ProductDetails />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="buyer-profile" element={<Profile />} />
+        </Route>
       </Routes>
     </div>
   );

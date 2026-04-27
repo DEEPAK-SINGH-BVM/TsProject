@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export const signupValidation = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   const { name, email, password, role } = req.body;
 
@@ -37,7 +37,7 @@ export const signupValidation = (
 export const loginValidation = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   const { email, password } = req.body;
 
@@ -51,10 +51,16 @@ export const loginValidation = (
 
   next();
 };
-
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+// decode Token
+// "id": "69eb2e190f37c6a826476382",
+// "role": "seller",
+export const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const token = req.headers.authorization?.split(" ")[1];
-  if(!token){
+  if (!token) {
     return res.status(401).json({
       message: "No token provided",
     });
@@ -62,12 +68,12 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
     console.log("authMiddlewareDecode", decoded);
-    
-   (req as any).user = decoded;
+
+    (req as any).user = decoded;
     next();
   } catch (error) {
     return res.status(401).json({
       message: "Invalid token",
     });
   }
-}
+};

@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { persistor } from "../store"; 
 interface AuthContextType {
   token: string | null;
   role: string | null;
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }: Props) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    persistor.purge();
 
     setToken(null);
     setRole(null);

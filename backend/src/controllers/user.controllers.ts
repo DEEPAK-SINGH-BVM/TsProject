@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
+import Shop from "../models/shop.model";
 dotenv.config();
 
 type AuthRequest = Request & { user?: { id?: string } };
@@ -108,6 +109,25 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
   }
 
 }
+
+export const getShop = async (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      const user = await User.findById(userId).select("-password");
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      const shop = await Shop.findOne({ owner: userId });
+      if (!shop) {
+        return res.status(404).json({ message: "Shop not found" });
+      }
+      return res.status(200).json({ user,shop:shop || null });
+    }
+    catch (error) {
+      return res.status(500).json({ message: "Error fetching shop", error });
+    }
+}
+
 export const uploadProfileImage = async(req:any,res:any)=>{
   try{
     const userId = req.user?.id;

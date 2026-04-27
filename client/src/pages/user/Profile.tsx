@@ -5,6 +5,7 @@ import type { RootState } from "../../store";
 import { uploadProfileImageAction } from "../auth/redux/action";
 import { useAppDispatch } from "../../hook/useAuth";
 import { UpdateAddressAction } from "../auth/redux/action";
+import { FaUserCircle } from "react-icons/fa";
 const Profile = () => {
   const { logout } = useAuth();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -23,10 +24,14 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-gray-50  mt-11">
       <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex items-center gap-4">
         <label className="cursor-pointer">
-          <img
-            src={user?.profileImage || "https://i.pravatar.cc/300"}
-            className="w-20 h-20 rounded-full object-cover border"
-          />
+          {user?.profileImage ? (
+            <img
+              src={user?.profileImage}
+              className="w-20 h-20 rounded-full object-cover border"
+            />
+          ) : (
+            <FaUserCircle size={64} />
+          )}
           <input
             type="file"
             accept="image/*"
@@ -34,9 +39,7 @@ const Profile = () => {
             onChange={(e) => {
               const file = e.target.files?.[0];
               console.log("filefile", file);
-
               if (!file) return;
-
               const formData = new FormData();
               formData.append("image", file);
               dispatch(uploadProfileImageAction(formData));
@@ -45,9 +48,7 @@ const Profile = () => {
         </label>
         <div>
           <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
-
           <p className="text-gray-500 text-sm">{user.email}</p>
-
           <span className="inline-block mt-1 text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
             {user.role}
           </span>
