@@ -21,7 +21,7 @@ export interface Ishop extends Document {
   owner: mongoose.Types.ObjectId;
 }
 
-const shopSchema: Schema = new Schema(
+const shopSchema: Schema = new Schema<Ishop>(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
@@ -32,8 +32,7 @@ const shopSchema: Schema = new Schema(
     state: { type: String, required: true },
     logo: { type: String },
     owner: { type: mongoose.Types.ObjectId, ref: "User", required: true },
-  },
-  { timestamps: true },
+  }
 );
 
 const Shop = mongoose.model<Ishop>("Shop", shopSchema);

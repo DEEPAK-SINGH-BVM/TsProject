@@ -10,6 +10,7 @@ import {
   FaSignInAlt,
   FaUserPlus,
   FaTachometerAlt,
+  FaStore,
 } from "react-icons/fa";
 const Navbar = () => {
   const { token, role } = useAuth();
@@ -95,16 +96,11 @@ const Navbar = () => {
     //   </div>
     // </nav>
     <div
-      className={`bg-gray-800 text-white h-screen p-4 ${
-        open ? "w-64" : "w-16"
-      }`}
+      className={`bg-gray-800 text-white h-screen p-4
+         ${open ? "w-64" : "w-16"}`}
     >
       <div className="flex items-center justify-between mb-6">
-        {open && (
-          <p className="text-2xl font-bold">
-            MyEcom
-          </p>          
-        )}
+        {open && <p className="text-2xl font-bold">MyEcom</p>}
 
         <button className="text-2xl" onClick={() => setOpen(!open)}>
           <FaBars />
@@ -131,6 +127,14 @@ const Navbar = () => {
                 {open && "Products"}
               </Link>
 
+              <Link
+                className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
+                to="/seller/shop"
+              >
+                <FaStore />
+                {open && "My Shop"}
+              </Link>
+              
               <Link
                 to="/seller/profile"
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"

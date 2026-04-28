@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
-import { uploadProfileImageAction } from "../auth/redux/action";
+import { uploadProfileImageAction } from "../../store/feature/auth/action";
 import { useAppDispatch } from "../../hook/useAuth";
-import { UpdateAddressAction } from "../auth/redux/action";
+import { UpdateAddressAction } from "../../store/feature/auth/action";
 import { FaUserCircle } from "react-icons/fa";
 const Profile = () => {
   const { logout } = useAuth();
+   const userCheck = useSelector((state: RootState) => state.auth.user);
+   console.log("userCheck", userCheck);
+   
   const user = useSelector((state: RootState) => state.auth.user);
   console.log("ProfileUser", user);
   const [address, setAddress] = useState("");
@@ -18,7 +21,7 @@ const Profile = () => {
   useEffect(() => {
     if (user?.address) {
       setAddress(user.address || "");
-    }
+  }
   }, [user?.address]);
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-gray-50  mt-11">

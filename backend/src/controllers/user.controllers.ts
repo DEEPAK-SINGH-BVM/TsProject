@@ -113,6 +113,7 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
 export const getShop = async (req: AuthRequest, res: Response) => {
     try {
       const userId = req.user?.id;
+      console.log('userId',userId);
       const user = await User.findById(userId).select("-password");
       if (!userId) {
         return res.status(401).json({ message: "Unauthorized" });

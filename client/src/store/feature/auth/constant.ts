@@ -3,3 +3,4 @@ export const SIGNUP_USER = "SIGNUP_USER";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const UPDATE_ADDRESS = "UPDATE_ADDRESS";
 export const UPDATE_PROFILE_IMAGE = "UPDATE_PROFILE_IMAGE";
+export const CREATE_SHOP = "CREATE_SHOP";

@@ -1,4 +1,3 @@
-// Volume serial number is E022-8B3B
 // C:.
 // │   .env
 // │   .gitignore
@@ -37,11 +36,15 @@
 //     │   │       Logout.tsx
 //     │   │       
 //     │   ├───guard
-//     │   │       PrivateRoute.tsx
+//     │   │       ProtectedRoute.tsx
 //     │   │       PublicRoute.tsx
+//     │   │       SellerShopRoute.tsx
 //     │   │       
 //     │   └───layout
+//     │           AuthLayout.tsx
+//     │           BuyerLayout.tsx
 //     │           Navbar.tsx
+//     │           SellerLayout.tsx
 //     │           
 //     ├───context
 //     │       AuthContext.tsx
@@ -58,13 +61,11 @@
 //     │   │   │   Signup.tsx
 //     │   │   │   
 //     │   │   └───redux
-//     │   │       │   action.ts
-//     │   │       │   index.ts
-//     │   │       │   reducer.ts
-//     │   │       │   
-//     │   │       └───constant
-//     │   │               index.ts
-//     │   │
+//     │   │           action.ts
+//     │   │           constant.ts
+//     │   │           index.ts
+//     │   │           reducer.ts
+//     │   │           
 //     │   ├───buyer
 //     │   │       Cart.tsx
 //     │   │       Checkout.tsx
@@ -74,13 +75,16 @@
 //     │   │       
 //     │   ├───seller
 //     │   │       AddProducts.tsx
+//     │   │       CreateShop.tsx
 //     │   │       Dashboard.tsx
 //     │   │       EditProduct.tsx
 //     │   │       Order.tsx
 //     │   │       Products.tsx
 //     │   │       
-//     │   └───shared
-//     │           NotFound.tsx
+//     │   ├───shared
+//     │   │       NotFound.tsx
+//     │   │       
+//     │   └───user
 //     │           Profile.tsx
 //     │           
 //     ├───routes
@@ -91,5 +95,3 @@
 //     │       
 //     └───types
 //             auth.types.ts
-            
-// PS C:\E-Com\client> 

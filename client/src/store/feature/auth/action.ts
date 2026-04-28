@@ -6,12 +6,12 @@ import {
   AUTH_ERROR,
   UPDATE_ADDRESS,
   UPDATE_PROFILE_IMAGE,
+  CREATE_SHOP,
 } from "./constant";
-import { AppDispatch } from "../../../store";
+import { AppDispatch } from "../../index";
 import endpoint from "../../../api/endPoint";
 
 export type Shop = {
-  _id: string;
   name: string;
   description: string;
   category: string;
@@ -20,7 +20,6 @@ export type Shop = {
   city: string;
   state: string;
   logo: string;
-  owner: string;
 };
 
 export type User = {
@@ -67,7 +66,7 @@ export const signupSuccess = (data: AuthResponse) => {
 };
 
 export const authError = (error: AuthResponse) => {
-  return {
+  return {  
     type: AUTH_ERROR,
     payload: error,
   };
@@ -86,47 +85,14 @@ const updateProfileImageSuccess = (user: User) => {
     payload: user,
   };
 };
-// LOGIN
-// export const LoginAction =
-//   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
-//     try {
-//       const res = await api.post(endpoint.auth.login, data);
-//       const token = res.data.token;
-      
-//       console.log("LoginActionResponse", res);
-//       // dispatch(loginSuccess(res.data));
-  
-//       toast.success(res.data.message);
-   
-//       auth.login(res.data.token, res.data.user.role);
-  
-//       const shopRes = await api.get(endpoint.auth.shop);
-//       console.log('shopRes', shopRes);
 
-//       const { user, shop } = shopRes.data;
-//       dispatch(
-//         loginSuccess({
-//           user,
-//           token,
-//           shop,
-//           message: res.data.message
-//         }),
-//       );
-//       if (user.role === "seller") {
-//         if (shop) {
-//         auth.goTo("/seller/dashboard", true);
-//       } else {
-//           auth.goTo("/seller/create-shop", true);
-//         }
-//       } else {
-//         auth.goTo("/home", true);
-//       }
-//     } catch (error: any) {
-//       dispatch(authError(error.response?.data?.message));
-  
-//       toast.error(error.response?.data?.message);
-//     }
-//   };
+const createShopSuccess = (shop: Shop) => {
+  return {
+    type: CREATE_SHOP,
+    payload: shop,
+  };
+};
+// LOGIN
 export const LoginAction =
   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
     try {
@@ -141,7 +107,7 @@ export const LoginAction =
       let shop = null;
 
       try {
-        const shopRes = await api.get(endpoint.auth.shop);
+        const shopRes = await api.get(endpoint.shop.get);
         console.log("shopRes", shopRes);
 
         user = shopRes.data.user || user;
@@ -156,25 +122,23 @@ export const LoginAction =
           token,
           shop,
           message: res.data.message,
-        })
+        }),
       );
 
-      if (user.role === "seller" && !shop) {
-        if (shop) {
-          auth.goTo("/seller/dashboard", true);
-        } else {
-          auth.goTo("/seller/create-shop", true);
-        }
-      } else {
-        auth.goTo("/home", true);
-      }
-
+      // if (user.role === "seller") {
+      // if (shop) {
+      // auth.goTo("/home", true);
+      // } else {
+      // auth.goTo("/seller/create-shop", true);
+      // }
+      // } else {
+      //   auth.goTo("/home", true);
+      // }
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
       toast.error(error.response?.data?.message);
     }
   };
-
 
 // SIGNUP
 export const SignupAction =
@@ -187,13 +151,13 @@ export const SignupAction =
 
       toast.success(res.data.message);
 
-      auth.login(res.data.token, res.data.user.role);
+      auth.signup(res.data.token, res.data.user.role);
 
-      if (res.data.user.role === "seller") {
-        auth.goTo("/seller/create-shop", true);
-      } else {
-        auth.goTo("/home", true);
-      }
+      // if (res.data.user.role === "seller") {
+      //   auth.goTo("/seller/create-shop", true);
+      // } else {
+      //   auth.goTo("/home", true);
+      // }
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
 
@@ -226,5 +190,17 @@ export const uploadProfileImageAction =
       toast.error(
         error.response?.data?.message || "Failed to upload profile image",
       );
+    }
+  };
+export const createShopAction =
+  (data: any, auth: any) => async (dispatch: AppDispatch) => {
+    try {
+      const res = await api.post(endpoint.shop.create, data);
+      console.log("createShopActionResponse", res);
+      dispatch(createShopSuccess(res.data.shop));
+      toast.success(res.data.message);
+      auth.goTo("/seller/dashboard", true);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to create shop");
     }
   };

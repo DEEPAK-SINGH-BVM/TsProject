@@ -18,7 +18,6 @@ import Cart from "./pages/buyer/Cart.js";
 import Checkout from "./pages/buyer/Checkout";
 import Orders from "./pages/buyer/Orders.js";
 import PublicRoute from "./components/guard/PublicRoute";
-import Navbar from "./components/layout/Navbar";
 import Profile from "./pages/user/Profile.jsx";
 
 // layout
@@ -26,6 +25,9 @@ import AuthLayout from "./components/layout/AuthLayout";
 import SellerLayout from "./components/layout/SellerLayout";
 import BuyerLayout from "./components/layout/BuyerLayout";
 import CreateShop from "./pages/seller/CreateShop";
+import { SellerShopGuard } from "./components/guard/SellerShopRoute.js";
+import MyShop from "./pages/seller/MyShop.js";
+//
 function App() {
   return (
     <div>
@@ -60,12 +62,20 @@ function App() {
           }
         >
           <Route path="create-shop" element={<CreateShop />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route
+            path="dashboard"
+            element={
+              <SellerShopGuard>
+                <Dashboard />
+              </SellerShopGuard>
+            }
+          />
           <Route path="products" element={<Products />} />
           <Route path="add-products" element={<AddProducts />} />
           <Route path="edit-product" element={<EditProducts />} />
           <Route path="orders" element={<Order />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="shop" element={<MyShop />}   />
         </Route>
         {/* Buyer */}
         <Route

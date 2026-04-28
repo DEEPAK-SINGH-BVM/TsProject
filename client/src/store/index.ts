@@ -19,17 +19,17 @@ import {
 import { thunk } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import { authReducer } from "../pages/auth/redux";
-
+import { authReducer } from "./feature/auth";
+import { shopReducer } from "./feature/shop";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "shop"],
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  // user: userReducer,
+  shop: shopReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

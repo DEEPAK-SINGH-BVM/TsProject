@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { SignupAction, SignupData } from "./redux";
+import { SignupAction, SignupData } from "../../store/feature/auth";
 import { useAppDispatch } from "../../hook/useAuth";
 
 const Signup = () => {

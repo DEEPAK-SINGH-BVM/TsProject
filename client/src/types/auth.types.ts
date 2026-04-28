@@ -22,3 +22,14 @@ export interface AuthResponse {
     token: string;
     user: User;
 }
+
+export interface Shop {
+    name: string;   
+    description: string;
+    category: string;
+    phone: string;
+    address: string;
+    city: string;
+    state: string;
+    logo: string;
+}

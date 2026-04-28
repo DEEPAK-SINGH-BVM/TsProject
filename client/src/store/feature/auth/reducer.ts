@@ -4,6 +4,7 @@ import {
   AUTH_ERROR,
   UPDATE_ADDRESS,
   UPDATE_PROFILE_IMAGE,
+  CREATE_SHOP,
 } from "./constant";
 
 const initialState = {
@@ -41,6 +42,12 @@ const authReducer = (state = initialState, action: any) => {
         user: action.payload,
         error: null,
       };
+      case CREATE_SHOP:
+        return {
+          ...state,
+          shop: action.payload,
+          error: null,
+        };
     default:
       return state;
   }

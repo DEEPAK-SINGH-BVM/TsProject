@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LoginAction } from "./redux";
+import { LoginAction } from "../../store/feature/auth";
 import { useAppDispatch } from "../../hook/useAuth";
 import { useState } from "react";
 import type { LoginData } from "../../types/auth.types";

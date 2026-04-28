@@ -13,8 +13,9 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   // const token = localStorage.getItem("token");
   // const role = localStorage.getItem("role");
   const { token, role } = useAuth();
-  const  shop  = useSelector((state: any) => state.auth.shop) || {};
+  const shop = useSelector((state: any) => state.auth.shop);
   console.log("ProtectedRouteShopssss", shop);
+  console.log("allowedRoles", allowedRoles);
 
   console.log("ProtectedRouteToken", token);
   console.log("ProtectedRouteRole", role);
@@ -26,15 +27,15 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   }
 
   if (allowedRoles && role && !allowedRoles.includes(role)) {
-    if (role === "seller" && !shop) {
-      if (shop == undefined) {
-        return <Navigate to="/seller/create-shop" replace />;
-      } else {
+    if (role === "seller") {
+      if (shop) {
         return <Navigate to="/seller/dashboard" replace />;
+      } else {
+        return <Navigate to="/seller/create-shop" replace />;
       }
-    } else if (role === "buyer") {
-    return <Navigate to="/home" replace />;
-  }
+    } else {
+      return <Navigate to="/home" replace />;
+    }
   }
   return children;
 };
