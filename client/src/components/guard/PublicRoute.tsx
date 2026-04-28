@@ -17,15 +17,15 @@ const PublicRoute = ({ children }: Props) => {
   console.log("PublicRouteShopssss", shop);
 
   if (token) {
-    if (role === "seller") {
+    if (role === "seller" && !shop) {
       return shop ? (
         <Navigate to="/seller/dashboard" replace />
       ) : (
         <Navigate to="/seller/create-shop" replace />
       );
     } else {
-      return <Navigate to="/home" replace />;
-    }
+    return <Navigate to="/home" replace />;
+  }
   }
   return children;
 };

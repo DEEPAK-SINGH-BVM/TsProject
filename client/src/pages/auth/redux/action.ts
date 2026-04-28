@@ -87,32 +87,79 @@ const updateProfileImageSuccess = (user: User) => {
   };
 };
 // LOGIN
+// export const LoginAction =
+//   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
+//     try {
+//       const res = await api.post(endpoint.auth.login, data);
+//       const token = res.data.token;
+      
+//       console.log("LoginActionResponse", res);
+//       // dispatch(loginSuccess(res.data));
+  
+//       toast.success(res.data.message);
+   
+//       auth.login(res.data.token, res.data.user.role);
+  
+//       const shopRes = await api.get(endpoint.auth.shop);
+//       console.log('shopRes', shopRes);
+
+//       const { user, shop } = shopRes.data;
+//       dispatch(
+//         loginSuccess({
+//           user,
+//           token,
+//           shop,
+//           message: res.data.message
+//         }),
+//       );
+//       if (user.role === "seller") {
+//         if (shop) {
+//         auth.goTo("/seller/dashboard", true);
+//       } else {
+//           auth.goTo("/seller/create-shop", true);
+//         }
+//       } else {
+//         auth.goTo("/home", true);
+//       }
+//     } catch (error: any) {
+//       dispatch(authError(error.response?.data?.message));
+  
+//       toast.error(error.response?.data?.message);
+//     }
+//   };
 export const LoginAction =
   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
     try {
       const res = await api.post(endpoint.auth.login, data);
       const token = res.data.token;
-      
-      console.log("LoginActionResponse", res);
-      // dispatch(loginSuccess(res.data));
 
       toast.success(res.data.message);
 
-      auth.login(res.data.token, res.data.user.role);
+      auth.login(token, res.data.user.role);
 
-      const shopRes = await api.get(endpoint.auth.shop);
-      console.log('shopRes', shopRes);
+      let user = res.data.user;
+      let shop = null;
 
-      const { user, shop } = shopRes.data;
+      try {
+        const shopRes = await api.get(endpoint.auth.shop);
+        console.log("shopRes", shopRes);
+
+        user = shopRes.data.user || user;
+        shop = shopRes.data.shop || null;
+      } catch (shopError: any) {
+        console.log("No shop found");
+      }
+
       dispatch(
         loginSuccess({
           user,
           token,
           shop,
-          message: res.data.message
-        }),
+          message: res.data.message,
+        })
       );
-      if (user.role === "seller") {
+
+      if (user.role === "seller" && !shop) {
         if (shop) {
           auth.goTo("/seller/dashboard", true);
         } else {
@@ -121,12 +168,13 @@ export const LoginAction =
       } else {
         auth.goTo("/home", true);
       }
+
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
-
       toast.error(error.response?.data?.message);
     }
   };
+
 
 // SIGNUP
 export const SignupAction =

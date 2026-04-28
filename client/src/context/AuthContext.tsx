@@ -45,10 +45,10 @@ export const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     persistor.purge();
-
+  
     setToken(null);
     setRole(null);
-
+  
     toast.success("Logout Succeessfull");
     // navigate("/login", { replace: true });
     goTo("/login", true );

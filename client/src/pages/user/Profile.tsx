@@ -47,10 +47,10 @@ const Profile = () => {
           />
         </label>
         <div>
-          <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
-          <p className="text-gray-500 text-sm">{user.email}</p>
+          <h2 className="text-xl font-semibold text-gray-800">{user?.name}</h2>
+          <p className="text-gray-500 text-sm">{user?.email}</p>
           <span className="inline-block mt-1 text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
-            {user.role}
+            {user?.role}
           </span>
         </div>
       </div>
