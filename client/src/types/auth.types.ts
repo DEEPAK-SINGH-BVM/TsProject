@@ -31,5 +31,5 @@ export interface Shop {
     address: string;
     city: string;
     state: string;
-    logo: string;
+    logo: null | string;
 }

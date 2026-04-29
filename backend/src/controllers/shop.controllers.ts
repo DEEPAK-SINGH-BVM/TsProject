@@ -1,7 +1,47 @@
 import type { Request, Response } from "express";
 import Shop from "../models/shop.model";
+import User from "../models/user.model";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 
 type AuthRequest = Request & { user?: { id?: string } };
+
+export const getShop = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    console.log("userId", userId);
+    const user = await User.findById(userId).select("-password");
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const shop = await Shop.findOne({ owner: userId });
+    console.log("Getshop", shop);
+    
+    if (!shop) {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+    return res.status(200).json({ user, shop: shop || null });
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching shop", error });
+  }
+};
+
+export const updateShop = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const shop = await Shop.findOneAndUpdate({ owner: userId }, req.body, {
+      new: true,
+    });
+    if (!shop) {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+    return res.status(200).json({ message: "Shop updated successfully", shop });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating shop", error });
+  }
+};
 
 export const createShop = async (req: AuthRequest, res: Response) => {
   try {
@@ -14,3 +54,28 @@ export const createShop = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ message: "Error creating shop", error });
   }
 };
+
+export const uploadShopLogo = async (req: AuthRequest, res: Response) => {
+  try{
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+     if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const result = await uploadToCloudinary(req.file.buffer);
+    console.log("result", result);
+
+    const imageUrl = result.secure_url;
+    console.log("imageUrl", imageUrl);
+
+    const shop = await Shop.findOneAndUpdate({ owner: userId }, { logo: imageUrl }, { new: true });
+    if (!shop) {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+    return res.status(200).json({ message: "Shop logo updated successfully", shop });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating shop logo", error });
+  }
+}

@@ -22,11 +22,10 @@ import Profile from "./pages/user/Profile.jsx";
 
 // layout
 import AuthLayout from "./components/layout/AuthLayout";
-import SellerLayout from "./components/layout/SellerLayout";
-import BuyerLayout from "./components/layout/BuyerLayout";
 import CreateShop from "./pages/seller/CreateShop";
 import { SellerShopGuard } from "./components/guard/SellerShopRoute.js";
 import MyShop from "./pages/seller/MyShop.js";
+import Layout from "./components/layout/SellerLayout";
 //
 function App() {
   return (
@@ -57,11 +56,11 @@ function App() {
           path="/seller"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
-              <SellerLayout />
+              <Layout />
             </ProtectedRoute>
           }
         >
-          <Route path="create-shop" element={<CreateShop />} />
+          {/* <Route path="create-shop" element={<CreateShop />} /> */}
           <Route
             path="dashboard"
             element={
@@ -75,14 +74,25 @@ function App() {
           <Route path="edit-product" element={<EditProducts />} />
           <Route path="orders" element={<Order />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="shop" element={<MyShop />}   />
+          <Route path="shop" element={<MyShop />} />
+        </Route>
+        {/* Create Shop */}
+        <Route
+          path="/seller"
+          element={
+            <ProtectedRoute allowedRoles={["seller"]}>
+              <AuthLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="create-shop" element={<CreateShop />} />
         </Route>
         {/* Buyer */}
         <Route
           path="/"
           element={
             <ProtectedRoute allowedRoles={["buyer"]}>
-              <BuyerLayout />
+              <Layout />
             </ProtectedRoute>
           }
         >

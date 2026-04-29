@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import { Outlet } from 'react-router-dom'
-const SellerLayout = () => {
+const Layout = () => {
   return (
     <div className="flex">
       <Navbar/>
@@ -12,4 +12,4 @@ const SellerLayout = () => {
   );
 }
 
-export default SellerLayout
+export default Layout

@@ -7,10 +7,5 @@ const userRoutes = express.Router();
 userRoutes.post("/login",loginValidation, login); 
 userRoutes.post("/signup",signupValidation, signup);
 userRoutes.put("/address", authMiddleware, updateAddress);
-userRoutes.put(
-  "/profile-image",
-  authMiddleware,
-  upload.single("image"),
-  uploadProfileImage,
-);
+userRoutes.put("/profile-image",authMiddleware,upload.single("image"),uploadProfileImage);
 export default userRoutes;

@@ -29,23 +29,6 @@ const Signup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(SignupAction(form, auth));
-    // try {
-    //     const res = await api.post("/auth/signup", form)
-    //     alert(res.data.message)
-
-    //     localStorage.setItem("token", res.data.token);
-    //     localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    //     setForm({
-    //         name: "",
-    //         email: "",
-    //         password: "",
-    //         role: "user",
-    //     })
-    //     navigate("/dashboard");
-    // } catch (error: any) {
-    //     alert(error.response?.data?.message || "signup Failed")
-    // }
   };
   return (
     <div>

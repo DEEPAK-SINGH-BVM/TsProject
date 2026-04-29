@@ -1,158 +1,121 @@
-import { useNavigate } from "react-router-dom";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-
-const data = [
-  { name: "Mon", sales: 50 },
-  { name: "Tue", sales: 200 },
-  { name: "Wed", sales: 150 },
-  { name: "Thu", sales: 300 },
-  { name: "Fri", sales: 250 },
-];
-
+  FiBox,
+  FiShoppingCart,
+  FiDollarSign,
+  FiClock,
+  FiPackage,
+  FiUser,
+  FiShoppingBag,
+} from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
-  return (
-    <div className="p-6 space-y-6 bg-gray-100 min-h-screen">
-      {/* CARDS ROW */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-gray-500 text-sm">Total Products</p>
-          <div className="text-2xl font-bold text-gray-800 mt-2">120</div>
-          <p className="text-green-500 text-sm mt-1">+12% this month</p>
+return (
+  <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* Total Products */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+        <div className="flex items-center justify-between">
+          <p className="text-lg  text-gray-500">Total Products</p>
+          <FiPackage className="text-gray-400 text-xl" />
         </div>
+        <div className="text-3xl font-bold mt-3 text-gray-900">120</div>
+      </div>
 
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-gray-500 text-sm">Orders</p>
-          <div className="text-2xl font-bold text-gray-800 mt-2">85</div>
-          <p className="text-blue-500 text-sm mt-1">+8% this month</p>
+      {/* Orders */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">Orders</p>
+          <FiShoppingCart className="text-gray-400 text-xl" />
         </div>
+        <div className="text-3xl font-bold mt-3 text-gray-900">85</div>
+      </div>
 
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-gray-500 text-sm">Revenue</p>
-          <div className="text-2xl font-bold text-gray-800 mt-2">₹45,000</div>
-          <p className="text-purple-500 text-sm mt-1">+5% this month</p>
+      {/* Revenue */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">Revenue</p>
+          <FiDollarSign className="text-gray-400 text-xl" />
         </div>
+        <div className="text-3xl font-bold mt-3 text-gray-900">₹45,000</div>
+      </div>
 
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <p className="text-gray-500 text-sm">Pending</p>
-          <div className="text-2xl font-bold text-gray-800 mt-2">12</div>
-          <p className="text-red-500 text-sm mt-1">-3% this month</p>
+      {/* Pending */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">Pending Orders</p>
+          <FiClock className="text-gray-400 text-xl" />
+        </div>
+        <div className="text-3xl font-bold mt-3 text-gray-900">12</div>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* QUICK ACTIONS */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border">
+        <h2 className="text-lg font-semibold mb-5 text-gray-800">
+          Quick Actions
+        </h2>
+          
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => navigate("/seller/add-products")}
+            className="flex items-center justify-between bg-gray-900 hover:bg-gray-800 text-white p-3 rounded-lg transition"
+          >
+            <span>Products</span>
+            <FiBox />
+          </button>
+
+          <button
+            onClick={() => navigate("/seller/orders")}
+            className="flex items-center justify-between bg-gray-900 hover:bg-gray-800 text-white p-3 rounded-lg transition"
+          >
+            <span>Orders</span>
+            <FiShoppingCart />
+          </button>
+
+          <button
+            onClick={() => navigate("/seller/shop")}
+            className="flex items-center justify-between bg-gray-900 hover:bg-gray-800 text-white p-3 rounded-lg transition"
+          >
+            <span>My Shop</span>
+            <FiShoppingBag />
+          </button>
+
+          <button
+            onClick={() => navigate("/seller/profile")}
+            className="flex items-center justify-between bg-gray-900 hover:bg-gray-800 text-white p-3 rounded-lg transition"
+          >
+            <span>Profile</span>
+            <FiUser />
+          </button>
         </div>
       </div>
 
-      {/* MIDDLE SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* RECENT ORDERS */}
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Recent Orders
-          </h2>
+      <div className="bg-white p-6 rounded-xl shadow-sm border">
+        <h2 className="text-lg font-semibold mb-5 text-gray-800">
+          Order Summary
+        </h2>
 
-          <div className="space-y-3">
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>Order #101</span>
-              <span className="text-yellow-500 text-sm">Pending</span>
-            </div>
-
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>Order #102</span>
-              <span className="text-green-500 text-sm">Delivered</span>
-            </div>
-
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>Order #103</span>
-              <span className="text-blue-500 text-sm">Processing</span>
-            </div>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
+            <span>Pending Orders</span>
+            <span className="font-medium">12</span>
           </div>
-        </div>
 
-        {/* TOP PRODUCTS */}
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Top Products
-          </h2>
-
-          <div className="space-y-3">
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>Shoes</span>
-              <span className="text-gray-600">120 sold</span>
-            </div>
-
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>T-Shirt</span>
-              <span className="text-gray-600">90 sold</span>
-            </div>
-
-            <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
-              <span>Watch</span>
-              <span className="text-gray-600">70 sold</span>
-            </div>
+          <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
+            <span>Processing</span>
+            <span className="font-medium">8</span>
           </div>
-        </div>
-      </div>
 
-      {/* BOTTOM SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* GRAPH */}
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Sales Graph
-          </h2>
-
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={data}>
-              <XAxis dataKey="name" stroke="#6B7280" />
-              <YAxis stroke="#6B7280" />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="sales"
-                stroke="#10B981"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* QUICK ACTIONS */}
-        <div className="bg-white p-5 rounded-xl shadow-sm border">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Quick Actions
-          </h2>
-
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={() => navigate("/seller/add-products")}
-              className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg"
-            >
-              Add Product
-            </button>
-
-            <button
-              onClick={() => navigate("/seller/orders")}
-              className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg"
-            >
-              View Orders
-            </button>
-
-            <button
-              onClick={() => navigate("/seller/products")}
-              className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg"
-            >
-              Manage Products
-            </button>
+          <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
+            <span>Delivered</span>
+            <span className="font-medium">65</span>
           </div>
         </div>
       </div>
     </div>
-  );
-};
-
+  </div>
+);
+}
 export default Dashboard;

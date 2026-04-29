@@ -25,6 +25,12 @@ const Profile = () => {
   }, [user?.address]);
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-gray-50  mt-11">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-gray-800">Profile</h1>
+        <p className="text-sm text-gray-500">
+          Manage your account details
+        </p>
+      </div>
       <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex items-center gap-4">
         <label className="cursor-pointer">
           {user?.profileImage ? (

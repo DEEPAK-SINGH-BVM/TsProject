@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { CREATE_SHOP, GET_SHOP } from "./constant";
+import { CREATE_SHOP, GET_SHOP, UPDATE_SHOP, UPLOAD_SHOP_LOGO } from "./constant";
 import { AppDispatch } from "../../index";
 import api from "../../../api/axios";
 import endpoint from "../../../api/endPoint";
@@ -28,6 +28,19 @@ const createShopSuccess = (shop: Shop) => {
     payload: shop,
   };
 };
+
+const updateShopSuccess = (shop: Shop) => {
+  return {
+    type: UPDATE_SHOP,
+    payload: shop,
+  };
+};
+const uploadShopLogoSuccess = (shop: Shop) => {
+  return {
+    type: UPLOAD_SHOP_LOGO,
+    payload: shop,
+  };
+};
 export const getShopAction = () => async (dispatch: AppDispatch) => {
   try {
     const res = await api.get(endpoint.shop.get);
@@ -48,5 +61,30 @@ export const createShopAction =
       toast.success(res.data.message);
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed  to create shop");
+    }
+  };
+
+export const updateShopAction =
+  (data: any, auth: any) => async (dispatch: AppDispatch) => {
+    try {
+      const res = await api.put(endpoint.shop.update, data);
+      dispatch(updateShopSuccess(res.data.shop));
+      auth.goTo("/seller/shop", true);
+      toast.success(res.data.message);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to update shop");
+    }
+  };
+
+export const uploadShopLogoAction =
+  (formData: FormData) => async (dispatch: AppDispatch) => {
+    try {
+      const res = await api.post(endpoint.shop.uploadLogo, formData);
+      dispatch(uploadShopLogoSuccess(res.data.shop));
+      toast.success(res.data.message);
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Failed to upload shop logo",
+      );
     }
   };

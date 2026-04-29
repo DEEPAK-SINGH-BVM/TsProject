@@ -107,30 +107,47 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
   } catch (error) {
     return res.status(500).json({ message: "Error updating address", error });
   }
+};
+// export const getShop = async (req: AuthRequest, res: Response) => {
+//     try {
+//       const userId = req.user?.id;
+//       console.log('userId',userId);
+//       const user = await User.findById(userId).select("-password");
+//       if (!userId) {
+//         return res.status(401).json({ message: "Unauthorized" });
+//       }
+//       const shop = await Shop.findOne({ owner: userId });
+//       if (!shop) {
+//         return res.status(404).json({ message: "Shop not found" });
+//       }
+//       return res.status(200).json({ user,shop:shop || null });
+//     }
+//     catch (error) {
+//       return res.status(500).json({ message: "Error fetching shop", error });
+//     }
+// }
 
-}
-
-export const getShop = async (req: AuthRequest, res: Response) => {
-    try {
-      const userId = req.user?.id;
-      console.log('userId',userId);
-      const user = await User.findById(userId).select("-password");
-      if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-      const shop = await Shop.findOne({ owner: userId });
-      if (!shop) {
-        return res.status(404).json({ message: "Shop not found" });
-      }
-      return res.status(200).json({ user,shop:shop || null });
-    }
-    catch (error) {
-      return res.status(500).json({ message: "Error fetching shop", error });
-    }
-}
-
-export const uploadProfileImage = async(req:any,res:any)=>{
-  try{
+// export const updateShop = async (req: AuthRequest, res: Response) => {
+//   try {
+//     const userId = req.user?.id;
+//     if (!userId) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
+//     const shop = await Shop.findOneAndUpdate({ owner: userId }, req.body, {
+//       new: true,
+//     });
+//     if (!shop) {
+//       return res.status(404).json({ message: "Shop not found" });
+//     }
+//     return res.status(200).json({ message: "Shop updated successfully", shop });
+//   } catch (error) {
+//     return res
+//       .status(500)
+//       .json({ message: "Error updating shop", error });
+//   }
+// }
+export const uploadProfileImage = async (req: any, res: any) => {
+  try {
     const userId = req.user?.id;
     console.log("uploadProfileImage", userId);
 

@@ -6,7 +6,7 @@ import {
   AUTH_ERROR,
   UPDATE_ADDRESS,
   UPDATE_PROFILE_IMAGE,
-  CREATE_SHOP,
+  // CREATE_SHOP,
 } from "./constant";
 import { AppDispatch } from "../../index";
 import endpoint from "../../../api/endPoint";
@@ -86,15 +86,14 @@ const updateProfileImageSuccess = (user: User) => {
   };
 };
 
-const createShopSuccess = (shop: Shop) => {
-  return {
-    type: CREATE_SHOP,
-    payload: shop,
-  };
-};
+// const createShopSuccess = (shop: Shop) => {
+//   return {
+//     type: CREATE_SHOP,
+//     payload: shop,
+//   };
+// };
 // LOGIN
-export const LoginAction =
-  (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
+export const LoginAction = (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
     try {
       const res = await api.post(endpoint.auth.login, data);
       const token = res.data.token;
@@ -105,7 +104,6 @@ export const LoginAction =
 
       let user = res.data.user;
       let shop = null;
-
       try {
         const shopRes = await api.get(endpoint.shop.get);
         console.log("shopRes", shopRes);
@@ -124,22 +122,46 @@ export const LoginAction =
           message: res.data.message,
         }),
       );
-
-      // if (user.role === "seller") {
-      // if (shop) {
-      // auth.goTo("/home", true);
-      // } else {
-      // auth.goTo("/seller/create-shop", true);
-      // }
-      // } else {
-      //   auth.goTo("/home", true);
-      // }
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
       toast.error(error.response?.data?.message);
     }
   };
+// export const LoginAction =
+//   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
+//     try {
+//       const res = await api.post(endpoint.auth.login, data);
+//       const token = res.data.token;
 
+//       toast.success(res.data.message);
+
+//       auth.login(token, res.data.user.role);
+
+//       let shop = null;
+
+//       try {
+//         const shopRes = await api.get(endpoint.shop.get);
+//         shop = shopRes.data.shop || null;
+//       } catch (err) {
+//         console.log("No shop found");
+//       }
+
+//       dispatch(
+//         loginSuccess({
+//           user: res.data.user,
+//           token,
+//           message: res.data.message,
+//         }),
+//       );
+
+//       if (shop) {
+//         dispatch({ type: "GET_SHOP", payload: shop });
+//       }
+//     } catch (error: any) {
+//       dispatch(authError(error.response?.data?.message));
+//       toast.error(error.response?.data?.message);
+//     }
+//   };
 // SIGNUP
 export const SignupAction =
   (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
@@ -153,11 +175,6 @@ export const SignupAction =
 
       auth.signup(res.data.token, res.data.user.role);
 
-      // if (res.data.user.role === "seller") {
-      //   auth.goTo("/seller/create-shop", true);
-      // } else {
-      //   auth.goTo("/home", true);
-      // }
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
 
@@ -192,15 +209,15 @@ export const uploadProfileImageAction =
       );
     }
   };
-export const createShopAction =
-  (data: any, auth: any) => async (dispatch: AppDispatch) => {
-    try {
-      const res = await api.post(endpoint.shop.create, data);
-      console.log("createShopActionResponse", res);
-      dispatch(createShopSuccess(res.data.shop));
-      toast.success(res.data.message);
-      auth.goTo("/seller/dashboard", true);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to create shop");
-    }
-  };
+// export const createShopAction =
+//   (data: any, auth: any) => async (dispatch: AppDispatch) => {
+//     try {
+//       const res = await api.post(endpoint.shop.create, data);
+//       console.log("createShopActionResponse", res);
+//       dispatch(createShopSuccess(res.data.shop));
+//       toast.success(res.data.message);
+//       auth.goTo("/seller/dashboard", true);
+//     } catch (error: any) {
+//       toast.error(error.response?.data?.message || "Failed to create shop");
+//     }
+//   };

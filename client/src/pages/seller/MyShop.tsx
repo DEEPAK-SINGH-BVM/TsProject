@@ -1,24 +1,56 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { use, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaStore, FaPhone, FaMapMarkerAlt, FaTag } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../store";
+import { getShopAction, uploadShopLogoAction } from "../../store/feature/shop";
 
 const MyShop = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const wholeState = useSelector((state: any) => state);
+  console.log("WholeState", wholeState);
+
   const shop = useSelector((state: any) => state.auth.shop);
   console.log("MyShopShop", shop);
+
+  const navigate = useNavigate();
   return (
     <div className="max-w-3xl mx-auto p-6 mt-10 space-y-6 bg-gray-50">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-gray-800">My Shop</h1>
+        <p className="text-sm text-gray-500">
+          Manage your shop details and basic information
+        </p>
+      </div>
       <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex items-center gap-5">
-        {shop?.logo ? (
-          <img
-            src={shop.logo}
-            alt="shop"
-            className="w-20 h-20 rounded-xl object-cover border"
+        <label className="cursor-pointer">
+          {shop?.logo ? (
+            <img
+              src={shop.logo}
+              alt="shop"
+              className="w-20 h-20 rounded-xl object-cover border"
+            />
+          ) : (
+            <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-xl">
+              <FaStore size={30} />
+            </div>
+          )}
+
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              const formData = new FormData();
+              formData.append("logo", file);
+
+              dispatch(uploadShopLogoAction(formData));
+            }}
           />
-        ) : (
-          <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-xl">
-            <FaStore size={30} />
-          </div>
-        )}
+        </label>
 
         <div>
           <h2 className="text-xl font-semibold text-gray-800">{shop?.name}</h2>
@@ -52,11 +84,14 @@ const MyShop = () => {
         </div>
       </div>
 
-      {/* <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex gap-3">
-        <button className="px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition">
+      <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex gap-3">
+        <button
+          onClick={() => navigate("/seller/create-shop", { state: { shop } })}
+          className="px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
+        >
           Edit Shop
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };
