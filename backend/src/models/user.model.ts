@@ -7,6 +7,8 @@ export interface IUser extends Document {
   role: "seller" | "buyer";
   address?: string;
   profileImage?: string;
+  otp?: string;
+  otpExpires?: Date;
 }
 
 const userSchema = new Schema<IUser>({
@@ -41,7 +43,13 @@ const userSchema = new Schema<IUser>({
   profileImage:{
     type: String,
     default: "",
-  }
+  },
+  otp: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
 });
-const User = mongoose.model<IUser>("User",userSchema)
+const User = mongoose.model<IUser>("User", userSchema);
 export default User;

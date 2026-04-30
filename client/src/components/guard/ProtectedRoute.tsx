@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   // const token = localStorage.getItem("token");
   // const role = localStorage.getItem("role");
   const { token, role } = useAuth();
-  const shop = useSelector((state: any) => state.auth.shop);
+  const shop = useSelector((state: any) => state.shop .shop);
   console.log("ProtectedRouteShopssss", shop);
   console.log("allowedRoles", allowedRoles);
 

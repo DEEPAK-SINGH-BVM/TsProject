@@ -26,6 +26,8 @@ import CreateShop from "./pages/seller/CreateShop";
 import { SellerShopGuard } from "./components/guard/SellerShopRoute.js";
 import MyShop from "./pages/seller/MyShop.js";
 import Layout from "./components/layout/SellerLayout";
+import ForgotPassword from "./pages/auth/ForgotPassword.js";
+import ResetPassword from "./pages/auth/ResetPassword.js";
 //
 function App() {
   return (
@@ -49,6 +51,22 @@ function App() {
               </PublicRoute>
             }
           />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
         {/* Seller */}
@@ -60,7 +78,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* <Route path="create-shop" element={<CreateShop />} /> */}
+          <Route path="create-shop" element={<CreateShop />} />
           <Route
             path="dashboard"
             element={
@@ -77,7 +95,7 @@ function App() {
           <Route path="shop" element={<MyShop />} />
         </Route>
         {/* Create Shop */}
-        <Route
+        {/* <Route
           path="/seller"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
@@ -86,7 +104,7 @@ function App() {
           }
         >
           <Route path="create-shop" element={<CreateShop />} />
-        </Route>
+        </Route> */}
         {/* Buyer */}
         <Route
           path="/"
@@ -100,7 +118,6 @@ function App() {
           <Route path="product-details" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
-          <Route path="orders" element={<Orders />} />
           <Route path="buyer-profile" element={<Profile />} />
         </Route>
       </Routes>

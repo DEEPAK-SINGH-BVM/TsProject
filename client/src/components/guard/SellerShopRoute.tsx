@@ -12,7 +12,7 @@ export const SellerShopGuard = ({
   const shop = useSelector((state: any) => state.auth.shop);
   console.log("sellerShopGuard", shop);
 
-  if (role === "seller" && !shop) {
+  if (role === "seller" && shop === null) {
     return <Navigate to="/seller/create-shop" replace />;
   }
   return children;

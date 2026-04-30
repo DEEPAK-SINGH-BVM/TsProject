@@ -1,9 +1,10 @@
 import express from "express";
-import { createShop, getShop, updateShop, uploadShopLogo } from "../controllers/shop.controllers";
+import { createShop, getAllShops, getShop, updateShop, uploadShopLogo } from "../controllers/shop.controllers";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { shopMiddleware } from "../middlewares/shop.middleware";
 import upload from "../middlewares/multer.middleware";
 const shopRoutes = express.Router();
+shopRoutes.get("/all-shops", getAllShops);
 shopRoutes.get("/my-shop", authMiddleware, getShop);
 shopRoutes.post("/create", authMiddleware, shopMiddleware, createShop);
 shopRoutes.put("/update", authMiddleware, shopMiddleware, updateShop);

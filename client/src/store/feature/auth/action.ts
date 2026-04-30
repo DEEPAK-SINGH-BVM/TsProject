@@ -66,7 +66,7 @@ export const signupSuccess = (data: AuthResponse) => {
 };
 
 export const authError = (error: AuthResponse) => {
-  return {  
+  return {
     type: AUTH_ERROR,
     payload: error,
   };
@@ -92,41 +92,6 @@ const updateProfileImageSuccess = (user: User) => {
 //     payload: shop,
 //   };
 // };
-// LOGIN
-export const LoginAction = (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
-    try {
-      const res = await api.post(endpoint.auth.login, data);
-      const token = res.data.token;
-
-      toast.success(res.data.message);
-
-      auth.login(token, res.data.user.role);
-
-      let user = res.data.user;
-      let shop = null;
-      try {
-        const shopRes = await api.get(endpoint.shop.get);
-        console.log("shopRes", shopRes);
-
-        user = shopRes.data.user || user;
-        shop = shopRes.data.shop || null;
-      } catch (shopError: any) {
-        console.log("No shop found");
-      }
-
-      dispatch(
-        loginSuccess({
-          user,
-          token,
-          shop,
-          message: res.data.message,
-        }),
-      );
-    } catch (error: any) {
-      dispatch(authError(error.response?.data?.message));
-      toast.error(error.response?.data?.message);
-    }
-  };
 // export const LoginAction =
 //   (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
 //     try {
@@ -162,6 +127,43 @@ export const LoginAction = (data: LoginData, auth: any) => async (dispatch: AppD
 //       toast.error(error.response?.data?.message);
 //     }
 //   };
+// LOGIN
+export const LoginAction =
+  (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
+    try {
+      const res = await api.post(endpoint.auth.login, data);
+      const token = res.data.token;
+
+      toast.success(res.data.message);
+
+      auth.login(token, res.data.user.role);
+
+      let user = res.data.user;
+      let shop = null;
+      try {
+        const shopRes = await api.get(endpoint.shop.get);
+        console.log("shopRes", shopRes);
+
+        user = shopRes.data.user || user;
+        shop = shopRes.data.shop || null;
+      } catch (shopError: any) {
+        console.log("No shop found");
+      }
+
+      dispatch(
+        loginSuccess({
+          user,
+          token,
+          shop,
+          message: res.data.message,
+        }),
+      );
+    } catch (error: any) {
+      dispatch(authError(error.response?.data?.message));
+      toast.error(error.response?.data?.message);
+    }
+  };
+
 // SIGNUP
 export const SignupAction =
   (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
@@ -174,14 +176,44 @@ export const SignupAction =
       toast.success(res.data.message);
 
       auth.signup(res.data.token, res.data.user.role);
-
     } catch (error: any) {
       dispatch(authError(error.response?.data?.message));
 
       toast.error(error.response?.data?.message || "Signup Failed");
     }
   };
+// sendOtp
+export const sendOtp = (email: string) => async (dispatch: AppDispatch) => {
+  try {
+    const res = await api.post(endpoint.auth.sendOtp, { email });
+    toast.success(res.data.message);
+    localStorage.setItem("otpUserId", res.data.user_id);
+  } catch (error: any) {
+    toast.error(error.response?.data?.error || "OTP failed");
+  }
+};
 
+// ResetPassword 
+export const resetPassword = (data:{ otp: string; new_password: string }, navigate: any) => async (dispatch:AppDispatch)=>
+{
+   try {
+     const user_id = localStorage.getItem("otpUserId");
+ 
+     const res = await api.post(endpoint.auth.resetPassword, {
+       user_id,
+       otp:data.otp,
+       new_password:data.new_password
+     });
+ 
+     toast.success(res.data.message)
+     localStorage.removeItem("otpUserId");
+     setTimeout(()=>{
+       navigate("/login")
+     },1500)
+   } catch (error:any) {
+      toast.error(error.response?.data?.error || "Reset failed");
+   }
+}
 export const UpdateAddressAction =
   (address: string) => async (dispatch: AppDispatch) => {
     try {

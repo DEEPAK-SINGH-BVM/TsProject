@@ -3,8 +3,9 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import * as crypto from "crypto";
+import nodemailer from "nodemailer";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
-import Shop from "../models/shop.model";
 dotenv.config();
 
 type AuthRequest = Request & { user?: { id?: string } };
@@ -86,6 +87,80 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const sendOtp = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: "Email Not Found " });
+    }
+    const otp: string = crypto.randomInt(100000, 999999).toString();
+
+    user.otp = otp;
+    user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
+    });
+    return res.status(200).json({
+      message: "OTP sent successfully",
+      user_id: user._id,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Failed to send OTP",
+    });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { user_id, otp, new_password } = req.body;
+
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(400).json({ error: "User Not Found" });
+    }
+
+    if (!user.otp || user.otp !== otp) {
+      return res.status(400).json({ error: "Invalid OTP !" });
+    }
+
+    const otpExpires = user.otpExpires;
+    if (!otpExpires || otpExpires < new Date()) {
+      return res.status(400).json({ error: "OTP Expired!" });
+    }
+
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+    user.password = hashedPassword;
+    delete user.otp;
+    delete user.otpExpires;
+    user.save();
+
+    return res.status(200).json({
+      message: "Password reset successful",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Reset Password Fail",
+    });
+  }
+};
 export const updateAddress = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
@@ -98,54 +173,18 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
     const user = await User.findByIdAndUpdate(
       userId,
       { address },
-      { new: true }
-    );  
+      { new: true },
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({ message: "Address updated successfully", user });
+    return res
+      .status(200)
+      .json({ message: "Address updated successfully", user });
   } catch (error) {
     return res.status(500).json({ message: "Error updating address", error });
   }
 };
-// export const getShop = async (req: AuthRequest, res: Response) => {
-//     try {
-//       const userId = req.user?.id;
-//       console.log('userId',userId);
-//       const user = await User.findById(userId).select("-password");
-//       if (!userId) {
-//         return res.status(401).json({ message: "Unauthorized" });
-//       }
-//       const shop = await Shop.findOne({ owner: userId });
-//       if (!shop) {
-//         return res.status(404).json({ message: "Shop not found" });
-//       }
-//       return res.status(200).json({ user,shop:shop || null });
-//     }
-//     catch (error) {
-//       return res.status(500).json({ message: "Error fetching shop", error });
-//     }
-// }
-
-// export const updateShop = async (req: AuthRequest, res: Response) => {
-//   try {
-//     const userId = req.user?.id;
-//     if (!userId) {
-//       return res.status(401).json({ message: "Unauthorized" });
-//     }
-//     const shop = await Shop.findOneAndUpdate({ owner: userId }, req.body, {
-//       new: true,
-//     });
-//     if (!shop) {
-//       return res.status(404).json({ message: "Shop not found" });
-//     }
-//     return res.status(200).json({ message: "Shop updated successfully", shop });
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ message: "Error updating shop", error });
-//   }
-// }
 export const uploadProfileImage = async (req: any, res: any) => {
   try {
     const userId = req.user?.id;
@@ -162,13 +201,18 @@ export const uploadProfileImage = async (req: any, res: any) => {
     
     const imageUrl = result.secure_url;
     console.log("imageUrl", imageUrl);
-    
-    const user = await User.findByIdAndUpdate(userId,{profileImage: imageUrl },{new:true});
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { profileImage: imageUrl },
+      { new: true },
+    );
     console.log("updatedUser", user);
     return res
       .status(200)
       .json({ message: "Profile image uploaded successfully", user });
   } catch (error) {
-    return res.status(500).json({ message: "Error uploading profile image", error });
+    return res
+      .status(500)
+      .json({ message: "Error uploading profile image", error });
   }
-}
+};

@@ -5,6 +5,15 @@ import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 
 type AuthRequest = Request & { user?: { id?: string } };
 
+export const getAllShops = async (req: Request, res: Response) => {
+  try {
+    const shops = await Shop.find();
+    console.log("AllShops", shops);
+    return res.status(200).json({ shops });
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching shops", error });
+  }
+};
 export const getShop = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;

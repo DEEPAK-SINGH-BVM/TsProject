@@ -48,82 +48,101 @@ const CreateShop = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg"
+        className="w-full max-w-2xl bg-white border border-gray-100 shadow-sm rounded-2xl p-8 space-y-5"
       >
-        <h2 className="text-2xl font-bold mb-4">
-          {" "}
-          {editShop ? "Edit" : "Create"}Shop
-        </h2>
+        {/* Header */}
+        <div className="mb-2">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {editShop ? "Edit Shop" : "Create Shop"}
+          </h2>
+          <p className="text-sm text-gray-500">
+            Fill in the details below to continue
+          </p>
+        </div>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Shop Name"
-          value={form.name}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
+        {/* Inputs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Shop Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
 
+          <input
+            type="text"
+            name="category"
+            placeholder="Category"
+            value={form.category}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
+
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            value={form.phone}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
+
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            value={form.city}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
+
+          <input
+            type="text"
+            name="state"
+            placeholder="State"
+            value={form.state}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
+
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={form.address}
+            onChange={handleChange}
+            className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl 
+        focus:outline-none focus:ring-1 focus:ring-gray-300"
+          />
+        </div>
+
+        {/* Description full width */}
         <textarea
           name="description"
           placeholder="Description"
           value={form.description}
           onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
+          className="w-full border border-gray-200 bg-gray-50 p-3 rounded-xl h-28 
+      focus:outline-none focus:ring-1 focus:ring-gray-300"
         />
 
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
-
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={form.phone}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
-
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={form.address}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
-
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={form.city}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
-
-        <input
-          type="text"
-          name="state"
-          placeholder="State"
-          value={form.state}
-          onChange={handleChange}
-          className="w-full border p-2 mb-3 rounded"
-        />
+        {/* Button */}
         <button
           type="submit"
-          className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
+          className="w-full py-3 rounded-xl bg-gray-800 text-white font-medium 
+      hover:bg-gray-700 transition shadow-sm"
         >
-          {editShop ? "Edit" : "Create"} Shop
+          {editShop ? "Update Shop" : "Create Shop"}
         </button>
       </form>
     </div>

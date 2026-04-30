@@ -1,3 +1,4 @@
+export const GET_ALL_SHOPS = "GET_ALL_SHOPS";
 export const GET_SHOP = "GET_SHOP";
 export const CREATE_SHOP = "CREATE_SHOP";
 export const UPDATE_SHOP = "UPDATE_SHOP";

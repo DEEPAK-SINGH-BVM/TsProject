@@ -80,7 +80,6 @@ const Login = () => {
             style={{
               ...styles.button,
             }}
-
           >
             Login
           </button>
@@ -91,6 +90,11 @@ const Login = () => {
           <Link to="/signup" style={styles.link}>
             Create an account
           </Link>
+          <div style={{ marginTop: "10px" }}>
+            <Link to="/forgot-password" style={styles.link}>
+              Forgot Password?
+            </Link>
+          </div>
         </div>
       </div>
     </div>

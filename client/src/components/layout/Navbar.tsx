@@ -75,7 +75,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/orders"
+                to="/cart"
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
               >
                 <FaShoppingCart />

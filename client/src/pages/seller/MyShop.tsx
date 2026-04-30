@@ -3,16 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaStore, FaPhone, FaMapMarkerAlt, FaTag } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store";
-import { getShopAction, uploadShopLogoAction } from "../../store/feature/shop";
+import {
+  getShopAction,
+  uploadShopLogoAction,
+} from "../../store/feature/shop";
 
 const MyShop = () => {
   const dispatch = useDispatch<AppDispatch>();
   const wholeState = useSelector((state: any) => state);
   console.log("WholeState", wholeState);
 
-  const shop = useSelector((state: any) => state.auth.shop);
+  const shop = useSelector((state: any) => state.shop.shop);
   console.log("MyShopShop", shop);
-
+  useEffect(() => {
+    dispatch(getShopAction());
+  }, []);
   const navigate = useNavigate();
   return (
     <div className="max-w-3xl mx-auto p-6 mt-10 space-y-6 bg-gray-50">
@@ -31,7 +36,7 @@ const MyShop = () => {
               className="w-20 h-20 rounded-xl object-cover border"
             />
           ) : (
-            <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-xl">
+            <div className="w-20 h-20 flex items-center justify-center vbg-gray-100 rounded-xl">
               <FaStore size={30} />
             </div>
           )}
@@ -43,10 +48,8 @@ const MyShop = () => {
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
-
               const formData = new FormData();
               formData.append("logo", file);
-
               dispatch(uploadShopLogoAction(formData));
             }}
           />
@@ -65,6 +68,7 @@ const MyShop = () => {
         <h3 className="text-lg font-semibold text-gray-800">Shop Details</h3>
 
         <div className="grid gap-3 text-gray-700 text-sm">
+          {/* shop description  */}
           <div className="flex items-center gap-2">
             <FaTag />
             <span>{shop?.description}</span>
