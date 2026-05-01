@@ -100,7 +100,7 @@ export const sendOtp = async (req: Request, res: Response) => {
     const otp: string = crypto.randomInt(100000, 999999).toString();
 
     user.otp = otp;
-    user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+    user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
     await user.save();
 
     const transporter = nodemailer.createTransport({
@@ -114,7 +114,7 @@ export const sendOtp = async (req: Request, res: Response) => {
     await transporter.sendMail({
       to: email,
       subject: "Password Reset OTP",
-      text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
+      text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
     });
     return res.status(200).json({
       message: "OTP sent successfully",
@@ -150,7 +150,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     user.password = hashedPassword;
     delete user.otp;
     delete user.otpExpires;
-    user.save();
+    await user.save();
 
     return res.status(200).json({
       message: "Password reset successful",

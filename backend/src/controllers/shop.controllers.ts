@@ -43,6 +43,8 @@ export const updateShop = async (req: AuthRequest, res: Response) => {
     const shop = await Shop.findOneAndUpdate({ owner: userId }, req.body, {
       new: true,
     });
+    console.log('updateShop',shop);
+    
     if (!shop) {
       return res.status(404).json({ message: "Shop not found" });
     }
@@ -56,6 +58,8 @@ export const createShop = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
     const shop = await Shop.create({ ...req.body, owner: userId });
+    console.log('createShop',shop);
+    
     return res
       .status(201)
       .json({ message: "Shop Registed successfully", shop });
