@@ -4,6 +4,7 @@ const endpoint = {
     signup: "/auth/signup",
     address: "/auth/address",
     sendOtp: "/auth/send-otp",
+    verifyOtp:"/auth/verify-otp",
     resetPassword: "/auth/reset-password",
   },
   shop: {

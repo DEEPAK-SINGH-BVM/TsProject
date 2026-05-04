@@ -5,7 +5,7 @@ export const validate =
   (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     // validate incoming data with Zod
     console.log("validateReq.body", req.body);
-    
+    // Check if data is valid WITHOUT crashing the app
     const result = schema.safeParse(req.body);
     console.log("validatorResult", result);
 

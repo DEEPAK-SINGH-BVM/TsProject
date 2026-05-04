@@ -33,7 +33,7 @@ export const signup = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     const userData = user.toObject() as any;
@@ -127,7 +127,7 @@ export const sendOtp = async (req: Request, res: Response) => {
   }
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { user_id, otp, new_password } = req.body;
 
@@ -146,6 +146,26 @@ export const resetPassword = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "OTP Expired!" });
     }
 
+    return res.status(200).json({
+      message: "OTP varified",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "OTP Verification Failed",
+    });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { user_id, otp, new_password } = req.body;
+
+    const user = await User.findById(user_id);
+
+    if (!user) {
+      return res.status(400).json({ error: "User Not Found" });
+    }
+
     const hashedPassword = await bcrypt.hash(new_password, 10);
     user.password = hashedPassword;
     delete user.otp;
@@ -153,11 +173,11 @@ export const resetPassword = async (req: Request, res: Response) => {
     await user.save();
 
     return res.status(200).json({
-      message: "Password reset successful",
+      message: "OTP varified",
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Reset Password Fail",
+      message: "OTP Verification Failed",
     });
   }
 };

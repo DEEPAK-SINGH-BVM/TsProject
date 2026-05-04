@@ -53,24 +53,19 @@
 //     │       useAuth.ts
 //     │       
 //     ├───pages
-//     │   │   Signup.tsx
 //     │   │   try.tsx
 //     │   │   
 //     │   ├───auth
-//     │   │   │   Login.tsx
-//     │   │   │   Signup.tsx
-//     │   │   │   
-//     │   │   └───redux
-//     │   │           action.ts
-//     │   │           constant.ts
-//     │   │           index.ts
-//     │   │           reducer.ts
-//     │   │           
+//     │   │       ForgotPassword.tsx
+//     │   │       Login.tsx
+//     │   │       OtpPage.tsx
+//     │   │       ResetPassword.tsx
+//     │   │       Signup.tsx
+//     │   │       
 //     │   ├───buyer
 //     │   │       Cart.tsx
 //     │   │       Checkout.tsx
 //     │   │       Home.tsx
-//     │   │       Orders.tsx
 //     │   │       ProductDetails.tsx
 //     │   │       
 //     │   ├───seller
@@ -78,6 +73,7 @@
 //     │   │       CreateShop.tsx
 //     │   │       Dashboard.tsx
 //     │   │       EditProduct.tsx
+//     │   │       MyShop.tsx
 //     │   │       Order.tsx
 //     │   │       Products.tsx
 //     │   │       
@@ -91,7 +87,65 @@
 //     │       AppRoutes.tsx
 //     │       
 //     ├───store
-//     │       index.ts
+//     │   │   index.ts
+//     │   │   
+//     │   └───feature
+//     │       ├───auth
+//     │       │       action.ts
+//     │       │       constant.ts
+//     │       │       index.ts
+//     │       │       reducer.ts
+//     │       │       
+//     │       └───shop
+//     │               action.ts
+//     │               constant.ts
+//     │               index.ts
+//     │               reducer.ts
+//     │               
+//     ├───types
+//     │       auth.types.ts
 //     │       
-//     └───types
-//             auth.types.ts
+//     └───utils
+////////////////////////////
+//Backend
+// C:.
+// │   .env
+// │   package-lock.json
+// │   package.json
+// │   tsconfig.json
+// │   
+// ├───dist
+// └───src
+//     │   index.ts
+//     │   
+//     ├───config
+//     │       cloudinary.ts
+//     │       db.ts
+//     │       
+//     ├───controllers
+//     │       shop.controllers.ts
+//     │       user.controllers.ts
+//     │       
+//     ├───middlewares
+//     │       auth.middleware.ts
+//     │       multer.middleware.ts
+//     │       shop.middleware.ts
+//     │       validate.middleware.ts
+//     │       
+//     ├───models
+//     │       shop.model.ts
+//     │       user.model.ts
+//     │       
+//     ├───routes
+//     │       index.routes.ts
+//     │       shop.routes.ts
+//     │       user.routes.ts
+//     │       
+//     ├───utils
+//     │       uploadToCloudinary.ts
+//     │       
+//     └───validators
+//             auth.validator.ts
+//             shop.validator.ts
+            
+// PS C:\E-Com\backend> 

@@ -4,5 +4,5 @@ export const shopMiddleware = (req: Request, res: Response, next: NextFunction) 
     if (!name || !description || !category || !phone || !address || !city || !state) {
         return res.status(400).json({ message: "All fields are required" });
     }
-    next();
+    next()
 }

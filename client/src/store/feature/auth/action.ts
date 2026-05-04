@@ -153,15 +153,36 @@ export const sendOtp = (email: string) => async (dispatch: AppDispatch) => {
     const res = await api.post(endpoint.auth.sendOtp, { email });
     toast.success(res.data.message);
     localStorage.setItem("otpUserId", res.data.user_id);
+    console.log("sendOTPEmail", email);
+    
+    localStorage.setItem("otpEmail",email)
   } catch (error: any) {
     toast.error(error.response?.data?.error || "OTP failed");
   }
 };
+// varifyOtp
+export const verifyOtp = (data: { otp: string }, navigate: any) => async () => {
+  try {
+    const user_id = localStorage.getItem("otpUserId");
+    if (!user_id) {
+      toast.error("Session expired, try again");
+      return;
+    }
 
+    const res = await api.post(endpoint.auth.verifyOtp, {
+      user_id,
+      otp: data.otp,
+    });
+
+    toast.success(res.data.message);
+    navigate("/reset-password");
+  } catch (error: any) {
+    toast.error(error.response?.data?.error || "OTP failed");
+  }
+};
 // ResetPassword
 export const resetPassword =
-  (data: { otp: string; new_password: string }, navigate: any) =>
-  async (dispatch: AppDispatch) => {
+  (data: { new_password: string }, navigate: any) => async () => {
     try {
       const user_id = localStorage.getItem("otpUserId");
       if (!user_id) {
@@ -171,7 +192,6 @@ export const resetPassword =
 
       const res = await api.post(endpoint.auth.resetPassword, {
         user_id,
-        otp: data.otp,
         new_password: data.new_password,
       });
 
@@ -179,7 +199,7 @@ export const resetPassword =
       localStorage.removeItem("otpUserId");
       setTimeout(() => {
         navigate("/login");
-      }, 1500);
+      }, 1000);
     } catch (error: any) {
       toast.error(error.response?.data?.error || "Reset failed");
     }
