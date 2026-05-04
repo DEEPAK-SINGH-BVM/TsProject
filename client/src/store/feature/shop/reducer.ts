@@ -38,6 +38,12 @@ const shopReducer = (state = initialState, action: any) => {
         shop: action.payload,
         error: null,
       };
+    case "CLEAR_SHOP":
+      return {
+        ...state,
+        shop: null,
+        shops: [],
+      };
     case UPLOAD_SHOP_LOGO:
       return {
         ...state,

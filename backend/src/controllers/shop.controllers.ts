@@ -17,6 +17,8 @@ export const getAllShops = async (req: Request, res: Response) => {
 export const getShop = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
+    console.log('getShopRequest',req.user);
+    
     console.log("userId", userId);
     const user = await User.findById(userId).select("-password");
     if (!userId) {
@@ -25,9 +27,9 @@ export const getShop = async (req: AuthRequest, res: Response) => {
     const shop = await Shop.findOne({ owner: userId });
     console.log("Getshop", shop);
 
-    if (!shop) {
-      return res.status(404).json({ message: "Shop not found" });
-    }
+    // if (!shop) {
+    // return res.status(404).json({ message: "Shop not found" });
+    // }
     return res.status(200).json({ user, shop: shop || null });
   } catch (error) {
     return res.status(500).json({ message: "Error fetching shop", error });

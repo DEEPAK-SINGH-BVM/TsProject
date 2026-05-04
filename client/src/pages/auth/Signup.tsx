@@ -120,7 +120,7 @@ const Signup = () => {
             <p style={styles.footerText}>
               Already have an account?{" "}
               <Link to="/login" style={styles.link}>
-                Sign in
+                Login
               </Link>
             </p>
           </div>

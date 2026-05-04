@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../store";
 import { Shop } from "../../types/auth.types";
 import { useAuth } from "../../context/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { createShopAction, updateShopAction } from "../../store/feature/shop";
 
 const CreateShop = () => {
@@ -14,6 +14,9 @@ const CreateShop = () => {
   console.log("WholeState", wholeState);
 
   const location = useLocation();
+  const shop = useSelector((state: any) => state.shop.shop);
+  const navigate = useNavigate();
+
   const editShop = location?.state?.shop;
   const [form, setForm] = useState<Shop>({
     name:editShop?.name || "",
@@ -25,6 +28,13 @@ const CreateShop = () => {
     state: editShop?.state || "",
     logo: editShop?.logo || "",
   });
+
+  useEffect(() => {
+    if (shop && !editShop) {
+      navigate("/seller/dashboard");
+    }
+  }, [shop]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {

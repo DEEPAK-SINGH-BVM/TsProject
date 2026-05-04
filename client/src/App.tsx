@@ -16,14 +16,12 @@ import Home from "./pages/buyer/Home.js";
 import ProductDetails from "./pages/buyer/ProductDetails";
 import Cart from "./pages/buyer/Cart.js";
 import Checkout from "./pages/buyer/Checkout";
-import Orders from "./pages/buyer/Orders.js";
 import PublicRoute from "./components/guard/PublicRoute";
 import Profile from "./pages/user/Profile.jsx";
 
 // layout
 import AuthLayout from "./components/layout/AuthLayout";
 import CreateShop from "./pages/seller/CreateShop";
-import { SellerShopGuard } from "./components/guard/SellerShopRoute.js";
 import MyShop from "./pages/seller/MyShop.js";
 import Layout from "./components/layout/SellerLayout";
 import ForgotPassword from "./pages/auth/ForgotPassword.js";
@@ -72,21 +70,21 @@ function App() {
         {/* Seller */}
         <Route
           path="/seller"
+          element={<AuthLayout />}
+          // element={<Layout />}
+        >
+          <Route path="create-shop" element={<CreateShop />} />
+        </Route>
+        <Route
+          path="/seller"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute>
               <Layout />
             </ProtectedRoute>
           }
         >
-          <Route path="create-shop" element={<CreateShop />} />
-          <Route
-            path="dashboard"
-            element={
-              <SellerShopGuard>
-                <Dashboard />
-              </SellerShopGuard>
-            }
-          />
+          <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="products" element={<Products />} />
           <Route path="add-products" element={<AddProducts />} />
           <Route path="edit-product" element={<EditProducts />} />
@@ -94,22 +92,11 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="shop" element={<MyShop />} />
         </Route>
-        {/* Create Shop */}
-        {/* <Route
-          path="/seller"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <AuthLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="create-shop" element={<CreateShop />} />
-        </Route> */}
         {/* Buyer */}
         <Route
           path="/"
           element={
-            <ProtectedRoute allowedRoles={["buyer"]}>
+            <ProtectedRoute>
               <Layout />
             </ProtectedRoute>
           }

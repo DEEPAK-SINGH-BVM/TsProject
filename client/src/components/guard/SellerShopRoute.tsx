@@ -1,19 +1,9 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import { toast } from "react-toastify";
+import React from 'react'
 
-export const SellerShopGuard = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const { role } = useAuth();
-  const shop = useSelector((state: any) => state.shop.shop);
-  console.log("sellerShopGuard", shop);
+const SellerShopRoute = () => {
+  return (
+    <div>SellerShopRoute</div>
+  )
+}
 
-  if (role === "seller" && shop === null) {
-      return <Navigate to="/seller/create-shop" replace />;
-  }
-  return children;
-};
+export default SellerShopRoute

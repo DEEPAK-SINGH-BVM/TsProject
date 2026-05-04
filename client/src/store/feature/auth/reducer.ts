@@ -4,13 +4,11 @@ import {
   AUTH_ERROR,
   UPDATE_ADDRESS,
   UPDATE_PROFILE_IMAGE,
-  // CREATE_SHOP,
 } from "./constant";
 
 const initialState = {
   user: null,
   token: null,
-  shop: null,
   error: null,
 };
 
@@ -22,7 +20,6 @@ const authReducer = (state = initialState, action: any) => {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        // shop: action.payload.shop || null,
         error: null,
       };
     case AUTH_ERROR:
@@ -46,14 +43,8 @@ const authReducer = (state = initialState, action: any) => {
         return {
           user: null,
           token: null,
-          shop: null,
+          error: null,
         };
-      // case CREATE_SHOP:
-      //   return {
-      //     ...state,
-      //     shop: action.payload,
-      //     error: null,
-      //   };
     default:  
       return state;
   }

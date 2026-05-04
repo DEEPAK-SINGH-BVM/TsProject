@@ -1,5 +1,11 @@
 import { toast } from "react-toastify";
-import { CREATE_SHOP, GET_ALL_SHOPS, GET_SHOP, UPDATE_SHOP, UPLOAD_SHOP_LOGO } from "./constant";
+import {
+  CREATE_SHOP,
+  GET_ALL_SHOPS,
+  GET_SHOP,
+  UPDATE_SHOP,
+  UPLOAD_SHOP_LOGO,
+} from "./constant";
 import { AppDispatch } from "../../index";
 import api from "../../../api/axios";
 import endpoint from "../../../api/endPoint";
@@ -19,8 +25,8 @@ const getAllShopsSuccess = (shops: Shop[]) => {
     type: GET_ALL_SHOPS,
     payload: shops,
   };
-}
-const getShopSuccess = (shop: Shop) => {
+};
+const getShopSuccess = (shop: Shop | null) => {
   return {
     type: GET_SHOP,
     payload: shop,
@@ -62,9 +68,10 @@ export const getAllShopsAction = () => async (dispatch: AppDispatch) => {
 export const getShopAction = () => async (dispatch: AppDispatch) => {
   try {
     const res = await api.get(endpoint.shop.get);
-    dispatch(getShopSuccess(res.data.shop));
+    dispatch(getShopSuccess(res.data.shop || null));
   } catch (error: any) {
     toast.error(error.response?.data?.message || "Failed to fetch shop");
+    dispatch(getShopSuccess(null));
   }
 };
 

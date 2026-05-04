@@ -15,9 +15,6 @@ const MyShop = () => {
 
   const shop = useSelector((state: any) => state.shop.shop);
   console.log("MyShopShop", shop);
-  if (!shop) {
-    return <div className="text-center mt-10">Loading...</div>;
-  }
   useEffect(() => {
     dispatch(getShopAction());
   }, []);
