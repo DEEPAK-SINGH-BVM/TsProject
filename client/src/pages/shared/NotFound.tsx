@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
   const navigate = useNavigate();
-
+  const role = localStorage.getItem("role")
+  console.log('NotFoundRole',role);
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center bg-white p-10 rounded-2xl shadow-sm border border-gray-100 max-w-md w-full">
@@ -18,12 +20,12 @@ const NotFound = () => {
         </p>
 
         <div className="mt-6 flex flex-col gap-3">
-          {/* <button
-            onClick={() => navigate("/")}
+          <button
+            onClick={() => {navigate(role === "seller" ?"/seller/dashboard" :"/home")}}
             className="bg-gray-800 text-white py-2 rounded-xl hover:bg-gray-700 transition"
           >
             Go to Home
-          </button> */}
+          </button>
 
           <button
             onClick={() => navigate(-1)}
