@@ -22,7 +22,7 @@ const authReducer = (state = initialState, action: any) => {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        shop: action.payload.shop || null,
+        // shop: action.payload.shop || null,
         error: null,
       };
     case AUTH_ERROR:
@@ -42,6 +42,12 @@ const authReducer = (state = initialState, action: any) => {
         user: action.payload,
         error: null,
       };
+      case "LOGOUT_CLEAR":
+        return {
+          user: null,
+          token: null,
+          shop: null,
+        };
       // case CREATE_SHOP:
       //   return {
       //     ...state,

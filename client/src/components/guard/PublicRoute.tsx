@@ -13,13 +13,13 @@ const PublicRoute = ({ children }: Props) => {
   const { token, role } = useAuth();
   console.log("PublicRouteToken", token);
   console.log("PublicRouteRole", role);
-  const shop = useSelector((state: any) => state.auth.shop);
+  const shop = useSelector((state: any) => state.shop.shop);
   console.log("PublicRouteShopssss", shop);
 
   if (token) {
     if (role === "seller" && shop) {
-      return <Navigate to="/seller/dashboard" replace />;
-    } else {
+        return <Navigate to="/seller/dashboard" replace />;
+      } else {
       return <Navigate to="/home" replace />;
     }
   }

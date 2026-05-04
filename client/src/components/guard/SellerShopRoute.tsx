@@ -9,11 +9,11 @@ export const SellerShopGuard = ({
   children: React.ReactNode;
 }) => {
   const { role } = useAuth();
-  const shop = useSelector((state: any) => state.auth.shop);
+  const shop = useSelector((state: any) => state.shop.shop);
   console.log("sellerShopGuard", shop);
 
   if (role === "seller" && shop === null) {
-    return <Navigate to="/seller/create-shop" replace />;
+      return <Navigate to="/seller/create-shop" replace />;
   }
   return children;
 };

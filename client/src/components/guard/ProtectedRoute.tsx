@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
@@ -13,7 +14,9 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   // const token = localStorage.getItem("token");
   // const role = localStorage.getItem("role");
   const { token, role } = useAuth();
-  const shop = useSelector((state: any) => state.shop .shop);
+  const shop = useSelector((state: any) => state.shop.shop);
+
+const location = useLocation();
   console.log("ProtectedRouteShopssss", shop);
   console.log("allowedRoles", allowedRoles);
 
@@ -24,17 +27,25 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
 
   if (!token) {
     return <Navigate to="/login" replace />;
-  }
+  } 
 
-  if (allowedRoles && role && !allowedRoles.includes(role)) {
-    if (role === "seller") {
-      if (shop) {
-        return <Navigate to="/seller/dashboard" replace />;
-      } else {
-        return <Navigate to="/seller/create-shop" replace />;
-      }
-    } else {
-      return <Navigate to="/home" replace />;
+  // if (allowedRoles && role && !allowedRoles.includes(role)) {
+  //   if (role === "seller") {
+  //     if (shop) {
+  //       return <Navigate to="/seller/dashboard" replace />;
+  //     } else {
+  //       return <Navigate to="/seller/create-shop" replace />;
+  //     }
+  //   } else {
+  //     return <Navigate to="/home" replace />;
+  //   }
+  // }
+  if (role === "seller") {
+    if (shop === null) {
+      return children;
+    }
+    if (!shop && location.pathname !== "/seller/create-shop") {
+      return <Navigate to="/seller/create-shop" replace />;
     }
   }
   return children;

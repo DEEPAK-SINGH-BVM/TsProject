@@ -24,7 +24,7 @@ export const getShop = async (req: AuthRequest, res: Response) => {
     }
     const shop = await Shop.findOne({ owner: userId });
     console.log("Getshop", shop);
-    
+
     if (!shop) {
       return res.status(404).json({ message: "Shop not found" });
     }
@@ -44,7 +44,7 @@ export const updateShop = async (req: AuthRequest, res: Response) => {
       new: true,
     });
     console.log('updateShop',shop);
-    
+
     if (!shop) {
       return res.status(404).json({ message: "Shop not found" });
     }
@@ -59,7 +59,7 @@ export const createShop = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.id;
     const shop = await Shop.create({ ...req.body, owner: userId });
     console.log('createShop',shop);
-    
+
     return res
       .status(201)
       .json({ message: "Shop Registed successfully", shop });
@@ -74,7 +74,7 @@ export const uploadShopLogo = async (req: AuthRequest, res: Response) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-     if (!req.file) {
+    if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
     const result = await uploadToCloudinary(req.file.buffer);

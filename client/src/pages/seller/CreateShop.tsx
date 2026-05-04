@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch } from "../../store";
 import { Shop } from "../../types/auth.types";
@@ -10,6 +10,9 @@ import { createShopAction, updateShopAction } from "../../store/feature/shop";
 const CreateShop = () => {
   const auth = useAuth();
   const dispatch = useDispatch<AppDispatch>();
+  const wholeState = useSelector((state: any) => state);
+  console.log("WholeState", wholeState);
+
   const location = useLocation();
   const editShop = location?.state?.shop;
   const [form, setForm] = useState<Shop>({
@@ -22,13 +25,6 @@ const CreateShop = () => {
     state: editShop?.state || "",
     logo: editShop?.logo || "",
   });
-
-  // useEffect(() => {
-  //   if (editShop) {
-  //     setForm(editShop);
-  //   }
-  // }, [editShop]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {

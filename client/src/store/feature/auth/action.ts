@@ -143,18 +143,18 @@ export const LoginAction =
       try {
         const shopRes = await api.get(endpoint.shop.get);
         console.log("shopRes", shopRes);
-
+      
         user = shopRes.data.user || user;
         shop = shopRes.data.shop || null;
       } catch (shopError: any) {
         console.log("No shop found");
       }
-
+      
       dispatch(
         loginSuccess({
           user,
           token,
-          shop,
+          // shop,
           message: res.data.message,
         }),
       );
@@ -171,7 +171,21 @@ export const SignupAction =
       const res = await api.post(endpoint.auth.signup, data);
       console.log("SignupActionResponse", res);
 
-      dispatch(signupSuccess(res.data));
+      let shop = null;
+
+      try {
+        const shopRes = await api.get(endpoint.shop.get);
+        shop = shopRes.data.shop || null;
+      } catch { }
+
+      dispatch(
+        signupSuccess({
+          user: res.data.user,
+          token: res.data.token,
+          shop,
+          message: res.data.message,
+        })
+      );
 
       toast.success(res.data.message);
 
@@ -194,25 +208,28 @@ export const sendOtp = (email: string) => async (dispatch: AppDispatch) => {
 };
 
 // ResetPassword 
-export const resetPassword = (data:{ otp: string; new_password: string }, navigate: any) => async (dispatch:AppDispatch)=>
-{
-   try {
-     const user_id = localStorage.getItem("otpUserId");
- 
-     const res = await api.post(endpoint.auth.resetPassword, {
-       user_id,
-       otp:data.otp,
-       new_password:data.new_password
-     });
- 
-     toast.success(res.data.message)
-     localStorage.removeItem("otpUserId");
-     setTimeout(()=>{
-       navigate("/login")
-     },1500)
-   } catch (error:any) {
-      toast.error(error.response?.data?.error || "Reset failed");
-   }
+export const resetPassword = (data: { otp: string; new_password: string }, navigate: any) => async (dispatch: AppDispatch) => {
+  try {
+    const user_id = localStorage.getItem("otpUserId");
+    if (!user_id) {
+      toast.error("Session expired, try again");
+      return;
+    }
+
+    const res = await api.post(endpoint.auth.resetPassword, {
+      user_id,
+      otp: data.otp,
+      new_password: data.new_password
+    });
+
+    toast.success(res.data.message)
+    localStorage.removeItem("otpUserId");
+    setTimeout(() => {
+      navigate("/login")
+    }, 1500)
+  } catch (error: any) {
+    toast.error(error.response?.data?.error || "Reset failed");
+  }
 }
 export const UpdateAddressAction =
   (address: string) => async (dispatch: AppDispatch) => {
