@@ -6,11 +6,11 @@ import {
   AUTH_ERROR,
   UPDATE_ADDRESS,
   UPDATE_PROFILE_IMAGE,
-  // CREATE_SHOP,
 } from "./constant";
 import { AppDispatch } from "../../index";
 import endpoint from "../../../api/endPoint";
 import { getShopAction } from "../shop";
+import { CLEAR_SHOP } from "../shop/constant";
 
 export type Shop = {
   name: string;
@@ -97,14 +97,13 @@ export const LoginAction =
       toast.success(res.data.message);
 
       auth.login(token, res.data.user.role);
-      dispatch({ type: "CLEAR_SHOP" });
+      dispatch({ type: CLEAR_SHOP });
 
       dispatch(
         loginSuccess({
           user: res.data.user,
           token,
           message: res.data.message,
-          // shop
         }),
       );
 
@@ -124,10 +123,9 @@ export const SignupAction =
 
       let shop = null;
 
-      try {
         const shopRes = await api.get(endpoint.shop.get);
         shop = shopRes.data.shop || null;
-      } catch {}
+
 
       dispatch(
         signupSuccess({

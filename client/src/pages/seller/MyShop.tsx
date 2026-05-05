@@ -7,6 +7,8 @@ import {
   getShopAction,
   uploadShopLogoAction,
 } from "../../store/feature/shop";
+import { cardStyles as styles } from "../../styles/card.styles";
+
 
 const MyShop = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,23 +22,20 @@ const MyShop = () => {
   }, []);
   const navigate = useNavigate();
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-10 space-y-6 bg-gray-50">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">My Shop</h1>
-        <p className="text-sm text-gray-500">
+    <div style={styles.page}>
+      <div style={styles.header}>
+        <h1 style={styles.title}>My Shop</h1>
+        <p style={styles.subtitle}>
           Manage your shop details and basic information
         </p>
       </div>
-      <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex items-center gap-5">
-        <label className="cursor-pointer">
+
+      <div style={{ ...styles.card, ...styles.flex }}>
+        <label style={{ cursor: "pointer" }}>
           {shop?.logo ? (
-            <img
-              src={shop.logo}
-              alt="shop"
-              className="w-20 h-20 rounded-xl object-cover border"
-            />
+            <img src={shop.logo} style={styles.avatar} />
           ) : (
-            <div className="w-20 h-20 flex items-center justify-center vbg-gray-100 rounded-xl">
+            <div style={styles.fallbackAvatar}>
               <FaStore size={30} />
             </div>
           )}
@@ -44,7 +43,7 @@ const MyShop = () => {
           <input
             type="file"
             accept="image/*"
-            className="hidden"
+            style={{ display: "none" }}
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (!file) return;
@@ -56,30 +55,34 @@ const MyShop = () => {
         </label>
 
         <div>
-          <h2 className="text-xl font-semibold text-gray-800">{shop?.name}</h2>
-          <p className="text-gray-500 text-sm">{shop?.category}</p>
-          <span className="inline-block mt-1 text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded-full">
-            Seller Shop
-          </span>
+          <h2 style={styles.name}>{shop?.name}</h2>
+          <p style={styles.text}>{shop?.category}</p>
+          <span style={styles.badge}>Seller Shop</span>
         </div>
       </div>
 
-      <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800">Shop Details</h3>
+      <div style={styles.section}>
+        <h3 style={styles.sectionTitle}>Shop Details</h3>
 
-        <div className="grid gap-3 text-gray-700 text-sm">
-          {/* shop description  */}
-          <div className="flex items-center gap-2">
+        <div
+          style={{
+            display: "grid",
+            gap: "10px",
+            fontSize: "0.875rem",
+            color: "#374151",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <FaTag />
             <span>{shop?.description}</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <FaPhone />
             <span>{shop?.phone}</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <FaMapMarkerAlt />
             <span>
               {shop?.address}, {shop?.city}, {shop?.state}
@@ -88,10 +91,10 @@ const MyShop = () => {
         </div>
       </div>
 
-      <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 flex gap-3">
+      <div style={styles.section}>
         <button
+          style={styles.buttonPrimary}
           onClick={() => navigate("/seller/create-shop", { state: { shop } })}
-          className="px-4 py-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
         >
           Edit Shop
         </button>
