@@ -30,7 +30,7 @@ export const getShop = async (req: AuthRequest, res: Response) => {
     // if (!shop) {
     // return res.status(404).json({ message: "Shop not found" });
     // }
-    return res.status(200).json({ user, shop: shop || null });
+    return res.status(200).json({ user, shop: shop });
   } catch (error) {
     return res.status(500).json({ message: "Error fetching shop", error });
   }

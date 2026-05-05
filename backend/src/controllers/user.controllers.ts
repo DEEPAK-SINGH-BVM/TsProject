@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import * as crypto from "crypto";
 import nodemailer from "nodemailer";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
+import { sendEmail } from "../utils/sendEmail";
 dotenv.config();
 
 type AuthRequest = Request & { user?: { id?: string } };
@@ -103,19 +104,17 @@ export const sendOtp = async (req: Request, res: Response) => {
     user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
     await user.save();
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
+    await sendEmail({
       to: email,
       subject: "Password Reset OTP",
       text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
     });
+
+    // await transporter.sendMail({
+    //   to: email,
+    //   subject: "Password Reset OTP",
+    //   text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
+    // });
     return res.status(200).json({
       message: "OTP sent successfully",
       user_id: user._id,

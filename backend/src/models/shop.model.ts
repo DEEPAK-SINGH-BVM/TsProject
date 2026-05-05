@@ -1,11 +1,3 @@
-// Shop Name *
-// Description *
-// Category *
-// Phone *
-// Address *
-// City *
-// State *
-// Logo (optional)
 
 import mongoose, { Document, Schema } from "mongoose";
 
