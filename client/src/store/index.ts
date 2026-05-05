@@ -21,6 +21,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/es/storage";
 import { authReducer } from "./feature/auth";
 import { shopReducer } from "./feature/shop";
+import productReducer from "./feature/products/reducer";
 const persistConfig = {
   key: "root",
   storage,
@@ -29,7 +30,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  shop: shopReducer
+  shop: shopReducer,
+  product:productReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -22,8 +22,6 @@ const ProtectedRoute = ({ children }: Props) => {
   console.log("ProtectedRouteToken", token);
   console.log("ProtectedRouteRole", role);
 
-  console.log("role", role);
-
   if (!token) {
     return <Navigate to="/login" replace />;
   } 
