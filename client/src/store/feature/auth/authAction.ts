@@ -10,9 +10,6 @@ import {
   verifyOtpApi,
 } from "./authService";
 import { authActions } from "./authSlice";
-import { CLEAR_SHOP } from "../unused/shconstant";
-import endpoint from "../../../api/endPoint";
-import api from "../../../api/axios";
 import { getShopAction } from "../shop/shopAction";
 
 export type LoginData = {
@@ -41,8 +38,6 @@ export const LoginAction =
 
       auth.login(token, res.data.user.role);
 
-      dispatch({ type: CLEAR_SHOP });
-
       dispatch(
         authActions.loginSuccess({
           user: res.data.user,
@@ -57,27 +52,19 @@ export const LoginAction =
     }
   };
 
-export const SignupAction =
-  (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
+export const SignupAction = (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(authActions.request());
 
       const res = await signupApi(data);
       console.log("SignupActionRes", res);
 
-      // let shop = null;
-
-      // const shopRes = await api.get(endpoint.shop.get);
-      // shop = shopRes.data.shop || null;
-
       dispatch(
         authActions.signupSuccess({
           user: res.data.user,
           token: res.data.token,
-          // shop,
         }),
       );
-
       toast.success(res.data.message);
 
       auth.signup(res.data.token, res.data.user.role);

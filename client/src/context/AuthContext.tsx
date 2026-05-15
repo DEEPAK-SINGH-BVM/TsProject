@@ -1,5 +1,4 @@
 import {
-  Children,
   createContext,
   ReactNode,
   useContext,
@@ -10,7 +9,6 @@ import { toast } from "react-toastify";
 import { persistor } from "../store";
 interface AuthContextType {
   token: string | null;
-  // role: string | null;
   login: (token: string, role: string) => void;
   signup: (token: string, role: string) => void;
   logout: () => void;
@@ -28,38 +26,27 @@ export const AuthProvider = ({ children }: Props) => {
     localStorage.getItem("token"),
   );
 
-  // const [role, setRole] = useState<string | null>(localStorage.getItem("role"));
-
   const goTo = (path: string, replace?: boolean) => {
     navigate(path, { replace });
   };
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
-    // localStorage.setItem("role", role);
 
     setToken(token);
-    // setRole(role);
   };
 
   const signup = (token: string) => {
     localStorage.setItem("token", token);
-    // localStorage.setItem("role", role);
-
     setToken(token);
-    // setRole(role);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    // localStorage.removeItem("role");
     persistor.purge();
 
     setToken(null);
-    // setRole(null);
-
-    toast.success("Logout Succeessfull");
-    // navigate("/login", { replace: true });
+    toast.success("Logout Successfully");
     goTo("/login", true);
   };
 

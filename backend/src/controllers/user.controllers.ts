@@ -8,7 +8,7 @@ import nodemailer from "nodemailer";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 import { sendEmail } from "../utils/sendEmail";
 dotenv.config();
-
+// & ts intersection type
 type AuthRequest = Request & { user?: { id?: string } };
 
 export const signup = async (req: Request, res: Response) => {
@@ -110,11 +110,6 @@ export const sendOtp = async (req: Request, res: Response) => {
       text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
     });
 
-    // await transporter.sendMail({
-    //   to: email,
-    //   subject: "Password Reset OTP",
-    //   text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
-    // });
     return res.status(200).json({
       message: "OTP sent successfully",
       user_id: user._id,
@@ -157,7 +152,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const {  user_id, new_password } = req.body;
+    const { user_id, new_password } = req.body;
 
     const user = await User.findById(user_id);
 

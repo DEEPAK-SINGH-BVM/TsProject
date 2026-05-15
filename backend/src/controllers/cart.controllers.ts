@@ -214,9 +214,7 @@ export const stripePayment = async (req: Request, res: Response) => {
       cancel_url: `${process.env.CLIENT_URL}/fail`,
     });
     console.log("stripePaymentsession", session);
-    res.json({ id: session.id, url: session.url });
-    // res.json(session);
-
+    res.json({ url: session.url });
   } catch (error: any) {
     console.log(error);
     res.status(500).json({ message: error.message });

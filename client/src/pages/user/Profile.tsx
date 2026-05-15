@@ -64,7 +64,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div style={styles.section}>
+      {/* <div style={styles.section}>
         <h3 style={styles.sectionTitle}>Address</h3>
 
         <textarea
@@ -80,8 +80,8 @@ const Profile = () => {
         >
           Save Address
         </button>
-      </div>
-
+      </div> */}
+  
       <div style={styles.section}>
         <button style={styles.buttonOutline} onClick={logout}>
           Logout

@@ -175,17 +175,14 @@
 //             auth.validator.ts
 //             shop.validator.ts
 
-// Project Strucutre create  
-// UI inhance with Boltai
-// role base access secure insted of localstorage
 // Diagram url = https://dbdiagram.io/d/667527b45a764b3c720d75da 
 // Product Url = https://drive.google.com/drive/folders/1fi_QTn6ANqPLUS6EytYp_PFJbFJZiJ0Q
-// search realted algorithem 
-// Product Details page     
-// remove role from localstorage,  then addtocart and buy btn according to role
-// create cart page , craete checkout page  
+
+// Product Details page                 
+// remove role from localstorage,  then add to cart and buy btn according to role
+// create cart page , create checkout page  
 // Fix rbac  
-// in cart page increase , decraese , remove ,total amount then checkout page 
+// in cart page increase , decrease , remove ,total amount then checkout page 
 // order section 
 // payment gateway , order system [customer order , pending order , total earing ], 
 // order summanry pending , process , deliver 
@@ -514,3 +511,113 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+/*
+10 Hour code to complete this whole 
+// refresh token
+// Both User Ui glitch
+// Issue Code Strucuture
+// ReUsable
+// Share app QR code
+// Insert Proper Date
+// Validation
+// repeated code make it dynamic
+
+Seller 
+Dashboard:
+          Total customer orders
+          Total earnings
+          Pending orders 
+Product :
+         Update Product UI 
+Order:
+    show order details
+    changes order status 
+
+Buyer 
+Home: 
+      Filter shop base on Category
+Cart:
+      in Cart After payment remove product
+      invoice show cart , buy 
+      download invoice
+Order:
+      show user orders in particular section
+
+//////////////
+handling in the not to resolve that in every page to fix 
+apply zod validation in whole backend 
+also apply visible validation apply in FE side 
+what if any one is need to apply or all need to apply 
+Error Handling:
+Use global error handling for API calls → user-friendly messages.
+Show toast notifications for success/error.
+
+Loading States:
+Use skeleton loaders for tables, product lists, orders → better UX.
+
+Code Reusability:
+Use custom hooks for repeated API calls and logic.
+Shared utility functions: formatCurrency, formatDate, calculateTotals.
+
+Performance:
+Use lazy loading for images/products.
+Use React.memo or useMemo/useCallback for expensive components.
+
+Security:
+Protect routes for seller vs buyer.
+Sanitize inputs and validate data both backend/frontend.
+
+Testing:
+Unit tests for critical functions (calculations, status changes)
+Component tests for reusable UI
+Optional: e2e tests with Cypress for order flow
+
+1. Home Screen (Customer)
+Search bar (“Search products…”)
+Categories grid:
+Grocery
+Dairy
+Snacks
+Drinks
+Featured store section
+“Scan QR to Start” button (large CTA button)
+
+2.Product Listing Page - done
+Product cards with:
+Image
+Name
+Price
+Add to Cart(+)
+Category filter
+Sticky bottom buy button
+
+3. Cart Page - done 
+Selected items list
+Quantity update buttons (+ / -)
+Total price summary
+“Place Order” large CTA button
+
+4. Order Status Page	
+Step progress bar:
+Order Placed
+Preparing
+Ready for Pickup
+Completed
+Green highlight for “Ready” status
+
+5. Seller Dashboard 
+New orders list
+Order details section
+Action buttons:
+Accept Order
+Mark as Ready
+Analytics cards:
+Today Orders
+Revenue
+
+6. QR Scan Screen 
+Large QR scanner frame at center
+Text: “Scan Store QR to Start Ordering”
+Minimal dark background focus mode
+*/

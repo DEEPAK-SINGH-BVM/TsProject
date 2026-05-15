@@ -31,8 +31,8 @@ const endpoint = {
     updateCart: "/cart/update",
     deleteCart: (id: string) => `/cart/delete/${id}`,
   },
-  order:{
-    create:"/order/create"
-  }
+  order: {
+    create: "/order/create",
+  },
 };
 export default endpoint;

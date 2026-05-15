@@ -8,7 +8,7 @@ interface OrderItem {
   image?: string;
 }
 
-export interface IOrder extends Document {
+export interface IOrder  {
   userId: mongoose.Types.ObjectId;
   items: OrderItem[];
   deliveryAddress: {

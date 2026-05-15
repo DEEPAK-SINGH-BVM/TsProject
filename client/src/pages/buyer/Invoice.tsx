@@ -20,16 +20,11 @@ const Invoice = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-sm p-8">
-        {/* HEADER */}
         <div className="flex justify-between items-center border-b pb-5">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">
-              Invoice
-            </h1>
+            <h1 className="text-4xl font-bold text-gray-900">Invoice</h1>
 
-            <p className="text-gray-500 mt-2">
-              Order Successfully Placed
-            </p>
+            <p className="text-gray-500 mt-2">Order Successfully Placed</p>
           </div>
 
           <button
@@ -40,69 +35,56 @@ const Invoice = () => {
           </button>
         </div>
 
-        {/* CUSTOMER DETAILS */}
         <div className="mt-8 grid md:grid-cols-2 gap-6">
           <div>
-            <h2 className="text-xl font-semibold mb-4">
-              Customer Details
-            </h2>
+            <h2 className="text-xl font-semibold mb-4">Customer Details</h2>
 
             <div className="space-y-2 text-gray-700">
               <p>
-                <span className="font-semibold">Name :</span>{" "}
+                <span className="font-semibold">Name :</span>
                 {order?.deliveryAddress?.fullName}
               </p>
 
               <p>
-                <span className="font-semibold">Phone :</span>{" "}
+                <span className="font-semibold">Phone :</span>
                 {order?.deliveryAddress?.phone}
               </p>
 
               <p>
-                <span className="font-semibold">City :</span>{" "}
+                <span className="font-semibold">City :</span>
                 {order?.deliveryAddress?.city}
               </p>
 
               <p>
-                <span className="font-semibold">State :</span>{" "}
+                <span className="font-semibold">State :</span>
                 {order?.deliveryAddress?.state}
               </p>
 
               <p>
-                <span className="font-semibold">Address :</span>{" "}
+                <span className="font-semibold">Address :</span>
                 {order?.deliveryAddress?.address}
               </p>
             </div>
           </div>
 
           <div>
-            <h2 className="text-xl font-semibold mb-4">
-              Payment Details
-            </h2>
+            <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
             <div className="space-y-2 text-gray-700">
               <p>
-                <span className="font-semibold">
-                  Payment Method :
-                </span>{" "}
+                <span className="font-semibold">Payment Method :</span>{" "}
                 {order?.paymentMethod}
               </p>
 
               <p>
-                <span className="font-semibold">
-                  Order Status :
-                </span>{" "}
-                Pending
+                <span className="font-semibold">Order Status :</span> Pending
               </p>
             </div>
           </div>
         </div>
 
-        {/* PRODUCT DETAILS */}
         <div className="mt-10">
-          <h2 className="text-2xl font-semibold mb-5">
-            Product Details
-          </h2>
+          <h2 className="text-2xl font-semibold mb-5">Product Details</h2>
 
           <div className="space-y-5">
             {order?.items?.map((item: any, index: number) => (
@@ -117,17 +99,13 @@ const Invoice = () => {
                 />
 
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold">
-                    {item?.name}
-                  </h3>
+                  <h3 className="text-lg font-semibold">{item?.name}</h3>
 
                   <p className="text-gray-500 mt-1">
                     Quantity : {item?.quantity}
                   </p>
 
-                  <p className="text-gray-500">
-                    Price : ₹{item?.price}
-                  </p>
+                  <p className="text-gray-500">Price : ₹{item?.price}</p>
                 </div>
 
                 <div>

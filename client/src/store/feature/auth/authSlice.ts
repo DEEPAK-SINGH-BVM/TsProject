@@ -44,16 +44,13 @@ const authSlice = createSlice({
     updateAddressSuccess: (state, action) => {
       state.user = action.payload;
     },
-
     updateProfileImageSuccess: (state, action) => {
       state.user = action.payload;
     },
-
     authError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-
     logout: (state) => {
       state.user = null;
       state.token = null;

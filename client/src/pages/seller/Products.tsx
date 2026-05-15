@@ -124,109 +124,111 @@ const Products = () => {
             }}
           >
             <h2>Edit Product</h2>
+            <div style={{ display: "flex", gap: 4 }}>
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="text"
+                placeholder="Name"
+                value={editProduct.name}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    name: e.target.value,
+                  })
+                }
+              />
 
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="text"
-              placeholder="Name"
-              value={editProduct.name}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  name: e.target.value,
-                })
-              }
-            />
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="number"
+                placeholder="Price"
+                value={editProduct.price}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    price: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div style={{ display: "flex", gap: 4 }}>
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="number"
+                placeholder="Stock"
+                value={editProduct.stock}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    stock: e.target.value,
+                  })
+                }
+              />
 
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="number"
-              placeholder="Price"
-              value={editProduct.price}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  price: e.target.value,
-                })
-              }
-            />
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="text"
+                placeholder="Category"
+                value={editProduct.category}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    category: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div style={{ display: "flex", gap: 4 }}>
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="text"
+                placeholder="Sub Category"
+                value={editProduct.subCategory}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    subCategory: e.target.value,
+                  })
+                }
+              />
 
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="number"
-              placeholder="Stock"
-              value={editProduct.stock}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  stock: e.target.value,
-                })
-              }
-            />
-
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="text"
-              placeholder="Category"
-              value={editProduct.category}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  category: e.target.value,
-                })
-              }
-            />
-
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="text"
-              placeholder="Sub Category"
-              value={editProduct.subCategory}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  subCategory: e.target.value,
-                })
-              }
-            />
-
-            <input
-              style={{
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "6px",
-              }}
-              type="text"
-              placeholder="Unit"
-              value={editProduct.unit}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  unit: e.target.value,
-                })
-              }
-            />
-
+              <input
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "6px",
+                }}
+                type="text"
+                placeholder="Unit"
+                value={editProduct.unit}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    unit: e.target.value,
+                  })
+                }
+              />
+            </div>
             <textarea
               style={{
                 padding: "10px",
@@ -293,9 +295,7 @@ const Products = () => {
                 borderRadius: "8px",
                 cursor: "pointer",
               }}
-              onClick={() =>
-                setEditProduct(null)
-              }
+              onClick={() => setEditProduct(null)}
             >
               Close
             </button>

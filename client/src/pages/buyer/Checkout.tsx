@@ -14,6 +14,7 @@ import { AppDispatch } from "../../store";
 import { createOrderAction } from "../../store/feature/order/orderAction";
 import { toast } from "react-toastify";
 import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 const Checkout = () => {
   const location = useLocation();
 
@@ -73,23 +74,19 @@ const Checkout = () => {
         products: orderItems,
       };
 
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:1001/cart/create-checkout-session",
+        body,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body),
         },
       );
+      console.log("ResponseStripe", response);
 
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
-      }
-
-      const session = await response.json();
-      console.log("Backend", session.url);
+      const session = response.data;
+      console.log("SessionData", session);
 
       if (session.url) {
         window.location.href = session.url;
@@ -142,7 +139,7 @@ const Checkout = () => {
       }
     } catch (error) {
       console.log("Order failed:", error);
-      alert("Order failed, try again!");
+      alert("Order Fail , something was Wrong");
     }
   };
 

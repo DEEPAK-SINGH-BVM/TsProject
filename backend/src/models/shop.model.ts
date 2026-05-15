@@ -1,7 +1,7 @@
 
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface Ishop extends Document {
+export interface Ishop  {
   name: string;
   description: string;
   category: string;
