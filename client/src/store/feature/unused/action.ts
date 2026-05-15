@@ -117,7 +117,7 @@
 //   };
 
 // // SIGNUP
-// export const SignupAction =
+// export const SignupAction = 
 //   (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
 //     try {
 //       const res = await api.post(endpoint.auth.signup, data);

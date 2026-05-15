@@ -37,14 +37,14 @@ export const getShopAction = () => async (dispatch: AppDispatch) => {
 };
 
 export const createShopAction =
-  (data: any, auth: any) => async (dispatch: AppDispatch) => {
+  (data: any, goTo: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(shopAction.request());
       const res = await craeteShopsApi(data);
 
       dispatch(shopAction.createShopSuccess(res.data.shop));
 
-      auth.goTo("/seller/dashboard", true);
+      goTo("/seller/dashboard", true);
       toast.success(res.data.message);
     } catch (error: any) {
       dispatch(
@@ -56,12 +56,12 @@ export const createShopAction =
   };
 
 export const updateShopAction =
-  (data: any, auth: any) => async (dispatch: AppDispatch) => {
+  (data: any, goTo: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(shopAction.request());
       const res = await updateShopsApi(data);
       dispatch(shopAction.updateShopSuccess(res.data.shop));
-      auth.goTo("/seller/shop", true);
+      goTo("/seller/shop", true);
       toast.success(res.data.message);
     } catch (error: any) {
       dispatch(

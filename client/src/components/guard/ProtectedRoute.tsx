@@ -24,13 +24,7 @@ const ProtectedRoute = ({ children }: Props) => {
 
   console.log("ProtectedRouteToken", token);
   console.log("ProtectedRouteRole", role);
-
-  // if (!token) {
-  //   return <Navigate to="/login" replace />;
-  // }
-  // if (role === "seller" && shop === null) {
-  //   return <Navigate to="/seller/create-shop" replace />;
-  // }
+  
   if (!token) {
     return <Navigate to="/login" replace />;
   }

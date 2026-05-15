@@ -9,19 +9,18 @@ interface Props {
 
 const SellerRoute = ({ children }: Props) => {
   const { token } = useAuth();
-
+  
+  const wholeState = useSelector((state: any) => state);
+  console.log("wholeStateShop", wholeState);
   const role = useSelector(
     (state: any) => state.auth.user?.role,
   );
-
   const shop = useSelector(
     (state: any) => state.shop.shop,
   );
-
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-
   if (role !== "seller") {
     return <Navigate to="/home" replace />;
   }

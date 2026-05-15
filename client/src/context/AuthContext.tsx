@@ -1,16 +1,11 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { persistor } from "../store";
 interface AuthContextType {
   token: string | null;
-  login: (token: string, role: string) => void;
-  signup: (token: string, role: string) => void;
+  login: (token: string) => void;
+  signup: (token: string) => void;
   logout: () => void;
   goTo: (path: string, replace?: boolean) => void;
 }
@@ -32,7 +27,6 @@ export const AuthProvider = ({ children }: Props) => {
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
-
     setToken(token);
   };
 
@@ -56,6 +50,7 @@ export const AuthProvider = ({ children }: Props) => {
     </AuthContext.Provider>
   );
 };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,15 +1,14 @@
-
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 // import { LoginAction } from "../../store/feature/auth";
 import { useAppDispatch } from "../../hook/useAuth";
 import { useState } from "react";
 import type { LoginData } from "../../store/feature/unused/auth.types";
-import { authStyles  as styles} from "../../styles/auth.styles";
+import { authStyles as styles } from "../../styles/auth.styles";
 import { LoginAction } from "../../store/feature/auth/authAction";
 
 const Login = () => {
-  const auth = useAuth();
+  const { login } = useAuth();
   const dispatch = useAppDispatch();
   const [form, setForm] = useState<LoginData>({ email: "", password: "" });
   const [focused, setFocused] = useState<string | null>(null);
@@ -35,7 +34,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validation()) return;
-    dispatch(LoginAction(form, auth));
+    dispatch(LoginAction(form, login));
   };
 
   return (

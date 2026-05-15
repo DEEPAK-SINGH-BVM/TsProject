@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import apiRouter from "./routes/index.routes";
 import db from "./config/db";
-import Stripe from "stripe";
 
 dotenv.config();
 const app = express();

@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { authStyles  as styles} from "../../styles/auth.styles";
 import { createShopAction, updateShopAction } from "../../store/feature/shop/shopAction";
 const CreateShop = () => {
-  const auth = useAuth();
+  const {goTo} = useAuth();
   const dispatch = useDispatch<AppDispatch>();
   // const wholeState = useSelector((state: any) => state);
   // console.log("WholeState", wholeState);
@@ -48,9 +48,9 @@ const CreateShop = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editShop) {
-      dispatch(updateShopAction(form, auth));
+      dispatch(updateShopAction(form, goTo));
     } else {
-      dispatch(createShopAction(form, auth));
+      dispatch(createShopAction(form, goTo));
     }
   };
 

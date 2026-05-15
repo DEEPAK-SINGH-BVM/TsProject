@@ -9,7 +9,7 @@ import { authStyles as styles } from "../../styles/auth.styles";
 import { SignupAction, SignupData } from "../../store/feature/auth/authAction";
 
 const Signup = () => {
-  const auth = useAuth();
+  const {signup} = useAuth();
   const dispatch = useAppDispatch();
   const [form, setForm] = useState<SignupData>({
     name: "",
@@ -26,7 +26,7 @@ const Signup = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(SignupAction(form, auth));
+    dispatch(SignupAction(form, signup));
   };
 
   return (

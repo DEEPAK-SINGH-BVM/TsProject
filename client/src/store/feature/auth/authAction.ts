@@ -25,7 +25,7 @@ export type SignupData = {
 };
 
 export const LoginAction =
-  (data: LoginData, auth: any) => async (dispatch: AppDispatch) => {
+  (data: LoginData, login: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(authActions.request());
 
@@ -36,7 +36,7 @@ export const LoginAction =
 
       toast.success(res.data.message);
 
-      auth.login(token, res.data.user.role);
+      login(token);
 
       dispatch(
         authActions.loginSuccess({
@@ -52,7 +52,8 @@ export const LoginAction =
     }
   };
 
-export const SignupAction = (data: SignupData, auth: any) => async (dispatch: AppDispatch) => {
+export const SignupAction =
+  (data: SignupData, signup: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(authActions.request());
 
@@ -65,9 +66,10 @@ export const SignupAction = (data: SignupData, auth: any) => async (dispatch: Ap
           token: res.data.token,
         }),
       );
+
       toast.success(res.data.message);
 
-      auth.signup(res.data.token, res.data.user.role);
+      signup(res.data.token);
     } catch (error: any) {
       dispatch(authActions.authError(error.response?.data?.message));
       toast.error(error.response?.data?.message || "Signup Failed");
