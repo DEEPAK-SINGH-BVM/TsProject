@@ -14,7 +14,7 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(getAllShopsAction());
-  }, [dispatch]);
+  }, []);
 
   const handleViewProducts = (shopId: string) => {
     // console.log("handleViewProducts", shopId);

@@ -4,6 +4,7 @@ import shopReducer from "./feature/shop/shopSlice";
 import productReducer from "./feature/products/productSlice";
 import authReducer from "./feature/auth/authSlice";
 import cartReducer from "./feature/cart/cartSlice";
+import orderReducer from "./feature/order/orderSlice";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 const persistConfig = {
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   shop: shopReducer,
   product: productReducer,
+  order: orderReducer,
   cart: cartReducer,
 });
 

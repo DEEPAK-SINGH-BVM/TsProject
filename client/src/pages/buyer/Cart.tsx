@@ -18,7 +18,7 @@ const Cart = () => {
   console.log("cartData", cart);
   useEffect(() => {
     dispatch(getCartProductsAction());
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">

@@ -27,7 +27,7 @@ export const getShopAction = () => async (dispatch: AppDispatch) => {
     dispatch(shopAction.request());
     const res = await getShopsApi();
     console.log("getShopActionRess", res);
-    
+
     dispatch(shopAction.getShopSuccess(res.data.shop));
   } catch (error: any) {
     dispatch(
@@ -49,7 +49,7 @@ export const createShopAction =
     } catch (error: any) {
       dispatch(
         shopAction.fail(error.response?.data?.message) ||
-          "Failed to fetch shops",
+        "Failed to fetch shops",
       );
       toast.error(error.response?.data?.message || "Failed  to create shop");
     }
@@ -66,7 +66,7 @@ export const updateShopAction =
     } catch (error: any) {
       dispatch(
         shopAction.fail(error.response?.data?.message) ||
-          "Failed to fetch shops",
+        "Failed to fetch shops",
       );
       toast.error(error.response?.data?.message || "Failed to update shop");
     }
@@ -82,7 +82,7 @@ export const uploadShopLogoAction =
     } catch (error: any) {
       dispatch(
         shopAction.fail(error.response?.data?.message) ||
-          "Failed to fetch shops",
+        "Failed to fetch shops",
       );
       toast.error(
         error.response?.data?.message || "Failed to upload shop logo",

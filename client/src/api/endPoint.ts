@@ -33,6 +33,7 @@ const endpoint = {
   },
   order: {
     create: "/order/create",
+    getMy:"/order/my-orders"
   },
 };
 export default endpoint;

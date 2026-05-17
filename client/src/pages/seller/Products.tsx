@@ -19,7 +19,7 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(getMyProductsAction());
-  }, [dispatch]);
+  }, []);
 
   const [open, setOpen] = useState(false);
 

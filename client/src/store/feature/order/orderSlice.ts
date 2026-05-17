@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface OrderState {
-  loading: Boolean;
+  loading: boolean;
   error: string | null;
   order: string | null;
+  orders: any[],
 }
 
 const initialState: OrderState = {
   loading: true,
   error: null,
   order: null,
+  orders: [],
 };
 
 const orderSlice = createSlice({
@@ -23,6 +25,11 @@ const orderSlice = createSlice({
     placeOrderSuccess: (state, action) => {
       state.loading = false;
       state.order = action.payload;
+    },
+    getOrdersSuccess: (state, action) => {
+      console.log('getOrdersSuccess',action.payload);
+      state.loading = false;
+      state.orders = action.payload;
     },
     fail: (state, action) => {
       state.loading = false;

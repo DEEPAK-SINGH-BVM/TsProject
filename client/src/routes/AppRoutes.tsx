@@ -29,6 +29,7 @@ import BuyerRoute from "../components/guard/BuyerRoute.js";
 import Invoice from "../pages/buyer/Invoice.js";
 import Sucess from "../pages/buyer/Sucess.js";
 import Fail from "../pages/buyer/Fail.js";
+import MyOrders from "../pages/buyer/MyOrder.js";
 
 const AppRoutes = () => {
   return (
@@ -123,6 +124,7 @@ const AppRoutes = () => {
           }
         >
           <Route path="home" element={<Home />} />
+          <Route path="/my-orders" element={<MyOrders />}/>
           <Route path="invoice" element={<Invoice />} />
           <Route path="products/:shopId" element={<Productshow />} />
           <Route path="product-details" element={<ProductDetails />} />

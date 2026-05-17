@@ -127,12 +127,12 @@ export const verifyOtp = async (req: Request, res: Response) => {
     const { user_id, otp } = req.body;
 
     const user = await User.findById(user_id);
-
+    
     if (!user) {
       return res.status(400).json({ error: "User Not Found" });
     }
-
     
+
     if (!user.otp || user.otp !== otp) {
       return res.status(400).json({ error: "Invalid OTP !" });
     }

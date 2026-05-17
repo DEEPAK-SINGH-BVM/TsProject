@@ -38,7 +38,7 @@ export const getBuyProductAction =
       dispatch(productActions.request());
       const res = await getBuyProductApi(productId);
       console.log("getBuyProductActionRes", res);
-      
+
       dispatch(productActions.getBuyProduct(res.data));
     } catch (error: any) {
       dispatch(productActions.fail(error.response?.data?.message));

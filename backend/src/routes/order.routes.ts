@@ -1,8 +1,14 @@
 import express from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
-import { placeOrder } from "../controllers/order.controllers";
+import { getMyOrders, placeOrder, sellerOrders } from "../controllers/order.controllers";
 
 const orderRoute = express.Router();
 
 orderRoute.post("/create", authMiddleware, placeOrder);
+orderRoute.get("/my-orders", authMiddleware, getMyOrders);
+orderRoute.get(
+    "/seller-orders",
+    authMiddleware,
+    sellerOrders
+  );
 export default orderRoute;

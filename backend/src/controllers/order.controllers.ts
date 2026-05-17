@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import Order from "../models/order.model";
 import mongoose from "mongoose";
+import Cart from "../models/cart.model";
+import Shop from "../models/shop.model";
+import Product from "../models/products.model";
 
 type AuthRequest = Request & { user?: { id?: string } };
 
@@ -33,12 +36,75 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
       deliveryFee,
       total,
     });
-
+    await Cart.deleteMany({
+      userId: new mongoose.Types.ObjectId(userId),
+    });
     res.status(201).json({
       message: "Order placed successfully",
       order,
     });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+export const getMyOrders = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+
+    return res.status(200).json({ message: "Orders fetched", orders });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const sellerOrders = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const sellerId = req.user?.id;
+    console.log('Sellerdata',sellerId);
+    
+    if (!sellerId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const shop = await Shop.findOne({
+      owner: sellerId,
+    });
+
+    if (!shop) {
+      return res.status(404).json({
+        message: "Shop not found",
+      });
+    }
+
+    const products = await Product.find({
+      shopId: shop._id,
+    });
+
+    const productIds = products.map(
+      (item) => item._id
+    );
+
+    const orders = await Order.find({
+      "items.productId": {
+        $in: productIds,
+      },
+    }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      orders,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      message: err.message,
+    });
   }
 };

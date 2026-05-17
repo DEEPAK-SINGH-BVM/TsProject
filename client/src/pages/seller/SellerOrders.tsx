@@ -5,7 +5,7 @@ import { AppDispatch } from "../../store";
 
 import { getSellerOrdersAction } from "../../store/feature/order/orderAction";
 
-const Orders = () => {
+const SellerOrders = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { orders } = useSelector(
@@ -77,4 +77,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default SellerOrders;

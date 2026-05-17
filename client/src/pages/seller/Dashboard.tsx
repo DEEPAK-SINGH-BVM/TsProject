@@ -22,7 +22,7 @@ const Dashboard = () => {
   const totalProducts = products?.length || 0;
   useEffect(()=>{
     dispatch(getMyProductsAction());
-  },[dispatch])
+  },[])
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mb-8">

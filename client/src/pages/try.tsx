@@ -513,6 +513,12 @@ const Checkout = () => {
 export default Checkout;
 
 /*
+// Aja ka task 
+1) cart order k bad remove hona chahiye cart ka data - done
+2) payment k bad invoice page in online - done 
+3) buyer a sepcific page to show k use me aab tak ya order kiya with date - done
+4) order show kar na seller side - done
+
 10 Hour code to complete this whole 
 // refresh token
 // Both User Ui glitch
@@ -531,8 +537,8 @@ Dashboard:
 Product :
          Update Product UI 
 Order:
-    show order details
-    changes order status 
+      show order details
+      changes order status 
 
 Buyer 
 Home: 

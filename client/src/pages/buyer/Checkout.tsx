@@ -54,6 +54,7 @@ const Checkout = () => {
     ? [
         {
           productId: buyNowProduct._id,
+          sellerId: buyNowProduct.sellerId,
           name: buyNowProduct.name,
           price: buyNowProduct.price,
           quantity: 1,
@@ -62,6 +63,7 @@ const Checkout = () => {
       ]
     : cart.map((item: any) => ({
         productId: item.productId._id,
+        sellerId: item.productId.sellerId,
         name: item.productId.name,
         price: item.productId.price,
         quantity: item.quantity,
