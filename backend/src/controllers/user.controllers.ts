@@ -94,7 +94,8 @@ export const sendOtp = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
-
+    console.log('SendOtpUSER',user);
+    
     if (!user) {
       return res.status(400).json({ error: "Email Not Found " });
     }
@@ -131,6 +132,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User Not Found" });
     }
 
+    
     if (!user.otp || user.otp !== otp) {
       return res.status(400).json({ error: "Invalid OTP !" });
     }
