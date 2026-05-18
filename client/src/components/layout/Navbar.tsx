@@ -12,6 +12,7 @@ import {
   FaTachometerAlt,
   FaStore,
   FaAd,
+  FaClipboardList,
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 const Navbar = () => {
@@ -51,13 +52,14 @@ const Navbar = () => {
                 {open && "Products"}
               </Link>
 
-              {/* <Link
-                to="/seller/add-products"
+              <Link
+                to="/seller/orders"
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
               >
-                <FaAd />
-                {open && "Add Products"}
-              </Link> */}
+                <FaClipboardList />
+                {open && "Orders"}
+              </Link>
+
               <Link
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
                 to="/seller/shop"
@@ -89,9 +91,15 @@ const Navbar = () => {
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
               >
                 <FaShoppingCart />
-                {open && "Orders"}
+                {open && "Cart"}
               </Link>
-
+              <Link
+                to="/my-orders"
+                className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
+              >
+                <FaClipboardList />
+                {open && "My Order"}
+              </Link>
               <Link
                 to="/buyer-profile"
                 className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"

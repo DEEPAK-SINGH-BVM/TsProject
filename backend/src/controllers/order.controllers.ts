@@ -10,6 +10,7 @@ type AuthRequest = Request & { user?: { id?: string } };
 export const placeOrder = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
+
     if (!userId) res.status(400).json({ message: "Unauthorize" });
     const {
       items,
@@ -19,9 +20,9 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
       total,
       paymentMethod,
     } = req.body;
+    console.log("placeOrderItems", items);
 
     let paymentStatus = "Pending";
-
     if (paymentMethod === "Online") {
       paymentStatus = "Paid";
     }
@@ -36,9 +37,9 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
       deliveryFee,
       total,
     });
-    await Cart.deleteMany({
-      userId: new mongoose.Types.ObjectId(userId),
-    });
+
+    await Cart.deleteMany({ userId: new mongoose.Types.ObjectId(userId) });
+
     res.status(201).json({
       message: "Order placed successfully",
       order,
@@ -61,23 +62,16 @@ export const getMyOrders = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const sellerOrders = async (
-  req: AuthRequest,
-  res: Response
-) => {
+export const sellerOrders = async (req: AuthRequest, res: Response) => {
   try {
     const sellerId = req.user?.id;
-    console.log('Sellerdata',sellerId);
-    
-    if (!sellerId) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
-    }
+    console.log("SellerData", sellerId);
 
-    const shop = await Shop.findOne({
-      owner: sellerId,
-    });
+    if (!sellerId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const shop = await Shop.findOne({ owner: sellerId });
+    console.log("sellerOrder", shop);
 
     if (!shop) {
       return res.status(404).json({
@@ -85,20 +79,19 @@ export const sellerOrders = async (
       });
     }
 
-    const products = await Product.find({
-      shopId: shop._id,
-    });
-
-    const productIds = products.map(
-      (item) => item._id
-    );
+    const products = await Product.find({ shopId: shop._id });
+    console.log("products", products);
+    
+    const productIds = products.map((item) => item._id);
 
     const orders = await Order.find({
-      "items.productId": {
-        $in: productIds,
-      },
+      "items.productId": { $in: productIds },
     }).sort({ createdAt: -1 });
 
+    //     null → don’t filter any properties.
+    // 2 → pretty-print with 2 spaces of indentation.
+
+    // console.log("Order items:", JSON.stringify(orders, null, 2));
     return res.status(200).json({
       orders,
     });

@@ -26,13 +26,6 @@ const Cart = () => {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
-          {loading && (
-            <div className="bg-white p-10 rounded-xl text-center shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-700">
-                Loading...
-              </h2>
-            </div>
-          )}
 
           {!loading && cart?.length === 0 && (
             <div className="bg-white p-10 rounded-xl text-center shadow-sm">

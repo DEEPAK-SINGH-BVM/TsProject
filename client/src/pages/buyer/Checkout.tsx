@@ -27,14 +27,19 @@ const Checkout = () => {
     (state: any) => state.cart,
   );
   console.log("CheckoutCart", cart);
-  console.log("Checkoutsubtotal", subtotal);
-  const isBuyNow = buyNowProduct ? true : false;
-  console.log("isBuyNow", isBuyNow);
+  console.log("CheckOutSubtotal", subtotal);
 
-  const productToShow = isBuyNow ? buyNowProduct : cart;
-  const subtotalProduct = isBuyNow ? buyNowProduct.price : subtotal;
-  const deliveryFeeProduct = isBuyNow ? 50 : deliveryFee;
-  const totalProduct = isBuyNow ? buyNowProduct.price + 50 : total;
+  // const isBuyNow = buyNowProduct? true : false;
+  // const productToShow = isBuyNow ? buyNowProduct : cart;
+
+  const products = buyNowProduct
+    ? [{ ...buyNowProduct, quantity: 1 }]
+    : cart.map((item: any) => ({ ...item.productId, quantity: item.quantity }));
+  console.log(products, "productsProducts");
+
+  const subtotalProduct = buyNowProduct ? buyNowProduct.price : subtotal;
+  const deliveryFeeProduct = buyNowProduct ? 50 : deliveryFee;
+  const totalProduct = buyNowProduct ? buyNowProduct.price + 50 : total;
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -42,33 +47,43 @@ const Checkout = () => {
   const [stateName, setStateName] = useState("");
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"COD" | "Online">("COD");
-  console.log("CheckoutpaymentMethod", paymentMethod);
+  console.log("CheckoutpayMentMethod", paymentMethod);
 
   useEffect(() => {
-    if (!isBuyNow) {
+    if (!buyNowProduct) {
       dispatch(getCartProductsAction());
     }
-  }, [dispatch, isBuyNow]);
+  }, [dispatch, buyNowProduct]);
 
-  const orderItems = isBuyNow
-    ? [
-        {
-          productId: buyNowProduct._id,
-          sellerId: buyNowProduct.sellerId,
-          name: buyNowProduct.name,
-          price: buyNowProduct.price,
-          quantity: 1,
-          image: buyNowProduct.image[0],
-        },
-      ]
-    : cart.map((item: any) => ({
-        productId: item.productId._id,
-        sellerId: item.productId.sellerId,
-        name: item.productId.name,
-        price: item.productId.price,
-        quantity: item.quantity,
-        image: item.productId.image[0],
-      }));
+  const orderItems = products.map((product: any) => ({
+    productId: product._id,
+    sellerId: product.shopId,
+    name: product.name,
+    price: product.price,
+    quantity: product.quantity,
+    image: product.image[0],
+  }));
+  console.log("orderItems", orderItems);
+
+  // const orderItems = isBuyNow
+  //   ? [
+  //       {
+  //         productId: buyNowProduct._id,
+  //         sellerId: buyNowProduct.sellerId,
+  //         name: buyNowProduct.name,
+  //         price: buyNowProduct.price,
+  //         quantity: 1,
+  //         image: buyNowProduct.image[0],
+  //       },
+  //     ]
+  //   : cart.map((item: any) => ({
+  //       productId: item.productId._id,
+  //       sellerId: item.productId.sellerId,
+  //       name: item.productId.name,
+  //       price: item.productId.price,
+  //       quantity: item.quantity,
+  //       image: item.productId.image[0],
+  //     }));
 
   const makePayment = async () => {
     try {
@@ -129,12 +144,12 @@ const Checkout = () => {
         total: totalProduct,
       };
 
-      const res = await dispatch(createOrderAction(orderData));
-      console.log("OrderResponse", res);
+      await dispatch(createOrderAction(orderData));
 
       if (paymentMethod === "COD") {
         toast("Order Place Successfully !!");
         navigate("/invoice", { state: orderData });
+        navigate("/my-orders");
       } else {
         toast("Rediret to payment page");
         await makePayment();
@@ -287,7 +302,7 @@ const Checkout = () => {
           </div>
 
           {/* PRODUCTS */}
-          {isBuyNow ? (
+          {buyNowProduct ? (
             <div className="flex gap-4 border border-gray-100 rounded-2xl p-3">
               <img
                 src={buyNowProduct?.image?.[0]}
@@ -311,20 +326,20 @@ const Checkout = () => {
             </div>
           ) : (
             <div className="space-y-4 max-h-[330px] overflow-y-auto">
-              {productToShow?.map((item: any) => (
+              {products?.map((item: any) => (
                 <div
                   key={item._id}
                   className="flex gap-4 border border-gray-100 rounded-2xl p-3"
                 >
                   <img
-                    src={item.productId?.image?.[0]}
-                    alt={item.productId?.name}
+                    src={item?.image?.[0]}
+                    alt={item?.name}
                     className="w-24 h-24 rounded-xl object-cover border"
                   />
 
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">
-                      {item.productId?.name}
+                      {item?.name}
                     </h3>
 
                     <p className="text-sm text-gray-500 mt-1">
@@ -332,7 +347,7 @@ const Checkout = () => {
                     </p>
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-3">
-                      ₹{item.productId?.price * item.quantity}
+                      ₹{item?.price * item.quantity}
                     </h2>
                   </div>
                 </div>

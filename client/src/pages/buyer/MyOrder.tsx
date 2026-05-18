@@ -11,10 +11,11 @@ const MyOrders = () => {
   const { orders, loading } = useSelector(
     (state: any) => state.order
   );
+  console.log("ordersOrders", orders);
   
   useEffect(() => {
     dispatch(getMyOrdersAction());
-  }, [dispatch]);
+  }, []);
 
   if (loading) {
     return <h1>Loading...</h1>;

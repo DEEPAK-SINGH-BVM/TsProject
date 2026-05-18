@@ -7,6 +7,7 @@ import { cardStyles } from "../../styles/card.styles";
 import ProductCard from "../../components/product/ProductCard.tsx";
 import { productStyles } from "../../styles/product.styles.ts";
 import { updateProductAction } from "../../store/feature/products/productAction";
+import { ProductCardSkeleton } from "../../components/common/ProductCardSkeleton.tsx";
 
 const Products = () => {
 
@@ -44,28 +45,17 @@ const Products = () => {
     <div className="products-page">
       <div className="products-header">
         <div>
-          <h1 className="products-title">
-            My Products
-          </h1>
+          <h1 className="products-title">My Products</h1>
 
-          <p className="products-subtitle">
-            Manage your store products easily
-          </p>
+          <p className="products-subtitle">Manage your store products easily</p>
         </div>
 
-        <button
-          onClick={() => setOpen(true)}
-          style={cardStyles.buttonPrimary}
-        >
+        <button onClick={() => setOpen(true)} style={cardStyles.buttonPrimary}>
           Add Product
         </button>
       </div>
 
-      {open && (
-        <AddProducts
-          modelProps={{ onClose: handleClose }}
-        />
-      )}
+      {open && <AddProducts modelProps={{ onClose: handleClose }} />}
 
       {/* {loading && (
         <div className="empty-state">
@@ -73,20 +63,20 @@ const Products = () => {
         </div>
       )} */}
 
-      {!loading &&
-        products?.data?.length === 0 && (
-          <div className="empty-state">
-            No products found
-          </div>
-        )}
+      {products?.data?.length === 0 && (
+        <div className="empty-state">No products found</div>
+      )}
 
       <div
         style={{
-          ...productStyles.grid,
-          justifyContent: "center",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "16px",
+          alignItems: "start",
+          justifyItems: "center",
         }}
       >
-        {products?.data?.map((product: any) => (
+        {/* {products?.data?.map((product: any) => (
           <ProductCard
             key={product._id}
             product={product}
@@ -94,7 +84,18 @@ const Products = () => {
               setEditProduct(product)
             }
           />
-        ))}
+        ))} */}
+        {loading
+          ? Array(products?.data?.length || 0)
+              .fill(0)
+              .map((_, idx) => <ProductCardSkeleton key={idx} />)
+          : products?.data?.map((product: any) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                onEdit={(product: any) => setEditProduct(product)}
+              />
+            ))}
       </div>
       {editProduct && (
         <div

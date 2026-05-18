@@ -10,5 +10,5 @@ export const getMyOrdersApi = async () => {
 };
 
 export const getSellerOrdersApi = async () => {
-  return api.get("/order/seller-orders");
+  return api.get(endpoint.order.seller);
 };

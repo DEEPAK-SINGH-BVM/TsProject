@@ -173,7 +173,7 @@ export const deleteCartProduct = async (req: AuthRequest, res: Response) => {
 
     if (!cart) {
       return res.status(404).json({
-        message: "Cart Item Not found   ",
+        message: "Cart Item Not found",
       });
     }
     res.status(200).json({
@@ -210,10 +210,10 @@ export const stripePayment = async (req: Request, res: Response) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/success`,
+      success_url: `${process.env.CLIENT_URL}/my-orders`,
       cancel_url: `${process.env.CLIENT_URL}/fail`,
     });
-    console.log("stripePaymentsession", session);
+    console.log("stripePaymentSession", session);
     res.json({ url: session.url });
   } catch (error: any) {
     console.log(error);

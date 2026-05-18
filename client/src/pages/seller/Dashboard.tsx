@@ -10,32 +10,51 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getMyProductsAction, getShopProductAction } from "../../store/feature/products/productAction";
+import { getMyProductsAction } from "../../store/feature/products/productAction";
 import { AppDispatch } from "../../store";
+import { getSellerOrdersAction } from "../../store/feature/order/orderAction";
+import DashboardSkeleton from "../../components/common/DashboardSkeleton";
+import {
+  getTotalEarnings,
+  getTotalOrders,
+  getTotalProducts,
+} from "../../utils/calcHelpers";
 
 const Dashboard = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const products = useSelector((state: any) => state.product.products.data);
-  console.log('dashboardprodut',products);
-  
-  const totalProducts = products?.length || 0;
-  useEffect(()=>{
+
+  const { product, order } = useSelector((state: any) => state);
+
+  console.log("dashboardOrders", order);
+  const totalProducts = getTotalProducts(product?.products?.data);
+  const totalOrders = getTotalOrders(order.orders);
+
+  const totalEarnings = getTotalEarnings(order.orders);
+
+  const isLoading = order.loading || product.loading;
+  console.log("isLoadingIsLoading", isLoading);
+
+  useEffect(() => {
     dispatch(getMyProductsAction());
-  },[])
+    dispatch(getSellerOrdersAction());
+  }, []);
+  
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Seller Dashboard
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-500 mt-1">
           Manage your products and orders easily
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        <div className="bg-white rounded-2xl   p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
           <div className="flex items-center justify-between">
             <div className="bg-gray-100 p-3 rounded-xl">
               <FiPackage className="text-2xl text-gray-700" />
@@ -50,9 +69,7 @@ const Dashboard = () => {
             {totalProducts}
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Total uploaded products
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Total uploaded products</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
@@ -66,11 +83,11 @@ const Dashboard = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold mt-5 text-gray-900">85</h2>
+          <h2 className="text-3xl font-bold mt-5 text-gray-900">
+            {totalOrders}
+          </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Total customer orders
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Total customer orders</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
@@ -85,12 +102,10 @@ const Dashboard = () => {
           </div>
 
           <h2 className="text-3xl font-bold mt-5 text-gray-900">
-            ₹45,000
+            {totalEarnings}
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Total earnings
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Total earnings</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
@@ -106,9 +121,7 @@ const Dashboard = () => {
 
           <h2 className="text-3xl font-bold mt-5 text-gray-900">12</h2>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Pending orders
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Pending orders</p>
         </div>
       </div>
 
@@ -148,9 +161,7 @@ const Dashboard = () => {
                   <h3 className="text-lg font-semibold text-gray-900">
                     Orders
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Track all orders
-                  </p>
+                  <p className="text-sm text-gray-500 mt-1">Track all orders</p>
                 </div>
 
                 <FiShoppingCart className="text-3xl text-gray-700 group-hover:rotate-6 transition" />
@@ -166,9 +177,7 @@ const Dashboard = () => {
                   <h3 className="text-lg font-semibold text-gray-900">
                     My Shop
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    View your store
-                  </p>
+                  <p className="text-sm text-gray-500 mt-1">View your store</p>
                 </div>
 
                 <FiShoppingBag className="text-3xl text-gray-700 group-hover:rotate-6 transition" />
@@ -184,9 +193,7 @@ const Dashboard = () => {
                   <h3 className="text-lg font-semibold text-gray-900">
                     Profile
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Manage account
-                  </p>
+                  <p className="text-sm text-gray-500 mt-1">Manage account</p>
                 </div>
 
                 <FiUser className="text-3xl text-gray-700 group-hover:rotate-6 transition" />
@@ -203,43 +210,29 @@ const Dashboard = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
-                <p className="font-medium text-gray-800">
-                  Pending Orders
-                </p>
-                <p className="text-sm text-gray-500">
-                  Waiting for processing
-                </p>
+                <p className="font-medium text-gray-800">Pending Orders</p>
+                <p className="text-sm text-gray-500">Waiting for processing</p>
               </div>
 
-              <span className="text-xl font-bold text-gray-900">
-                12
-              </span>
+              <span className="text-xl font-bold text-gray-900">12</span>
             </div>
 
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
                 <p className="font-medium text-gray-800">Processing</p>
-                <p className="text-sm text-gray-500">
-                  Orders in progress
-                </p>
+                <p className="text-sm text-gray-500">Orders in progress</p>
               </div>
 
-              <span className="text-xl font-bold text-gray-900">
-                8
-              </span>
+              <span className="text-xl font-bold text-gray-900">8</span>
             </div>
 
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
                 <p className="font-medium text-gray-800">Delivered</p>
-                <p className="text-sm text-gray-500">
-                  Successfully delivered
-                </p>
+                <p className="text-sm text-gray-500">Successfully delivered</p>
               </div>
 
-              <span className="text-xl font-bold text-gray-900">
-                65
-              </span>
+              <span className="text-xl font-bold text-gray-900">65</span>
             </div>
           </div>
         </div>

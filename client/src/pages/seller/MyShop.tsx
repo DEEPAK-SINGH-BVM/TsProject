@@ -4,23 +4,32 @@ import { FaStore, FaPhone, FaMapMarkerAlt, FaTag } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store";
 // import {
-  // getShopAction,
-  // uploadShopLogoAction,
+// getShopAction,
+// uploadShopLogoAction,
 // } from "../../store/feature/shop";
 import { cardStyles as styles } from "../../styles/card.styles";
-import { getShopAction, uploadShopLogoAction } from "../../store/feature/shop/shopAction";
-
+import {
+  getShopAction,
+  uploadShopLogoAction,
+} from "../../store/feature/shop/shopAction";
+import { MyShopSkeleton } from "../../components/common/MyShopSkeleton";
 
 const MyShop = () => {
   const dispatch = useDispatch<AppDispatch>();
   // const wholeState = useSelector((state: any) => state);
   // console.log("WholeState", wholeState);
 
-  const shop = useSelector((state: any) => state.shop.shop);
-  console.log("MyShopShop", shop);
+  const { shop, loading } = useSelector((state: any) => state.shop);
+  console.log("MyShopShop", loading);
+
   useEffect(() => {
     dispatch(getShopAction());
   }, []);
+
+  // if (loading) {
+  //   return <MyShopSkeleton/>
+  // }
+
   const navigate = useNavigate();
   return (
     <div style={styles.page}>

@@ -178,18 +178,145 @@
 // Diagram url = https://dbdiagram.io/d/667527b45a764b3c720d75da 
 // Product Url = https://drive.google.com/drive/folders/1fi_QTn6ANqPLUS6EytYp_PFJbFJZiJ0Q
 
-// Product Details page                 
-// remove role from localstorage,  then add to cart and buy btn according to role
-// create cart page , create checkout page  
-// Fix rbac  
-// in cart page increase , decrease , remove ,total amount then checkout page 
-// order section 
-// payment gateway , order system [customer order , pending order , total earing ], 
-// order summanry pending , process , deliver 
+/*
+1) cart after order remove cart ka data - done
+2) after payment show invoice page in online - done 
+3) buyer a specific page to show order by that with date - done
+4) order show seller side - done
 
-{/* <button className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300" onClick={() => dispatch(decreaseQtyAction(item._id) as any)}>-</button>
+// code refactor
+// total earning , total sales 
+// Insert Proper Date to easy to verify 
+// Use skeleton loaders for tables, product lists, orders → better UX (dashboard ,my product , seller order ,my shop , profile , shop available , Your Cart ,My Orders).
+// from buyer side Filter shop base on Category 
 
-<button className="w-8 h-8 bg-gray-200 rounded hover:bg-gray-300" onClick={() => dispatch(increaseQtyAction(item._id) as any)}>+</button> */}
+Implemented seller-side order view showing buyer details including name, address, and payment method.
+Connected seller dashboard to display real-time order data and status updates.
+Updated cart behavior so purchased products are automatically removed after successful payment.
+Developed invoice view for both cart and single-product purchases, showing items, quantities, and total amount.
+Enhanced buyer-side order view to display all orders placed by that particular user.
+
+// Both User Ui glitch
+// Issue Code Strucuture
+// ReUsable
+// Share app QR code
+// Insert Proper Date
+// Validation
+// repeated code make it dynamic
+
+Seller 
+Dashboard:
+          Total customer orders
+          Total earnings
+          Pending orders 
+Product :
+         Update Product UI 
+Order:
+      show order details
+      changes order status 
+
+Buyer 
+Home: 
+      Filter shop base on Category
+Cart:
+      invoice show cart , buy 
+      download invoice
+Order:
+
+//////////////
+Loading States:
+Use skeleton loaders for tables, product lists, orders → better UX.
+
+Code Reusability:
+Use custom hooks for repeated API calls and logic.
+Shared utility functions: formatCurrency, formatDate, calculateTotals.
+
+Performance:
+Use lazy loading for images/products.
+Use React.memo or useMemo/useCallback for expensive components.
+
+Security:
+Protect routes for seller vs buyer.
+Sanitize inputs and validate data both backend/frontend.
+
+Testing:
+Unit tests for critical functions (calculations, status changes)
+Component tests for reusable UI
+Optional: e2e tests with Cypress for order flow
+
+1. Home Screen (Customer)
+Search bar (“Search products…”)
+Categories grid:
+Grocery
+Dairy
+Snacks
+Drinks
+Featured store section
+“Scan QR to Start” button (large CTA button)
+
+2.Product Listing Page - done
+Product cards with:
+Image
+Name
+Price
+Add to Cart(+)
+Category filter
+Sticky bottom buy button
+
+3. Cart Page - done 
+Selected items list
+Quantity update buttons (+ / -)
+Total price summary
+“Place Order” large CTA button
+
+4. Order Status Page	
+Step progress bar:
+Order Placed
+Preparing
+Ready for Pickup
+Completed
+Green highlight for “Ready” status
+
+5. Seller Dashboard 
+New orders list
+Order details section
+Action buttons:
+Stock decrease
+Today Orders
+Revenue
+
+6. QR Scan Screen 
+Large QR scanner frame at center
+Text: “Scan Store QR to Start Ordering”
+Minimal dark background focus mode
+*/
+
+/*
+If seller has only one shop
+
+You can do aggregation in MongoDB to combine steps:
+
+const orders = await Order.aggregate([
+  { $unwind: "$items" }, // break items array into multiple docs
+  {
+    $lookup: {
+      from: "products",
+      localField: "items.productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  },
+  { $unwind: "$productDetails" },
+  { $match: { "productDetails.shopId": new mongoose.Types.ObjectId(sellerId) } },
+  { $sort: { createdAt: -1 } }
+]);
+*/
+
+
+
+
+
+
 import { useEffect, useState } from "react";
 import {
   FiShoppingBag,
@@ -227,7 +354,7 @@ const Checkout = () => {
         ...item.productId,
         quantity: item.quantity,
       }));
-  console.log("productToShoproductToShoww", productToShow);
+  console.log("productToShoproductToShow", productToShow);
 
   const subtotalProduct = isBuyNow ? buyNowProduct.product.price : subtotal;
   const deliveryFeeProduct = isBuyNow ? buyNowProduct.deliveryFee : deliveryFee;
@@ -239,7 +366,7 @@ const Checkout = () => {
   const [stateName, setStateName] = useState("");
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"COD" | "Online">("COD");
-  console.log("CheckoutpaymentMethod", paymentMethod);
+  console.log("CheckoutPaymentMethod", paymentMethod);
 
   useEffect(() => {
     if (!isBuyNow) {
@@ -511,119 +638,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-
-/*
-// Aja ka task 
-1) cart order k bad remove hona chahiye cart ka data - done
-2) payment k bad invoice page in online - done 
-3) buyer a sepcific page to show k use me aab tak ya order kiya with date - done
-4) order show kar na seller side - done
-
-10 Hour code to complete this whole 
-// refresh token
-// Both User Ui glitch
-// Issue Code Strucuture
-// ReUsable
-// Share app QR code
-// Insert Proper Date
-// Validation
-// repeated code make it dynamic
-
-Seller 
-Dashboard:
-          Total customer orders
-          Total earnings
-          Pending orders 
-Product :
-         Update Product UI 
-Order:
-      show order details
-      changes order status 
-
-Buyer 
-Home: 
-      Filter shop base on Category
-Cart:
-      in Cart After payment remove product
-      invoice show cart , buy 
-      download invoice
-Order:
-      show user orders in particular section
-
-//////////////
-handling in the not to resolve that in every page to fix 
-apply zod validation in whole backend 
-also apply visible validation apply in FE side 
-what if any one is need to apply or all need to apply 
-Error Handling:
-Use global error handling for API calls → user-friendly messages.
-Show toast notifications for success/error.
-
-Loading States:
-Use skeleton loaders for tables, product lists, orders → better UX.
-
-Code Reusability:
-Use custom hooks for repeated API calls and logic.
-Shared utility functions: formatCurrency, formatDate, calculateTotals.
-
-Performance:
-Use lazy loading for images/products.
-Use React.memo or useMemo/useCallback for expensive components.
-
-Security:
-Protect routes for seller vs buyer.
-Sanitize inputs and validate data both backend/frontend.
-
-Testing:
-Unit tests for critical functions (calculations, status changes)
-Component tests for reusable UI
-Optional: e2e tests with Cypress for order flow
-
-1. Home Screen (Customer)
-Search bar (“Search products…”)
-Categories grid:
-Grocery
-Dairy
-Snacks
-Drinks
-Featured store section
-“Scan QR to Start” button (large CTA button)
-
-2.Product Listing Page - done
-Product cards with:
-Image
-Name
-Price
-Add to Cart(+)
-Category filter
-Sticky bottom buy button
-
-3. Cart Page - done 
-Selected items list
-Quantity update buttons (+ / -)
-Total price summary
-“Place Order” large CTA button
-
-4. Order Status Page	
-Step progress bar:
-Order Placed
-Preparing
-Ready for Pickup
-Completed
-Green highlight for “Ready” status
-
-5. Seller Dashboard 
-New orders list
-Order details section
-Action buttons:
-Accept Order
-Mark as Ready
-Analytics cards:
-Today Orders
-Revenue
-
-6. QR Scan Screen 
-Large QR scanner frame at center
-Text: “Scan Store QR to Start Ordering”
-Minimal dark background focus mode
-*/
