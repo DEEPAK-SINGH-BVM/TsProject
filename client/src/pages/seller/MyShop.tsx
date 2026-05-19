@@ -16,6 +16,7 @@ import { MyShopSkeleton } from "../../components/common/MyShopSkeleton";
 
 const MyShop = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   // const wholeState = useSelector((state: any) => state);
   // console.log("WholeState", wholeState);
 
@@ -26,11 +27,10 @@ const MyShop = () => {
     dispatch(getShopAction());
   }, []);
 
-  // if (loading) {
-  //   return <MyShopSkeleton/>
-  // }
+  if (loading) {
+    return <MyShopSkeleton/>
+  }
 
-  const navigate = useNavigate();
   return (
     <div style={styles.page}>
       <div style={styles.header}>

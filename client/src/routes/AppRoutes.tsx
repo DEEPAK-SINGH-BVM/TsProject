@@ -23,13 +23,11 @@ import Checkout from "../pages/buyer/Checkout.js";
 import EditProduct from "../pages/seller/EditProduct.js";
 import OtpPage from "../pages/auth/OtpPage.js";
 import Products from "../pages/seller/Products.js";
-import Productshow from "../pages/buyer/Productshow.js";
 import SellerRoute from "../components/guard/SellerShopRoute.js";
 import BuyerRoute from "../components/guard/BuyerRoute.js";
 import Invoice from "../pages/buyer/Invoice.js";
-import Sucess from "../pages/buyer/Sucess.js";
-import Fail from "../pages/buyer/Fail.js";
 import MyOrders from "../pages/buyer/MyOrder.js";
+import ProductShow from "../pages/buyer/ProductShow.js";
 
 const AppRoutes = () => {
   return (
@@ -37,8 +35,6 @@ const AppRoutes = () => {
       <ToastContainer position="top-right" autoClose={2000} />
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/success" element={<Sucess />} />
-          <Route path="/fail" element={<Fail />} />
           <Route
             path="/signup"
             element={
@@ -85,9 +81,9 @@ const AppRoutes = () => {
         <Route
           path="/seller"
           element={
-            <SellerRoute>
+            // <SellerRoute>
               <AuthLayout />
-            </SellerRoute>
+            //  </SellerRoute>
           }
           // element={<Layout />}
         >
@@ -124,9 +120,9 @@ const AppRoutes = () => {
           }
         >
           <Route path="home" element={<Home />} />
-          <Route path="/my-orders" element={<MyOrders />}/>
+          <Route path="/my-orders" element={<MyOrders />} />
           <Route path="invoice" element={<Invoice />} />
-          <Route path="products/:shopId" element={<Productshow />} />
+          <Route path="products/:shopId" element={<ProductShow/>} />
           <Route path="product-details" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
@@ -136,5 +132,6 @@ const AppRoutes = () => {
     </div>
   );
 };
+
 
 export default AppRoutes;

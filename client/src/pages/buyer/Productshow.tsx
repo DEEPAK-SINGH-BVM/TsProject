@@ -6,11 +6,11 @@ import { getShopProductAction } from "../../store/feature/products/productAction
 import ProductCard from "../../components/product/ProductCard";
 import { productStyles } from "../../styles/product.styles";
 
-const Productshow = () => {
+const ProductShow = () => {
   const { shopId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log("ProductshowShopid", shopId);
+  console.log("ProductshowShopId", shopId);
   const productState = useSelector((state: any) => state.product);
   console.log("ProductshowProductState", productState);
   
@@ -67,4 +67,4 @@ const Productshow = () => {
     </>
   );
 };
-export default Productshow;
+export default ProductShow;

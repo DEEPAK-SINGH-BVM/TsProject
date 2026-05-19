@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../store";
 
 const NotFound = () => {
   const navigate = useNavigate();
-  // const role = localStorage.getItem("role")
-  const role = useSelector((state: any) => state.auth.user?.role);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
   console.log('NotFoundRole',role);
   
   return (

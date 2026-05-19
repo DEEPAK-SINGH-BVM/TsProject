@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface Props {
   children: ReactNode;
@@ -16,8 +17,8 @@ const PublicRoute = ({ children }: Props) => {
     (state:any) => state.auth.user?.role
   );
   console.log("PublicRouteRole", role);
-  const shop = useSelector((state: any) => state.shop.shop);
-  console.log("PublicRouteShopssss", shop);
+  const shop = useSelector((state: RootState) => state.shop.shop);
+  console.log("PublicRouteShops", shop);
 
   if (token) {
     if (role === "seller" && shop) {

@@ -15,9 +15,10 @@ import {
   FaClipboardList,
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 const Navbar = () => {
   const { token } = useAuth();
-  const role = useSelector((state: any) => state.auth.user?.role);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
   const [open, setOpen] = useState(false);
   return (
     <div

@@ -6,7 +6,7 @@ import {
 } from "../../store/feature/products/productAction";
 import { productStyles } from "../../styles/product.styles";
 import { FaCartPlus, FaEdit, FaShoppingCart, FaTrash } from "react-icons/fa";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { MdBolt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { addToCartAction } from "../../store/feature/cart/cartAction";
@@ -30,7 +30,7 @@ interface ProductProps {
 const ProductCard = ({ product, onEdit }: ProductProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const role = useSelector((state: any) => state.auth.user?.role);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
   console.log("ProductCart", role);
 
   const handleDelete = async () => {

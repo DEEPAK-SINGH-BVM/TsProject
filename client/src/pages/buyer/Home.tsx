@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { FaMapMarkerAlt, FaPhoneAlt, FaStore } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 // import { getAllShopsAction } from "../../store/feature/shop";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { getAllShopsAction } from "../../store/feature/shop/shopAction";
 import { getShopProductAction } from "../../store/feature/products/productAction";
 import { useNavigate } from "react-router-dom";
 import { cardStyles as styles } from "../../styles/card.styles";
 const Home = () => {
   const navigate = useNavigate();
-  const shops = useSelector((state: any) => state.shop.shops);
+  const shops = useSelector((state: RootState) => state.shop.shops);
   console.log("shopsId", shops);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {

@@ -1,220 +1,232 @@
-// C:.
-// │   .env
-// │   .gitignore
-// │   eslint.config.js
-// │   index.html
-// │   package-lock.json
-// │   package.json
-// │   postcss.config.js
-// │   README.md
-// │   tailwind.config.js
-// │   tsconfig.app.json
-// │   tsconfig.app.tsbuildinfo
-// │   tsconfig.json
-// │   tsconfig.node.json
-// │   vite.config.ts
-// │   
-// ├───dist
-// │   │   index.html
-// │   │   
-// │   └───assets
-// │           index-BcVGrXLP.js
-// │           
-// └───src
-//     │   App.tsx
-//     │   global.d.ts
-//     │   main.css
-//     │   main.tsx
-//     │   vite-env.d.ts
-//     │   
-//     ├───api
-//     │       axios.ts
-//     │       endPoint.ts
-//     │       
-//     ├───components
-//     │   ├───common
-//     │   │       Loader.tsx
-//     │   │       Logout.tsx
-//     │   │       
-//     │   ├───guard
-//     │   │       ProtectedRoute.tsx
-//     │   │       PublicRoute.tsx
-//     │   │       SellerShopRoute.tsx
-//     │   │       
-//     │   └───layout
-//     │           AuthLayout.tsx
-//     │           BuyerLayout.tsx
-//     │           Navbar.tsx
-//     │           SellerLayout.tsx
-//     │           
-//     ├───context
-//     │       AuthContext.tsx
-//     │       
-//     ├───hook
-//     │       useAuth.ts
-//     │       
-//     ├───pages
-//     │   │   try.tsx
-//     │   │   
-//     │   ├───auth
-//     │   │       ForgotPassword.tsx
-//     │   │       Login.tsx
-//     │   │       OtpPage.tsx
-//     │   │       ResetPassword.tsx
-//     │   │       Signup.tsx
-//     │   │       
-//     │   ├───buyer
-//     │   │       Cart.tsx
-//     │   │       Checkout.tsx
-//     │   │       Home.tsx
-//     │   │       ProductDetails.tsx
-//     │   │       
-//     │   ├───seller
-//     │   │       AddProducts.tsx
-//     │   │       CreateShop.tsx
-//     │   │       Dashboard.tsx
-//     │   │       EditProduct.tsx
-//     │   │       MyShop.tsx
-//     │   │       Order.tsx
-//     │   │       Products.tsx
-//     │   │       
-//     │   ├───shared
-//     │   │       NotFound.tsx
-//     │   │       
-//     │   └───user
-//     │           Profile.tsx
-//     │           
-//     ├───routes
-//     │       AppRoutes.tsx
-//     │       
-//     ├───store
-//     │   │   index.ts
-//     │   │   
-//     │   └───feature
-//     │       ├───auth
-//     │       │       authAction.ts
-//     │       │       authService.ts
-//     │       │       authSlice.ts
-//     │       │       
-//     │       ├───products
-//     │       │       productAction.ts
-//     │       │       productService.ts
-//     │       │       productSlice.ts
-//     │       │       
-//     │       ├───shop
-//     │       │       shopAction.ts
-//     │       │       shopService.ts
-//     │       │       shopSlice.ts
-//     │       │       
-//     │       └───unused
-//     │               action.ts
-//     │               constant.ts
-//     │               index.ts
-//     │               proAction.ts
-//     │               proConstant.ts
-//     │               proReducer.ts
-//     │               reducer.ts
-//     │               shaction.ts
-//     │               shconstant.ts
-//     │               shindex.ts
-//     │               shreducer.ts
-//     │               
-//     ├───styles
-//     │       auth.styles.ts
-//     │       card.styles.ts
-//     │       
-//     ├───types
-//     │       auth.types.ts
-//     │       
-//     └───utils
-
-// Backend
-// C:
-// │   .env
-// │   package-lock.json
-// │   package.json
-// │   tsconfig.json
-// │   
-// ├───dist
-// └───src
-//     │   index.ts
-//     │   
-//     ├───config
-//     │       cloudinary.ts
-//     │       db.ts
-//     │       mailer.ts
-//     │       
-//     ├───controllers
-//     │       product.controllers.ts
-//     │       shop.controllers.ts
-//     │       user.controllers.ts
-//     │       
-//     ├───middlewares
-//     │       auth.middleware.ts
-//     │       multer.middleware.ts
-//     │       shop.middleware.ts
-//     │       upload.middleware.ts
-//     │       validate.middleware.ts
-//     │       
-//     ├───models
-//     │       products.model.ts
-//     │       shop.model.ts
-//     │       user.model.ts
-//     │       
-//     ├───routes
-//     │       index.routes.ts
-//     │       product.routes.ts
-//     │       shop.routes.ts
-//     │       user.routes.ts
-//     │       
-//     ├───utils
-//     │       sendEmail.ts
-//     │       uploadToCloudinary.ts
-//     │       
-//     └───validators
-//             auth.validator.ts
-//             shop.validator.ts
-
-// Diagram url = https://dbdiagram.io/d/667527b45a764b3c720d75da 
-// Product Url = https://drive.google.com/drive/folders/1fi_QTn6ANqPLUS6EytYp_PFJbFJZiJ0Q
+{
+  /*
+C:.
+│   .env
+│   .gitignore
+│   eslint.config.js
+│   index.html
+│   package-lock.json
+│   package.json
+│   postcss.config.js
+│   README.md
+│   tailwind.config.js
+│   tsconfig.app.json
+│   tsconfig.app.tsbuildinfo
+│   tsconfig.json
+│   tsconfig.node.json
+│   vite.config.ts
+│   
+├───dist
+│   │   index.html
+│   │   
+│   └───assets
+│           index-BcVGrXLP.js
+│           
+└───src
+    │   App.tsx
+    │   global.d.ts
+    │   main.css
+    │   main.tsx
+    │   vite-env.d.ts
+    │   
+    ├───api
+    │       axios.ts
+    │       endPoint.ts
+    │       
+    ├───components
+    │   ├───common
+    │   │       DashboardSkeleton.tsx
+    │   │       Loader.tsx
+    │   │       MyShopSkeleton.tsx
+    │   │       ProductCardSkeleton.tsx
+    │   │       ProfileSkeleton.tsx
+    │   │       sellerOrderSkeleton.tsx
+    │   │       
+    │   ├───guard
+    │   │       BuyerRoute.tsx
+    │   │       ProtectedRoute.tsx
+    │   │       PublicRoute.tsx
+    │   │       SellerShopRoute.tsx
+    │   │       
+    │   ├───layout
+    │   │       AuthLayout.tsx
+    │   │       BuyerLayout.tsx
+    │   │       Navbar.tsx
+    │   │       SellerLayout.tsx
+    │   │       
+    │   └───product
+    │           ProductCard.tsx
+    │           
+    ├───context
+    │       AuthContext.tsx
+    │       
+    ├───hook
+    │       useAuth.ts
+    │       
+    ├───pages
+    │   │   try.tsx
+    │   │   
+    │   ├───auth
+    │   │       ForgotPassword.tsx
+    │   │       Login.tsx
+    │   │       OtpPage.tsx
+    │   │       ResetPassword.tsx
+    │   │       Signup.tsx
+    │   │       
+    │   ├───buyer
+    │   │       Cart.tsx
+    │   │       Checkout.tsx
+    │   │       Home.tsx
+    │   │       Invoice.tsx
+    │   │       MyOrder.tsx
+    │   │       ProductDetails.tsx
+    │   │       ProductShow.tsx
+    │   │       
+    │   ├───seller
+    │   │       AddProducts.tsx
+    │   │       CreateShop.tsx
+    │   │       Dashboard.tsx
+    │   │       EditProduct.tsx
+    │   │       MyShop.tsx
+    │   │       Order.tsx
+    │   │       Products.tsx
+    │   │       
+    │   ├───shared
+    │   │       NotFound.tsx
+    │   │       
+    │   └───user
+    │           Profile.tsx
+    │           
+    ├───routes
+    │       AppRoutes.tsx
+    │       
+    ├───store
+    │   │   index.ts
+    │   │   
+    │   └───feature
+    │       ├───auth
+    │       │       authAction.ts
+    │       │       authService.ts
+    │       │       authSlice.ts
+    │       │       
+    │       ├───cart
+    │       │       cartAction.ts
+    │       │       cartService.ts
+    │       │       cartSlice.ts
+    │       │       
+    │       ├───order
+    │       │       orderAction.ts
+    │       │       orderService.ts
+    │       │       orderSlice.ts
+    │       │       
+    │       ├───products
+    │       │       productAction.ts
+    │       │       productService.ts
+    │       │       productSlice.ts
+    │       │       
+    │       ├───shop
+    │       │       shopAction.ts
+    │       │       shopService.ts
+    │       │       shopSlice.ts
+    │       │       
+    │       └───unused
+    │               action.ts
+    │               auth.types.ts
+    │               constant.ts
+    │               index.ts
+    │               proAction.ts
+    │               proConstant.ts
+    │               proReducer.ts
+    │               reducer.ts
+    │               shaction.ts
+    │               shconstant.ts
+    │               shindex.ts
+    │               shreducer.ts
+    │               
+    ├───styles
+    │       auth.styles.ts
+    │       card.styles.ts
+    │       product.styles.ts
+    │       
+    └───utils
+            calcHelpers.ts
+   Backend
+   C:.
+   │   .env
+   │   .gitignore
+   │   package-lock.json
+   │   package.json
+   │   tsconfig.json
+   │   
+   └───src
+       │   index.ts
+       │   
+       ├───config
+       │       cloudinary.ts
+       │       db.ts
+       │       mailer.ts
+       │       
+       ├───controllers
+       │       cart.controllers.ts
+       │       order.controllers.ts
+       │       product.controllers.ts
+       │       shop.controllers.ts
+       │       user.controllers.ts
+       │       
+       ├───middlewares
+       │       auth.middleware.ts
+       │       multer.middleware.ts
+       │       shop.middleware.ts
+       │       upload.middleware.ts
+       │       validate.middleware.ts
+       │       
+       ├───models
+       │       cart.model.ts
+       │       order.model.ts
+       │       products.model.ts
+       │       shop.model.ts
+       │       user.model.ts
+       │       
+       ├───routes
+       │       cart.routes.ts
+       │       index.routes.ts
+       │       order.routes.ts
+       │       product.routes.ts
+       │       shop.routes.ts
+       │       user.routes.ts
+       │       
+       ├───utils
+       │       cartUtils.ts
+       │       sendEmail.ts
+       │       uploadToCloudinary.ts
+       │       
+       └───validators
+               auth.validator.ts
+               shop.validator.ts
+            
+               Diagram url = https://dbdiagram.io/d/667527b45a764b3c720d75da
+               Product Url = https://drive.google.com/drive/folders/1fi_QTn6ANqPLUS6EytYp_PFJbFJZiJ0Q
+*/
+}
 
 /*
-1) cart after order remove cart ka data - done
-2) after payment show invoice page in online - done 
-3) buyer a specific page to show order by that with date - done
-4) order show seller side - done
-
-// code refactor
-// total earning , total sales 
-// Insert Proper Date to easy to verify 
-// Use skeleton loaders for tables, product lists, orders → better UX (dashboard ,my product , seller order ,my shop , profile , shop available , Your Cart ,My Orders).
-// from buyer side Filter shop base on Category 
-
-Implemented seller-side order view showing buyer details including name, address, and payment method.
-Connected seller dashboard to display real-time order data and status updates.
-Updated cart behavior so purchased products are automatically removed after successful payment.
-Developed invoice view for both cart and single-product purchases, showing items, quantities, and total amount.
-Enhanced buyer-side order view to display all orders placed by that particular user.
-
-// Both User Ui glitch
-// Issue Code Strucuture
-// ReUsable
-// Share app QR code
-// Insert Proper Date
-// Validation
-// repeated code make it dynamic
+Both User Ui glitch
+Issue Code Strucuture
+ReUsable
+Share app QR code
+Insert Proper Date
+Validation
+repeated code make it dynamic
 
 Seller 
 Dashboard:
-          Total customer orders
-          Total earnings
           Pending orders 
 Product :
          Update Product UI 
+         base on order product was decrease stock  
 Order:
-      show order details
       changes order status 
-
+      
 Buyer 
 Home: 
       Filter shop base on Category
@@ -223,9 +235,12 @@ Cart:
       download invoice
 Order:
 
-//////////////
-Loading States:
-Use skeleton loaders for tables, product lists, orders → better UX.
+//
+in seller orders show Person details with order place by user 
+Insert Proper Data of diffrent shops , base on shop category 
+changes order status from seller side after complete order 
+base on order product was decrease stock 
+Filter order items to include only products belonging to the seller’s shop , so unwanted products from other shops don’t show. 
 
 Code Reusability:
 Use custom hooks for repeated API calls and logic.
@@ -243,6 +258,7 @@ Testing:
 Unit tests for critical functions (calculations, status changes)
 Component tests for reusable UI
 Optional: e2e tests with Cypress for order flow
+
 
 1. Home Screen (Customer)
 Search bar (“Search products…”)
@@ -311,11 +327,6 @@ const orders = await Order.aggregate([
   { $sort: { createdAt: -1 } }
 ]);
 */
-
-
-
-
-
 
 import { useEffect, useState } from "react";
 import {

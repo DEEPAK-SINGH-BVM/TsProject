@@ -207,7 +207,7 @@ const Dashboard = () => {
             Order Summary
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-11">
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
                 <p className="font-medium text-gray-800">Pending Orders</p>
@@ -217,19 +217,19 @@ const Dashboard = () => {
               <span className="text-xl font-bold text-gray-900">12</span>
             </div>
 
-            <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
+            {/* <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
                 <p className="font-medium text-gray-800">Processing</p>
                 <p className="text-sm text-gray-500">Orders in progress</p>
               </div>
 
               <span className="text-xl font-bold text-gray-900">8</span>
-            </div>
+            </div> */}
 
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
-                <p className="font-medium text-gray-800">Delivered</p>
-                <p className="text-sm text-gray-500">Successfully delivered</p>
+                <p className="font-medium text-gray-800">Complete</p>
+                <p className="text-sm text-gray-500">Successfully Complete</p>
               </div>
 
               <span className="text-xl font-bold text-gray-900">65</span>

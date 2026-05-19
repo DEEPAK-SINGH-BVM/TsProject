@@ -9,10 +9,10 @@ import { UpdateAddressAction, uploadProfileImageAction } from "../../store/featu
 
 const Profile = () => {
   const { logout } = useAuth();
-  const userCheck = useSelector((state: RootState) => state.auth.user);
+  const userCheck = useSelector((state: RootState) => state.auth);
   console.log("userCheck", userCheck);
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user ,loading } = useSelector((state: RootState) => state.auth);
   console.log("ProfileUser", user);
   const [address, setAddress] = useState("");
   const dispatch = useAppDispatch();
@@ -24,6 +24,10 @@ const Profile = () => {
       setAddress(user.address || "");
     }
   }, [user?.address]);
+  
+  // if(loading){
+  //   return <ProfileSkeleton/>;
+  // }
   return (
     <div style={styles.page}>
       <div style={styles.header}>

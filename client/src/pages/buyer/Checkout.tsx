@@ -13,7 +13,6 @@ import { getCartProductsAction } from "../../store/feature/cart/cartAction";
 import { AppDispatch } from "../../store";
 import { createOrderAction } from "../../store/feature/order/orderAction";
 import { toast } from "react-toastify";
-import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 const Checkout = () => {
   const location = useLocation();

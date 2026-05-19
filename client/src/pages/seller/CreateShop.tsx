@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { AppDispatch } from "../../store";
+import type { AppDispatch, RootState } from "../../store";
 import { Shop } from "../../store/feature/unused/auth.types";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,11 +11,9 @@ import { createShopAction, updateShopAction } from "../../store/feature/shop/sho
 const CreateShop = () => {
   const {goTo} = useAuth();
   const dispatch = useDispatch<AppDispatch>();
-  // const wholeState = useSelector((state: any) => state);
-  // console.log("WholeState", wholeState);
 
   const location = useLocation();
-  const shop = useSelector((state: any) => state.shop.shop);
+  const shop = useSelector((state: RootState) => state.shop.shop);
   const navigate = useNavigate();
 
   const editShop = location?.state?.shop;

@@ -8,8 +8,9 @@ interface OrderItem {
   image?: string;
 }
 
-export interface IOrder  {
+export interface IOrder {
   userId: mongoose.Types.ObjectId;
+  shopId: mongoose.Types.ObjectId;
   items: OrderItem[];
   deliveryAddress: {
     fullName: string;
@@ -30,6 +31,7 @@ export interface IOrder  {
 const OrderSchema: Schema<IOrder> = new Schema(
   {
     userId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    // shopId: { type: mongoose.Types.ObjectId, ref: "Shop", required: true },
     items: [
       {
         productId: {

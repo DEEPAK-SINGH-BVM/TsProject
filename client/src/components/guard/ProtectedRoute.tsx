@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { RootState } from "../../store";
 
 interface Props {
   children: ReactNode;
@@ -13,11 +14,11 @@ const ProtectedRoute = ({ children }: Props) => {
   // const token = localStorage.getItem("token");
   // const role = localStorage.getItem("role");
   const { token } = useAuth();
-  const shop = useSelector((state: any) => state.shop.shop);
-  const role = useSelector((state: any) => state.auth.user?.role);
+  const shop = useSelector((state: RootState) => state.shop.shop);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
   console.log("Role", role);
 
-  const wholestate = useSelector((state: any) => state);
+  const wholestate = useSelector((state: RootState) => state);
   console.log("wholestateShop", wholestate);
 
   console.log("ProtectedRouteShopssss", shop);

@@ -23,39 +23,28 @@ const MyOrders = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">
-        My Orders
-      </h1>
+      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
 
       <div className="space-y-5">
         {orders?.map((order: any) => (
-          <div
-            key={order._id}
-            className="bg-white p-5 rounded-xl shadow"
-          >
+          <div key={order._id} className="bg-white p-5 rounded-xl shadow">
             <div className="flex justify-between">
               <div>
                 <h2 className="font-bold text-lg">
-                  Order ID:
-                  {" "}
-                  {order._id.slice(-6)}
+                  Order ID: {order._id.slice(-6)}
                 </h2>
 
                 <p className="text-gray-500">
-                  {new Date(
-                    order.createdAt
-                  ).toDateString()}
+                  {new Date(order.createdAt).toDateString()}
                 </p>
               </div>
 
               <div>
-                <p className="font-semibold">
-                  ₹{order.total}
-                </p>
+                <p className="font-semibold">Total Amount : ₹{order.total}</p>
 
-                <p className="text-sm text-gray-500">
+                {/* <p className="text-sm text-gray-500">
                   {order.paymentStatus}
-                </p>
+                </p> */}
               </div>
             </div>
 
@@ -72,19 +61,11 @@ const MyOrders = () => {
                   />
 
                   <div>
-                    <h2 className="font-semibold">
-                      {item.name}
-                    </h2>
+                    <h2 className="font-semibold">{item.name}</h2>
 
-                    <p>
-                      Qty:
-                      {" "}
-                      {item.quantity}
-                    </p>
+                    <p>Qty: {item.quantity}</p>
 
-                    <p>
-                      ₹{item.price}
-                    </p>
+                    <p>Per Item : ₹{item.price}</p>
                   </div>
                 </div>
               ))}

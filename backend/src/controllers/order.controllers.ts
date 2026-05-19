@@ -27,6 +27,25 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
       paymentStatus = "Paid";
     }
 
+    for (const item of items) {
+      console.log("itemPlaceOrder", item);
+
+      const product = await Product.findById(item.productId);
+      console.log("ProductPlaceOrder", product);
+
+      if (!product) {
+        return res.status(404).json({ message: "Product Id was not found" });
+      }
+
+      if (product.stock < item.quantity) {
+        return res.status(400).json({
+          message: `Insufficient stock for product ${product.name}`,
+        });
+      }
+      product.stock -= item.quantity;
+      await product.save();
+    }
+
     const order = await Order.create({
       userId: new mongoose.Types.ObjectId(userId),
       items,
@@ -83,17 +102,34 @@ export const sellerOrders = async (req: AuthRequest, res: Response) => {
     console.log("products", products);
     
     const productIds = products.map((item) => item._id);
+    console.log("productIdsProductIds", productIds);
 
     const orders = await Order.find({
       "items.productId": { $in: productIds },
     }).sort({ createdAt: -1 });
 
-    //     null → don’t filter any properties.
-    // 2 → pretty-print with 2 spaces of indentation.
+    console.log("ordersPlaceOrder", orders);
 
-    // console.log("Order items:", JSON.stringify(orders, null, 2));
+    // null → don’t filter any properties.
+    // 2 → pretty-print with 2 spaces of indentation.
+    console.log("Order items:", JSON.stringify(orders, null, 2));
+
+    const filterOrders = orders.map((order) => {
+      console.log("filterOrdersOrder", order);
+      const sellerItems = order.items.filter((item) =>
+        productIds.some((id) => id.equals(item.productId)),
+      );
+      console.log("sellerItems", sellerItems);
+
+      return {
+        ...order.toObject(),
+        items: sellerItems,
+      };
+    });
+    console.log("filterOrders", filterOrders);
+
     return res.status(200).json({
-      orders,
+      orders: filterOrders,
     });
   } catch (err: any) {
     return res.status(500).json({
