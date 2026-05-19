@@ -218,6 +218,10 @@ Insert Proper Date
 Validation
 repeated code make it dynamic
 
+changes order status 
+Filter shop base on Category
+
+
 Seller 
 Dashboard:
           Pending orders 

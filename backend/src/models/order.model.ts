@@ -21,6 +21,7 @@ export interface IOrder {
   };
   paymentMethod: "COD" | "Online";
   paymentStatus: "Pending" | "Paid";
+  orderStatus: "Pending" | "Complete";
   subtotal: number;
   deliveryFee: number;
   total: number;
@@ -52,6 +53,11 @@ const OrderSchema: Schema<IOrder> = new Schema(
       address: { type: String, required: true },
     },
     paymentMethod: { type: String, enum: ["COD", "Online"], required: true },
+    orderStatus: {
+      type: String,
+      enum: ["Pending","Complete"],
+      default: "Pending",
+    },
     paymentStatus: {
       type: String,
       enum: ["Pending", "Paid"],

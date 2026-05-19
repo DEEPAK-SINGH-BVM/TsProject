@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaPhoneAlt, FaStore } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 // import { getAllShopsAction } from "../../store/feature/shop";
@@ -10,6 +10,7 @@ import { cardStyles as styles } from "../../styles/card.styles";
 const Home = () => {
   const navigate = useNavigate();
   const shops = useSelector((state: RootState) => state.shop.shops);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   console.log("shopsId", shops);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -21,7 +22,14 @@ const Home = () => {
     // dispatch(getShopProductAction(shopId));
     navigate(`/products/${shopId}`);
   };
+  const categories = ["All", ...new Set(shops.map((item: any) => item.category))];
 
+  const filteredShops =
+    selectedCategory === "All"
+      ? shops
+      : shops.filter(
+        (item: any) => item.category === selectedCategory
+      );
   return (
     <div className="max-w-4xl mx-auto mt-6 px-4">
       <div className="mb-5">
@@ -32,7 +40,21 @@ const Home = () => {
         <p className="text-sm text-gray-500">Browse all available shops</p>
       </div>
       <div className="space-y-4">
-        {shops?.map((shop: any) => {
+        <div className="flex gap-3 flex-wrap mb-5">
+          {categories.map((item) => (
+            <button
+              key={item}
+              onClick={() => setSelectedCategory(item)}             
+              className={`px-4 py-2 rounded-lg border ${selectedCategory === item
+                  ? "bg-black text-white"
+                  : "bg-white"
+                }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+        {filteredShops?.map((shop: any) => {
           console.log("All Shops", shop);
           return (
             <div

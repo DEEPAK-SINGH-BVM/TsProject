@@ -12,3 +12,7 @@ export const getMyOrdersApi = async () => {
 export const getSellerOrdersApi = async () => {
   return api.get(endpoint.order.seller);
 };
+
+export const updateOrderstatusApi = async (id: string, status: string) => {
+  return api.patch(endpoint.order.updateorder(id), { status })
+}

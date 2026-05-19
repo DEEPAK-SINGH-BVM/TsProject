@@ -12,7 +12,7 @@ const MyOrders = () => {
     (state: any) => state.order
   );
   console.log("ordersOrders", orders);
-  
+
   useEffect(() => {
     dispatch(getMyOrdersAction());
   }, []);
@@ -41,7 +41,9 @@ const MyOrders = () => {
 
               <div>
                 <p className="font-semibold">Total Amount : ₹{order.total}</p>
-
+                <p className="mt-2 font-semibold">
+                  Status : {order.orderStatus}
+                </p>
                 {/* <p className="text-sm text-gray-500">
                   {order.paymentStatus}
                 </p> */}

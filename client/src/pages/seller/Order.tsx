@@ -1,102 +1,247 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { AppDispatch, RootState } from "../../store";
-
-import { getSellerOrdersAction } from "../../store/feature/order/orderAction";
-import { getTotalEarnings, getTotalOrders } from "../../utils/calcHelpers";
-import { SellerOrderSkeleton } from "../../components/common/sellerOrderSkeleton";
 import { FiMapPin, FiPhone, FiUser } from "react-icons/fi";
+
+import { AppDispatch } from "../../store";
+
+import {
+  getSellerOrdersAction,
+  updateOrderStatusAction,
+} from "../../store/feature/order/orderAction";
+
+import { getTotalEarnings } from "../../utils/calcHelpers";
+
+import { SellerOrderSkeleton } from "../../components/common/sellerOrderSkeleton";
 
 const Orders = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { order } = useSelector((state: any) => state);
-  console.log("OrderSeller", order);
+  const { order } = useSelector(
+    (state: any) => state
+  );
 
-  // const totalOrders = getTotalOrders(orders?.orders);
   const isLoading = order.loading;
-  const totalEarnings = getTotalEarnings(order.orders);
+
+  const totalEarnings = getTotalEarnings(
+    order.orders
+  );
+
   const totalLength = order.orders.length;
-  console.log("totalLength", totalLength);
 
   useEffect(() => {
     dispatch(getSellerOrdersAction());
   }, []);
 
-  if (isLoading) return <SellerOrderSkeleton count={totalLength} />;
+  // if (isLoading) {
+  //   return (
+  //     <SellerOrderSkeleton
+  //       count={totalLength}
+  //     />
+  //   );
+  // }
+
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Seller Orders</h1>
-      <h1 className="text-xl font-medium mb-6">
-        Total Sales : ₹{totalEarnings}
+      <h1 className="text-3xl font-bold mb-2">
+        Seller Orders
       </h1>
-      <div className="space-y-5">
-        {order?.orders?.map((order: any) => {
-          console.log("OrderDevel", order?.deliveryAddress);
-          return (
-            <div key={order._id} className="bg-white p-5 rounded-xl shadow">
-              <div className="flex justify-between">
-                <h2 className="font-bold">Order #{order._id.slice(-6)}</h2>
-                <p>Total : ₹{order.total}</p>
-              </div>
-              <p className="text-sm text-gray-500 mt-1">
-                {new Date(order.createdAt).toLocaleString()}
-              </p>
-              <div className="mt-4 space-y-3">
-                <div className="flex gap-4 border p-3 rounded-lg">
-                  <div className="p-4">
-                    <h2 className="font-bold text-lg mb-4 flex items-center">
-                      Person Details
-                    </h2>
 
-                    <div className="space-y-2">
-                      <p className="flex items-center">
-                        <FiUser className="mr-2 text-gray-600" />
-                        <span className="font-semibold">Full Name: </span>
-                         {order.deliveryAddress.fullName}
-                      </p>
+      <h2 className="text-lg font-medium mb-6">
+        Total Sales : ₹
+        {totalEarnings}
+      </h2>
 
-                      <p className="flex items-center">
-                        <FiPhone className="mr-2 text-gray-600" />
-                        <span className="font-semibold">Phone: </span>
-                        {order.deliveryAddress.phone}
-                      </p>
+      <div className="space-y-6">
+        {order?.orders?.map(
+          (order: any) => (
+            <div
+              key={order._id}
+              className="bg-white p-5 rounded-2xl shadow"
+            >
+              {/* TOP */}
+              <div className="flex justify-between items-center border-b pb-4">
+                <div>
+                  <h2 className="font-bold text-lg">
+                    Order #
+                    {order._id.slice(-6)}
+                  </h2>
 
-                      <p className="flex items-center">
-                        <FiMapPin className="mr-2 text-gray-600" />
-                        <span className="font-semibold">Address: </span>
-                        {order.deliveryAddress.address}
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-sm text-gray-500">
+                    {new Date(
+                      order.createdAt
+                    ).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="text-right">
+                  <h2 className="font-bold text-xl">
+                    ₹{order.total}
+                  </h2>
+
+                  <p className="text-sm mt-1">
+                    Payment :
+                    <span className="font-semibold ml-1">
+                      {
+                        order.paymentStatus
+                      }
+                    </span>
+                  </p>
                 </div>
               </div>
-              <div className="mt-4 space-y-3">
-                {order.items.map((item: any) => (
-                  <div
-                    key={item.productId}
-                    className="flex gap-4 border p-3 rounded-lg"
+
+              {/* STATUS */}
+              <div className="mt-4">
+                <h2 className="font-semibold mb-3">
+                  Order Status :
+                  <span className="ml-2">
+                    {
+                      order.orderStatus
+                    }
+                  </span>
+                </h2>
+
+                <div className="flex gap-3">
+                  <button
+                    className={`px-4 py-2 rounded-lg text-white ${
+                      order.orderStatus ===
+                      "Pending"
+                        ? "bg-yellow-500"
+                        : "bg-gray-400"
+                    }`}
+                    onClick={() =>
+                      dispatch(
+                        updateOrderStatusAction(
+                          order._id,
+                          "Pending"
+                        )
+                      )
+                    }
                   >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-20 h-20 rounded-lg object-cover"
-                    />
+                    Pending
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-lg text-white ${
+                      order.orderStatus ===
+                      "Complete"
+                        ? "bg-green-500"
+                        : "bg-gray-400"
+                    }`}
+                    onClick={() =>
+                      dispatch(
+                        updateOrderStatusAction(
+                          order._id,
+                          "Complete"
+                        )
+                      )
+                    }
+                  >
+                    Complete
+                  </button>
+                </div>
+              </div>
 
-                    <div>
-                      <h2 className="font-semibold">{item.name}</h2>
+              {/* CUSTOMER */}
+              <div className="mt-6 border rounded-xl p-4">
+                <h2 className="font-bold text-lg mb-4">
+                  Customer Details
+                </h2>
 
-                      <p>Qty: {item.quantity}</p>
+                <div className="space-y-3">
+                  <p className="flex items-center">
+                    <FiUser className="mr-2" />
 
-                      <p>Per Item : ₹{item.price}</p>
+                    <span className="font-semibold mr-2">
+                      Full Name :
+                    </span>
+
+                    {
+                      order
+                        .deliveryAddress
+                        .fullName
+                    }
+                  </p>
+
+                  <p className="flex items-center">
+                    <FiPhone className="mr-2" />
+
+                    <span className="font-semibold mr-2">
+                      Phone :
+                    </span>
+
+                    {
+                      order
+                        .deliveryAddress
+                        .phone
+                    }
+                  </p>
+
+                  <p className="flex items-center">
+                    <FiMapPin className="mr-2" />
+
+                    <span className="font-semibold mr-2">
+                      Address :
+                    </span>
+
+                    {
+                      order
+                        .deliveryAddress
+                        .address
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* PRODUCTS */}
+              <div className="mt-6 space-y-4">
+                {order.items.map(
+                  (item: any) => (
+                    <div
+                      key={
+                        item.productId
+                      }
+                      className="flex gap-4 border rounded-xl p-4"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-24 h-24 rounded-xl object-cover"
+                      />
+
+                      <div>
+                        <h2 className="font-bold text-lg">
+                          {item.name}
+                        </h2>
+
+                        <p className="mt-1">
+                          Quantity :
+                          {
+                            item.quantity
+                          }
+                        </p>
+
+                        <p className="mt-1">
+                          Price :
+                          ₹
+                          {
+                            item.price
+                          }
+                        </p>
+
+                        <p className="mt-1 font-semibold">
+                          Total :
+                          ₹
+                          {item.price *
+                            item.quantity}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
-          );
-        })}
+          )
+        )}
       </div>
     </div>
   );

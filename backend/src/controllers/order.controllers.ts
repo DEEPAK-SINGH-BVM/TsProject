@@ -100,7 +100,7 @@ export const sellerOrders = async (req: AuthRequest, res: Response) => {
 
     const products = await Product.find({ shopId: shop._id });
     console.log("products", products);
-    
+
     const productIds = products.map((item) => item._id);
     console.log("productIdsProductIds", productIds);
 
@@ -137,3 +137,14 @@ export const sellerOrders = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    const order = await Order.findByIdAndUpdate(orderId, { orderStatus: status }, { new: true })
+    res.status(201).json({ message: "Order Status Updated Successfully !!", order })
+  } catch (error: any) {
+    res.status(500).json({ message: "Error in update Status" })
+  }
+}

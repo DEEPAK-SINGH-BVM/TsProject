@@ -6,10 +6,10 @@ import { Shop } from "../../store/feature/unused/auth.types";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { createShopAction, updateShopAction } from "../../store/feature/shop";
-import { authStyles  as styles} from "../../styles/auth.styles";
+import { authStyles as styles } from "../../styles/auth.styles";
 import { createShopAction, updateShopAction } from "../../store/feature/shop/shopAction";
 const CreateShop = () => {
-  const {goTo} = useAuth();
+  const { goTo } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
 
   const location = useLocation();
@@ -35,7 +35,7 @@ const CreateShop = () => {
   }, [shop]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     setForm({
       ...form,
@@ -51,11 +51,22 @@ const CreateShop = () => {
       dispatch(createShopAction(form, goTo));
     }
   };
-
+  const categories = [
+    "Clothing",
+    "Electronics",
+    "Groceries",
+    "Footwear",
+    "Beauty",
+    "Furniture",
+    "Sports",
+    "Books",
+    "Accessories",
+    "Food",
+  ];
   return (
     <div style={styles.page}>
-      <form onSubmit={handleSubmit} style={{ ...styles.card ,maxWidth:"737px"}}>
-  
+      <form onSubmit={handleSubmit} style={{ ...styles.card, maxWidth: "737px" }}>
+
         <div style={styles.header}>
           <h2 style={styles.title}>{editShop ? "Edit Shop" : "Create Shop"}</h2>
           <p style={styles.subtitle}>Fill in the details below to continue</p>
@@ -70,13 +81,27 @@ const CreateShop = () => {
             style={styles.input}
           />
 
-          <input
+          {/* <input
             name="category"
             placeholder="Category"
             value={form.category}
             onChange={handleChange}
             style={styles.input}
-          />
+          /> */}
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            style={styles.input}
+          >
+            <option value="">Select Category</option>
+
+            {categories.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
 
           <input
             name="phone"
