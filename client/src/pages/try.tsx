@@ -232,7 +232,7 @@ Insert Proper Date
 Validation
 repeated code make it dynamic
 
-Seller 
+Seller
 Dashboard:
           Pending orders 
 Product :

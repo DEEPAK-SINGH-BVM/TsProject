@@ -56,6 +56,7 @@ const Dashboard = () => {
  const socketRef = useRef<any>(null);
 
  useEffect(() => {
+  if (!sellerId) return;
    socketRef.current = io("http://localhost:1001");
    socketRef.current.emit("joinRoom", sellerId);
 

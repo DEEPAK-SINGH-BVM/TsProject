@@ -56,7 +56,7 @@ const Checkout = () => {
 
   const orderItems = products.map((product: any) => ({
     productId: product._id,
-    sellerId: product.shopId,
+    sellerId: product.shopId.owner,
     name: product.name,
     price: product.price,
     quantity: product.quantity,

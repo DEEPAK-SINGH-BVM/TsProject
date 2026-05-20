@@ -32,6 +32,8 @@ io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
 
   socket.on("joinRoom", (roomId) => {
+    console.log("Room Joined", roomId);
+
     socket.join(roomId.toString());
   });
 

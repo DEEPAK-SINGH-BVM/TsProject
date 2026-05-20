@@ -141,7 +141,7 @@ export const getShopProducts = async (req: AuthRequest, res: Response) => {
     if (!shopId) {
       return res.status(400).json({ message: "shopId Not Found !!" });
     }
-    const products = await Product.find({ shopId });
+    const products = await Product.find({ shopId }).populate("shopId");;
 
     return res.status(200).json({
       message: "Products fetched successfully",

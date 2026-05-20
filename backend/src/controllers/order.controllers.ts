@@ -65,8 +65,17 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
 
     console.log("itemsItems", items);
 
+    // items.forEach((item: OrderItem) => {
+    //   io.to(item.sellerId.toString()).emit("orderPlaced", order);
+    // });
     items.forEach((item: OrderItem) => {
-      io.to(item.sellerId.toString()).emit("orderPlaced", order);
+
+      console.log("Emit To Seller", item.sellerId);
+    
+      io.to(item.sellerId.toString()).emit(
+        "orderPlaced",
+        order
+      );
     });
 
     res.status(201).json({
