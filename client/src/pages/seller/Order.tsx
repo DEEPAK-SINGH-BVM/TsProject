@@ -76,7 +76,7 @@ const Orders = () => {
 
                 <div className="text-right">
                   <h2 className="font-bold text-xl">
-                    ₹{order.total}
+                    ₹{order.sellerTotal}
                   </h2>
 
                   <p className="text-sm mt-1">

@@ -121,9 +121,14 @@ export const sellerOrders = async (req: AuthRequest, res: Response) => {
       );
       console.log("sellerItems", sellerItems);
 
+      const sellerTotal = sellerItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
       return {
         ...order.toObject(),
         items: sellerItems,
+        sellerTotal
       };
     });
     console.log("filterOrders", filterOrders);
