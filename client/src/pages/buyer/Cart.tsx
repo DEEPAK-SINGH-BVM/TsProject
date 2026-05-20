@@ -22,13 +22,14 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-6 ">Your Cart</h1>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
-
+        <div
+          className={`space-y-4 ${cart?.length === 0 ? "col-span-full" : "lg:col-span-2"}`}
+        >
           {!loading && cart?.length === 0 && (
-            <div className="bg-white p-10 rounded-xl text-center shadow-sm">
+            <div className="bg-white p-10 rounded-xl text-center shadow-sm ">
               <h2 className="text-2xl font-semibold text-gray-700">
                 Cart is Empty
               </h2>
@@ -109,42 +110,43 @@ const Cart = () => {
             );
           })}
         </div>
+        {cart?.length > 0 && (
+          <div className="bg-white p-6 rounded-xl shadow-sm h-fit sticky top-5">
+            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm h-fit sticky top-5">
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+            <div className="flex justify-between mb-2 text-gray-600">
+              <span>Subtotal</span>
 
-          <div className="flex justify-between mb-2 text-gray-600">
-            <span>Subtotal</span>
+              <span>₹ {subtotal}</span>
+            </div>
 
-            <span>₹ {subtotal}</span>
-          </div>
+            <div className="flex justify-between mb-2 text-gray-600">
+              <span>Delivery Charges</span>
 
-          <div className="flex justify-between mb-2 text-gray-600">
-            <span>Delivery Charges</span>
+              <span>₹ {deliveryFee}</span>
+            </div>
 
-            <span>₹ {deliveryFee}</span>
-          </div>
+            <hr className="my-3" />
 
-          <hr className="my-3" />
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
 
-          <div className="flex justify-between font-bold text-lg">
-            <span>Total</span>
+              <span>₹ {total}</span>
+            </div>
 
-            <span>₹ {total}</span>
-          </div>
-
-          <button
-            className={`w-full mt-5 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition
+            <button
+              className={`w-full mt-5 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition
               ${
                 cart.length === 0
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-black text-white hover:bg-gray-800"
               }`}
-            onClick={() => cart.length > 0 && navigate("/checkout")}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
+              onClick={() => cart.length > 0 && navigate("/checkout")}
+            >
+              Proceed to Checkout
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

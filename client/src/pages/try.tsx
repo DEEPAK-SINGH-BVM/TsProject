@@ -210,6 +210,20 @@ C:.
 }
 
 /*
+Where Socket.IO should go (priority list)
+Seller Dashboard – high priority
+New orders appear instantly
+Order status updates reflect live
+Inventory changes (optional)
+Order Status Page (Customer) – high priority
+Step progress bar updates in real-time
+Product Listing Page / Cart Page (Customer) – medium priority
+Stock updates reflected live
+“Add to Cart” or quantity changes automatically
+Home Screen / QR Scan / Analytics – optional
+Only if you want live featured products or live scan session updates
+
+
 Both User Ui glitch
 Issue Code Strucuture
 ReUsable
@@ -217,10 +231,6 @@ Share app QR code
 Insert Proper Date
 Validation
 repeated code make it dynamic
-
-changes order status 
-Filter shop base on Category
-
 
 Seller 
 Dashboard:
@@ -240,11 +250,6 @@ Cart:
 Order:
 
 //
-in seller orders show Person details with order place by user 
-Insert Proper Data of diffrent shops , base on shop category 
-changes order status from seller side after complete order 
-base on order product was decrease stock 
-Filter order items to include only products belonging to the seller’s shop , so unwanted products from other shops don’t show. 
 
 Code Reusability:
 Use custom hooks for repeated API calls and logic.
@@ -264,7 +269,7 @@ Component tests for reusable UI
 Optional: e2e tests with Cypress for order flow
 
 
-1. Home Screen (Customer)
+1. Home Screen (Customer)  - done 
 Search bar (“Search products…”)
 Categories grid:
 Grocery
@@ -289,15 +294,13 @@ Quantity update buttons (+ / -)
 Total price summary
 “Place Order” large CTA button
 
-4. Order Status Page	
-Step progress bar:
+4. Order Status Page - done
 Order Placed
 Preparing
-Ready for Pickup
 Completed
 Green highlight for “Ready” status
 
-5. Seller Dashboard 
+5. Seller Dashboard - done 
 New orders list
 Order details section
 Action buttons:

@@ -91,7 +91,7 @@ export const productStyles = {
   },
 
   outStock: {
-    backgroundColor: "#a8a29e",
+    backgroundColor: "black",
   },
 
   content: {

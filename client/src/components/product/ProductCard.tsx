@@ -41,6 +41,7 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
       console.log("Delete failed:", error);
     }
   };
+
   /*
     const handleBuyCart = async() => {
     try {
@@ -52,15 +53,25 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
      }
   };
   */
+
   const handleBuyCart = () => {
     navigate("/checkout", { state: product });
   };
   const handleEdit = () => {
     onEdit?.(product);
   };
-
+  const inStock = product.stock > 0;
+  const isBuyer = role === "buyer";
   return (
-    <div style={productStyles.card}>
+    <div
+      style={{
+        ...productStyles.card,
+        ...(isBuyer && {
+          opacity: inStock ? 1 : 0.5,
+          cursor: inStock ? "pointer" : "not-allowed",
+        }),
+      }}
+    >
       <div style={productStyles.imageWrapper}>
         <img
           src={product.image}
@@ -127,13 +138,28 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
           </div>
         ) : (
           <div style={productStyles.actions}>
-            <button style={productStyles.editButton} onClick={handleBuyCart}>
+            <button
+              style={{
+                ...productStyles.editButton,
+                ...(isBuyer && {
+                  cursor: inStock ? "pointer" : "not-allowed",
+                }),
+              }}
+              disabled={isBuyer && !inStock}
+              onClick={handleBuyCart}
+            >
               <FaShoppingCart />
               Buy
             </button>
 
             <button
-              style={productStyles.editButton}
+              style={{
+                ...productStyles.editButton,
+                ...(isBuyer && {
+                  cursor: inStock ? "pointer" : "not-allowed",
+                }),
+              }}
+              disabled={isBuyer && !inStock}
               onClick={() => dispatch(addToCartAction(product._id))}
             >
               <FaCartPlus />

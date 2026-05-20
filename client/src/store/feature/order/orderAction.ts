@@ -3,7 +3,7 @@ import {
   createOrderApi,
   getMyOrdersApi,
   getSellerOrdersApi,
-  updateOrderstatusApi,
+  updateOrderStatusApi,
 } from "./orderService";
 import { orderAction } from "./orderSlice";
 
@@ -50,7 +50,7 @@ export const getSellerOrdersAction = () => async (dispatch: AppDispatch) => {
 export const updateOrderStatusAction = (id: string, status: string) => async (dispatch: AppDispatch) => {
   try {
     dispatch(orderAction.request())
-    const res = await updateOrderstatusApi(id, status);
+    const res = await updateOrderStatusApi(id, status);
     console.log('updateOrderStatusResponse', res);
     dispatch(getSellerOrdersAction());
   } catch (error: any) {

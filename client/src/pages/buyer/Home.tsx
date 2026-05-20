@@ -11,6 +11,8 @@ const Home = () => {
   const navigate = useNavigate();
   const shops = useSelector((state: RootState) => state.shop.shops);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  console.log("selectedCategory", selectedCategory);
+  
   console.log("shopsId", shops);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -22,14 +24,17 @@ const Home = () => {
     // dispatch(getShopProductAction(shopId));
     navigate(`/products/${shopId}`);
   };
-  const categories = ["All", ...new Set(shops.map((item: any) => item.category))];
+  const categories = [
+    "All",
+    ...new Set(shops.map((item: any) => item.category)),
+  ];
+  console.log("categories", categories);
 
   const filteredShops =
     selectedCategory === "All"
       ? shops
-      : shops.filter(
-        (item: any) => item.category === selectedCategory
-      );
+      : shops.filter((item: any) => item.category === selectedCategory);
+
   return (
     <div className="max-w-4xl mx-auto mt-6 px-4">
       <div className="mb-5">
@@ -44,11 +49,10 @@ const Home = () => {
           {categories.map((item) => (
             <button
               key={item}
-              onClick={() => setSelectedCategory(item)}             
-              className={`px-4 py-2 rounded-lg border ${selectedCategory === item
-                  ? "bg-black text-white"
-                  : "bg-white"
-                }`}
+              onClick={() => setSelectedCategory(item)}
+              className={`px-4 py-2 rounded-lg border ${
+                selectedCategory === item ? "bg-indigo-600 text-white" : "bg-white"
+              }`}
             >
               {item}
             </button>

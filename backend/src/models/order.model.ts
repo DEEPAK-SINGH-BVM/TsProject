@@ -10,7 +10,6 @@ interface OrderItem {
 
 export interface IOrder {
   userId: mongoose.Types.ObjectId;
-  shopId: mongoose.Types.ObjectId;
   items: OrderItem[];
   deliveryAddress: {
     fullName: string;
@@ -32,7 +31,6 @@ export interface IOrder {
 const OrderSchema: Schema<IOrder> = new Schema(
   {
     userId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
-    // shopId: { type: mongoose.Types.ObjectId, ref: "Shop", required: true },
     items: [
       {
         productId: {
@@ -55,7 +53,7 @@ const OrderSchema: Schema<IOrder> = new Schema(
     paymentMethod: { type: String, enum: ["COD", "Online"], required: true },
     orderStatus: {
       type: String,
-      enum: ["Pending","Complete"],
+      enum: ["Pending", "Complete"],
       default: "Pending",
     },
     paymentStatus: {
@@ -71,4 +69,4 @@ const OrderSchema: Schema<IOrder> = new Schema(
 );
 
 const Order = mongoose.model<IOrder>("Order", OrderSchema);
-export default Order
+export default Order;

@@ -5,6 +5,7 @@ import { AppDispatch } from "../../store";
 import { getShopProductAction } from "../../store/feature/products/productAction";
 import ProductCard from "../../components/product/ProductCard";
 import { productStyles } from "../../styles/product.styles";
+import { ProductCardSkeleton } from "../../components/common/ProductCardSkeleton";
 
 const ProductShow = () => {
   const { shopId } = useParams();
@@ -13,7 +14,7 @@ const ProductShow = () => {
   console.log("ProductshowShopId", shopId);
   const productState = useSelector((state: any) => state.product);
   console.log("ProductshowProductState", productState);
-  
+
   const product = productState.products.data || [];
   const loading = productState.loading;
 
@@ -25,9 +26,12 @@ const ProductShow = () => {
     }
   }, [dispatch, shopId]);
 
+  // if(loading){
+  //   return <ProductCardSkeleton/>
+  // }
   return (
     <>
-      {!loading && product?.length === 0 ? (
+      {product?.length === 0 ? (
         <div
           style={{
             display: "flex",
@@ -59,9 +63,13 @@ const ProductShow = () => {
             padding: "20px",
           }}
         >
-          {product?.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+          {loading
+            ? Array(product?.length || 0)
+                .fill(0)
+                .map((_, idx) => <ProductCardSkeleton key={idx} />)
+            : product?.map((product: any) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
         </div>
       )}
     </>

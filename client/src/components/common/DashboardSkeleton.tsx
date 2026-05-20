@@ -14,7 +14,7 @@ const DashboardSkeleton = () => {
           .fill(0)
           .map((_, idx) => (
             <div
-            //   key={idx}
+              key={idx}
               className="bg-white rounded-2xl p-6 border border-gray-100"
             >
               <div className="flex items-center justify-between mb-6">

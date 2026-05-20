@@ -35,7 +35,7 @@ const endpoint = {
     create: "/order/create",
     getMy:"/order/my-orders",
     seller:"/order/seller-orders",
-    updateorder:(id:string)=>`/order/update-status/${id}`
+    updateOrder:(id:string)=>`/order/update-status/${id}`
   },
 };
 export default endpoint;

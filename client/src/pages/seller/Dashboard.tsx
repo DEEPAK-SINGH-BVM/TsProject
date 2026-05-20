@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { io } from "socket.io-client";
 import { getMyProductsAction } from "../../store/feature/products/productAction";
 import { AppDispatch } from "../../store";
 import { getSellerOrdersAction } from "../../store/feature/order/orderAction";
@@ -24,22 +25,48 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { product, order } = useSelector((state: any) => state);
+  const { product, order, auth } = useSelector((state: any) => state);
+  console.log("authAuth", auth);
+  const sellerId = auth?.user?._id;
+  console.log("sellerIdSocket", sellerId);
 
-  console.log("dashboardOrders", order);
+  
   const totalProducts = getTotalProducts(product?.products?.data);
   const totalOrders = getTotalOrders(order.orders);
-
+  
   const totalEarnings = getTotalEarnings(order.orders);
-
+  
   const isLoading = order.loading || product.loading;
-  console.log("isLoadingIsLoading", isLoading);
+
+  const orderStatus = order.orders;
+
+  const orderPending = orderStatus.filter(
+    (ord: any) => ord.orderStatus == "Pending",
+  ).length;
+  
+  const orderComplete = orderStatus.filter(
+    (ord: any) => ord.orderStatus == "Complete",
+  ).length;
 
   useEffect(() => {
     dispatch(getMyProductsAction());
     dispatch(getSellerOrdersAction());
   }, []);
-  
+
+  useEffect(() => {
+    const socket = io("http://localhost:1001");
+    socket.emit("joinRoom", sellerId);
+
+    socket.on("orderPlaced", (newOrder) => {
+      console.log("New order received:", newOrder);
+      dispatch(getSellerOrdersAction());
+    });
+
+    return () => {
+      socket.off("orderPlaced");
+      socket.disconnect();
+    };
+  }, [sellerId]);
   if (isLoading) {
     return <DashboardSkeleton />;
   }
@@ -65,7 +92,7 @@ const Dashboard = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold mt-5 text-gray-900">
+          <h2 className="text-3xl f ont-bold mt-5 text-gray-900">
             {totalProducts}
           </h2>
 
@@ -105,7 +132,7 @@ const Dashboard = () => {
             {totalEarnings}
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">Total earnings</p>
+          <p className="text-sm text-gray-500 mt-1">Total Sales</p>
         </div>
 
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
@@ -119,12 +146,13 @@ const Dashboard = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold mt-5 text-gray-900">12</h2>
+          <h2 className="text-3xl font-bold mt-5 text-gray-900">
+            {orderPending}
+          </h2>
 
           <p className="text-sm text-gray-500 mt-1">Pending orders</p>
         </div>
       </div>
-
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-8">
         <div className="xl:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-6">
@@ -214,17 +242,10 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-500">Waiting for processing</p>
               </div>
 
-              <span className="text-xl font-bold text-gray-900">12</span>
+              <span className="text-xl font-bold text-gray-900">
+                {orderPending}
+              </span>
             </div>
-
-            {/* <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
-              <div>
-                <p className="font-medium text-gray-800">Processing</p>
-                <p className="text-sm text-gray-500">Orders in progress</p>
-              </div>
-
-              <span className="text-xl font-bold text-gray-900">8</span>
-            </div> */}
 
             <div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
               <div>
@@ -232,7 +253,9 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-500">Successfully Complete</p>
               </div>
 
-              <span className="text-xl font-bold text-gray-900">65</span>
+              <span className="text-xl font-bold text-gray-900">
+                {orderComplete}
+              </span>
             </div>
           </div>
         </div>

@@ -4,14 +4,18 @@ import mongoose from "mongoose";
 import Cart from "../models/cart.model";
 import Shop from "../models/shop.model";
 import Product from "../models/products.model";
-
+import { io } from "..";
 type AuthRequest = Request & { user?: { id?: string } };
-
+type OrderItem = {
+  productId: string;
+  sellerId: string;
+  quantity: number;
+};
 export const placeOrder = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
 
-    if (!userId) res.status(400).json({ message: "Unauthorize" });
+    if (!userId) return res.status(400).json({ message: "Unauthorize" });
     const {
       items,
       deliveryAddress,
@@ -59,6 +63,12 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
 
     await Cart.deleteMany({ userId: new mongoose.Types.ObjectId(userId) });
 
+    console.log("itemsItems", items);
+
+    items.forEach((item: OrderItem) => {
+      io.to(item.sellerId.toString()).emit("orderPlaced", order);
+    });
+
     res.status(201).json({
       message: "Order placed successfully",
       order,
@@ -99,39 +109,38 @@ export const sellerOrders = async (req: AuthRequest, res: Response) => {
     }
 
     const products = await Product.find({ shopId: shop._id });
-    console.log("products", products);
+    // console.log("products", products);
 
     const productIds = products.map((item) => item._id);
-    console.log("productIdsProductIds", productIds);
+    // console.log("productIdsProductIds", productIds);
 
     const orders = await Order.find({
       "items.productId": { $in: productIds },
     }).sort({ createdAt: -1 });
 
-    console.log("ordersPlaceOrder", orders);
+    // console.log("ordersPlaceOrder", orders);
 
     // null → don’t filter any properties.
     // 2 → pretty-print with 2 spaces of indentation.
-    console.log("Order items:", JSON.stringify(orders, null, 2));
+    // console.log("Order items:", JSON.stringify(orders, null, 2));
 
     const filterOrders = orders.map((order) => {
-      console.log("filterOrdersOrder", order);
+      // console.log("filterOrdersOrder", order);
       const sellerItems = order.items.filter((item) =>
         productIds.some((id) => id.equals(item.productId)),
       );
-      console.log("sellerItems", sellerItems);
+      // console.log("sellerItems", sellerItems);
 
       const sellerTotal = sellerItems.reduce(
         (acc, item) => acc + item.price * item.quantity,
-        0
+        0,
       );
       return {
         ...order.toObject(),
         items: sellerItems,
-        sellerTotal
+        sellerTotal,
       };
     });
-    console.log("filterOrders", filterOrders);
 
     return res.status(200).json({
       orders: filterOrders,
@@ -147,9 +156,21 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    const order = await Order.findByIdAndUpdate(orderId, { orderStatus: status }, { new: true })
-    res.status(201).json({ message: "Order Status Updated Successfully !!", order })
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { orderStatus: status },
+      { new: true },
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "order not Found" });
+    }
+
+    io.to(order?.userId.toString()).emit("orderStatusUpdated", order);
+    res
+      .status(201)
+      .json({ message: "Order Status Updated Successfully !!", order });
   } catch (error: any) {
-    res.status(500).json({ message: "Error in update Status" })
+    res.status(500).json({ message: "Error in update Status" });
   }
-}
+};

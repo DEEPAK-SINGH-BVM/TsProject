@@ -3,19 +3,36 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch } from "../../store";
 
-import { getMyOrdersAction } from "../../store/feature/order/orderAction";
+import { getMyOrdersAction, getSellerOrdersAction } from "../../store/feature/order/orderAction";
+import { io } from "socket.io-client";
 
 const MyOrders = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+   const user = useSelector((state: any) => state);
   const { orders, loading } = useSelector(
     (state: any) => state.order
   );
-  console.log("ordersOrders", orders);
+   const userId = user?.auth?.user?._id;
+  console.log("sellerIdSocketUserId", userId);
 
   useEffect(() => {
     dispatch(getMyOrdersAction());
   }, []);
+
+   useEffect(() => {
+    const socket = io("http://localhost:1001");
+    socket.emit("joinRoom", userId);
+
+    socket.on("orderStatusUpdated", (updateOrder) => {
+      console.log("New order received:", updateOrder);
+      dispatch(getSellerOrdersAction());
+    });
+
+    return () => {
+      socket.off("orderPlaced");
+      socket.disconnect();
+    };
+  }, [userId]);
 
   if (loading) {
     return <h1>Loading...</h1>;
