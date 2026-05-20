@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch } from "../../store";
@@ -19,20 +19,22 @@ const MyOrders = () => {
     dispatch(getMyOrdersAction());
   }, []);
 
-   useEffect(() => {
-    const socket = io("http://localhost:1001");
-    socket.emit("joinRoom", userId);
+ const socketRef = useRef<any>(null);
 
-    socket.on("orderStatusUpdated", (updateOrder) => {
-      console.log("New order received:", updateOrder);
-      dispatch(getSellerOrdersAction());
-    });
+ useEffect(() => {
+   socketRef.current = io("http://localhost:1001");
+   socketRef.current.emit("joinRoom", userId);
 
-    return () => {
-      socket.off("orderPlaced");
-      socket.disconnect();
-    };
-  }, [userId]);
+   socketRef.current.on("orderStatusUpdated", (updatedOrder: any) => {
+     console.log("Order status updated:", updatedOrder);
+     dispatch(getMyOrdersAction());
+   });
+
+   return () => {
+     socketRef.current.off("orderStatusUpdated");
+     socketRef.current.disconnect();
+   };
+ }, [userId]);
 
   if (loading) {
     return <h1>Loading...</h1>;

@@ -9,7 +9,7 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { getMyProductsAction } from "../../store/feature/products/productAction";
 import { AppDispatch } from "../../store";
@@ -53,20 +53,22 @@ const Dashboard = () => {
     dispatch(getSellerOrdersAction());
   }, []);
 
-  useEffect(() => {
-    const socket = io("http://localhost:1001");
-    socket.emit("joinRoom", sellerId);
+ const socketRef = useRef<any>(null);
 
-    socket.on("orderPlaced", (newOrder) => {
-      console.log("New order received:", newOrder);
-      dispatch(getSellerOrdersAction());
-    });
+ useEffect(() => {
+   socketRef.current = io("http://localhost:1001");
+   socketRef.current.emit("joinRoom", sellerId);
 
-    return () => {
-      socket.off("orderPlaced");
-      socket.disconnect();
-    };
-  }, [sellerId]);
+   socketRef.current.on("orderPlaced", (newOrder: any) => {
+     console.log("New order received:", newOrder);
+     dispatch(getSellerOrdersAction()); 
+   });
+
+   return () => {
+     socketRef.current.off("orderPlaced");
+     socketRef.current.disconnect();
+   };
+ }, [sellerId]);
   if (isLoading) {
     return <DashboardSkeleton />;
   }
