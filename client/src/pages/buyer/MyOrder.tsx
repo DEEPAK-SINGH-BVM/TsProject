@@ -3,38 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch } from "../../store";
 
-import { getMyOrdersAction, getSellerOrdersAction } from "../../store/feature/order/orderAction";
+import { getMyOrdersAction } from "../../store/feature/order/orderAction";
 import { io } from "socket.io-client";
+import { useSocket } from "../../context/SocketContext";
 
 const MyOrders = () => {
   const dispatch = useDispatch<AppDispatch>();
-   const user = useSelector((state: any) => state);
-  const { orders, loading } = useSelector(
-    (state: any) => state.order
-  );
-   const userId = user?.auth?.user?._id;
-  console.log("sellerIdSocketUserId", userId);
+  const { socket } = useSocket();
+  const { orders, loading } = useSelector((state: any) => state.order);
 
   useEffect(() => {
     dispatch(getMyOrdersAction());
   }, []);
 
- const socketRef = useRef<any>(null);
+  const socketRef = useRef<any>(null);
+  console.log("socketRef", socketRef);
 
- useEffect(() => {
-   socketRef.current = io("http://localhost:1001");
-   socketRef.current.emit("joinRoom", userId);
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("orderStatusUpdated", (updatedOrder: any) => {
+      console.log("Order status updated:", updatedOrder);
+      dispatch(getMyOrdersAction());
+    });
 
-   socketRef.current.on("orderStatusUpdated", (updatedOrder: any) => {
-     console.log("Order status updated:", updatedOrder);
-     dispatch(getMyOrdersAction());
-   });
-
-   return () => {
-     socketRef.current.off("orderStatusUpdated");
-     socketRef.current.disconnect();
-   };
- }, [userId]);
+    return () => {
+      socket.off("orderStatusUpdated");
+    };
+  }, [socket]);
 
   if (loading) {
     return <h1>Loading...</h1>;

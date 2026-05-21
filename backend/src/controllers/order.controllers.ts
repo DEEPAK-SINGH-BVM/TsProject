@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import Cart from "../models/cart.model";
 import Shop from "../models/shop.model";
 import Product from "../models/products.model";
-import { io } from "..";
+import { getIO } from "../config/socket";
+// import { io } from "..";
 type AuthRequest = Request & { user?: { id?: string } };
 type OrderItem = {
   productId: string;
@@ -65,18 +66,12 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
 
     console.log("itemsItems", items);
 
-    // items.forEach((item: OrderItem) => {
-    //   io.to(item.sellerId.toString()).emit("orderPlaced", order);
-    // });
     items.forEach((item: OrderItem) => {
-
       console.log("Emit To Seller", item.sellerId);
-    
-      io.to(item.sellerId.toString()).emit(
-        "orderPlaced",
-        order
-      );
+      getIO().to(item.sellerId.toString()).emit("orderPlaced", order);
     });
+
+    getIO().to(userId).emit("orderStatusUpdated", order);
 
     res.status(201).json({
       message: "Order placed successfully",
@@ -170,12 +165,27 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
       { orderStatus: status },
       { new: true },
     );
+    console.log("orderOrder", order);
 
     if (!order) {
       return res.status(404).json({ message: "order not Found" });
     }
 
-    io.to(order?.userId.toString()).emit("orderStatusUpdated", order);
+    for (const item of order.items) {
+      // fetch product to get shopId
+      const product = await Product.findById(item.productId).populate("shopId");
+      if (product && product.shopId) {
+        const sellerId = (product.shopId as any)._id.toString();
+        getIO().to(sellerId).emit("orderStatusUpdated", order);
+      }
+    }
+
+    //  Notify the user
+    if (order.userId) {
+      getIO().to(order.userId.toString()).emit("orderStatusUpdated", order);
+    }
+
+    // io.to(order?.userId.toString()).emit("orderStatusUpdated", order);
     res
       .status(201)
       .json({ message: "Order Status Updated Successfully !!", order });

@@ -20,10 +20,12 @@ import {
   getTotalOrders,
   getTotalProducts,
 } from "../../utils/calcHelpers";
+import { useSocket } from "../../context/SocketContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { socket } = useSocket();
 
   const { product, order, auth } = useSelector((state: any) => state);
   console.log("authAuth", auth);
@@ -53,23 +55,25 @@ const Dashboard = () => {
     dispatch(getSellerOrdersAction());
   }, []);
 
- const socketRef = useRef<any>(null);
+  useEffect(() => {
+    if (!socket) return;
 
- useEffect(() => {
-  if (!sellerId) return;
-   socketRef.current = io("http://localhost:1001");
-   socketRef.current.emit("joinRoom", sellerId);
+    socket.on("orderPlaced", (newOrder: any) => {
+      console.log("New order received:", newOrder);
+      dispatch(getSellerOrdersAction());
+    });
 
-   socketRef.current.on("orderPlaced", (newOrder: any) => {
-     console.log("New order received:", newOrder);
-     dispatch(getSellerOrdersAction()); 
-   });
+    socket.on("orderStatusUpdated", (order) => {
+      console.log("Order Status Updated:", order);
+      dispatch(getSellerOrdersAction());
+    });
 
-   return () => {
-     socketRef.current.off("orderPlaced");
-     socketRef.current.disconnect();
-   };
- }, [sellerId]);
+    return () => {
+      socket.off("orderPlaced");
+      socket.off("orderStatusUpdated");
+    };
+  }, [socket]);
+
   if (isLoading) {
     return <DashboardSkeleton />;
   }

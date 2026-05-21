@@ -13,10 +13,11 @@ import {
 import { getTotalEarnings } from "../../utils/calcHelpers";
 
 import { SellerOrderSkeleton } from "../../components/common/sellerOrderSkeleton";
+import { useSocket } from "../../context/SocketContext";
 
 const Orders = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const { socket } = useSocket();
   const { order } = useSelector((state: any) => state);
 
   const isLoading = order.loading;
@@ -26,8 +27,16 @@ const Orders = () => {
   const totalLength = order.orders.length;
 
   useEffect(() => {
-    dispatch(getSellerOrdersAction());
-  }, []);
+    if (!socket) return;
+
+    socket.on("orderPlaced", (newOrder: any) => {
+      dispatch(getSellerOrdersAction());
+    });
+
+    return () => {
+      socket.off("orderPlaced");
+    };
+  }, [socket]);
 
   // if (isLoading) {
   //   return (

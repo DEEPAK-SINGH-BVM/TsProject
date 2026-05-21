@@ -6,10 +6,12 @@ import apiRouter from "./routes/index.routes";
 import db from "./config/db";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
+import { initSocket } from "./config/socket";
 
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
+initSocket(server);
 app.use(express.json());
 app.use(
   cors({
@@ -21,26 +23,26 @@ const PORT = process.env.PORT || 1001;
 
 app.use("/", apiRouter);
 
-export const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST"],
-  },
-});
+// export const io = new Server(server, {
+//   cors: {
+//     origin: process.env.CLIENT_URL,
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-io.on("connection", (socket) => {
-  console.log("New client connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("New client connected:", socket.id);
 
-  socket.on("joinRoom", (roomId) => {
-    console.log("Room Joined", roomId);
+//   socket.on("joinRoom", (roomId) => {
+//     console.log("Room Joined", roomId);
 
-    socket.join(roomId.toString());
-  });
+//     socket.join(roomId.toString());
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("New client disconnect:", socket.id);
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("New client disconnect:", socket.id);
+//   });
+// });
 
 server.listen(PORT, async () => {
   try {

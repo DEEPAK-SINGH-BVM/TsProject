@@ -210,19 +210,29 @@ C:.
 }
 
 /*
-Where Socket.IO should go (priority list)
+// SELLER SIDE
+Seller Dashboard =  Total Customer order, total Sales , Pending Order , Complete Order   
+Seller Order = Status Update
+
+
+// BUYER SIDE 
+My Order = Status Update 
+
+
+
 Seller Dashboard – high priority
 New orders appear instantly
 Order status updates reflect live
 Inventory changes (optional)
 Order Status Page (Customer) – high priority
-Step progress bar updates in real-time
 Product Listing Page / Cart Page (Customer) – medium priority
 Stock updates reflected live
 “Add to Cart” or quantity changes automatically
-Home Screen / QR Scan / Analytics – optional
 Only if you want live featured products or live scan session updates
+Home Screen / QR Scan / Analytics – optional
 
+
+Step progress bar updates in real-time
 
 Both User Ui glitch
 Issue Code Strucuture

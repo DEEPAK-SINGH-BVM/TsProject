@@ -28,8 +28,12 @@ import BuyerRoute from "../components/guard/BuyerRoute.js";
 import Invoice from "../pages/buyer/Invoice.js";
 import MyOrders from "../pages/buyer/MyOrder.js";
 import ProductShow from "../pages/buyer/ProductShow.js";
+import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
+  const userId = useSelector((state: any) => state.auth?.user?._id);
+  console.log("userIdUserIdAppRoutes", userId);
+  
   return (
     <div>
       <ToastContainer position="top-right" autoClose={2000} />
