@@ -13,6 +13,7 @@ import {
   FaStore,
   FaAd,
   FaClipboardList,
+  FaShareAlt,
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -76,6 +77,13 @@ const Navbar = () => {
                 <FaUserCircle />
                 {open && "Profile"}
               </Link>
+              <Link
+                to="/share-app"
+                className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
+              >
+                <FaShareAlt />
+                {open && "Share App"}
+              </Link>
             </>
           ) : (
             <>
@@ -107,6 +115,13 @@ const Navbar = () => {
               >
                 <FaUserCircle />
                 {open && "Profile"}
+              </Link>
+              <Link
+                to="/share-app"
+                className="flex items-center gap-3 hover:bg-gray-700 p-2 rounded"
+              >
+                <FaShareAlt />
+                {open && "Share App"}
               </Link>
             </>
           )

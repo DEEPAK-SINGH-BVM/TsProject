@@ -12,8 +12,8 @@ import { ProductCardSkeleton } from "../../components/common/ProductCardSkeleton
 const Products = () => {
 
   const dispatch = useDispatch<AppDispatch>();
-  const [editProduct, setEditProduct] =useState<any>(null);
-  
+  const [editProduct, setEditProduct] = useState<any>(null);
+
   const { products, loading } = useSelector((state: any) => state.product);
 
   console.log("ProductsData", products?.data);
@@ -35,22 +35,72 @@ const Products = () => {
         editProduct
       )
     );
-  
+
     dispatch(getMyProductsAction());
-  
+
     setEditProduct(null);
   };
 
   return (
     <div className="products-page">
-      <div className="products-header">
+      <div
+        className="products-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "20px",
+          flexWrap: "wrap",
+          marginBottom: "28px",
+          padding: "22px 26px",
+          background: "#ffffff",
+          borderRadius: "24px",
+          border: "1px solid #e5e7eb",
+          boxShadow: "0 4px 18px rgba(15,23,42,0.05)",
+        }}
+      >
         <div>
-          <h1 className="products-title">My Products</h1>
+          <h1
+            className="products-title"
+            style={{
+              fontSize: "32px",
+              fontWeight: 700,
+              color: "#1e293b",
+              marginBottom: "6px",
+            }}
+          >
+            My Products
+          </h1>
 
-          <p className="products-subtitle">Manage your store products easily</p>
+          <p
+            className="products-subtitle"
+            style={{
+              color: "#64748b",
+              fontSize: "15px",
+            }}
+          >
+            Manage your store products easily
+          </p>
         </div>
 
-        <button onClick={() => setOpen(true)} style={cardStyles.buttonPrimary}>
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            ...cardStyles.buttonPrimary,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            padding: "14px 22px",
+            borderRadius: "16px",
+            fontSize: "15px",
+            fontWeight: 600,
+            minWidth: "170px",
+            background: "#1e293b",
+            boxShadow: "0 8px 20px rgba(30,41,59,0.14)",
+          }}
+        >
+          <span style={{ fontSize: "20px", marginTop: "-2px" }}>+</span>
           Add Product
         </button>
       </div>
@@ -87,15 +137,15 @@ const Products = () => {
         ))} */}
         {loading
           ? Array(products?.data?.length || 0)
-              .fill(0)
-              .map((_, idx) => <ProductCardSkeleton key={idx} />)
+            .fill(0)
+            .map((_, idx) => <ProductCardSkeleton key={idx} />)
           : products?.data?.map((product: any) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-                onEdit={(product: any) => setEditProduct(product)}
-              />
-            ))}
+            <ProductCard
+              key={product._id}
+              product={product}
+              onEdit={(product: any) => setEditProduct(product)}
+            />
+          ))}
       </div>
       {editProduct && (
         <div

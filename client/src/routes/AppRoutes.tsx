@@ -27,8 +27,9 @@ import SellerRoute from "../components/guard/SellerShopRoute.js";
 import BuyerRoute from "../components/guard/BuyerRoute.js";
 import Invoice from "../pages/buyer/Invoice.js";
 import MyOrders from "../pages/buyer/MyOrder.js";
-import ProductShow from "../pages/buyer/ProductShow.js";
 import { useSelector } from "react-redux";
+import ScanQr from "../pages/shared/ScanQr.js";
+import ProductShow from "../pages/buyer/Productshow.js";
 
 const AppRoutes = () => {
   const userId = useSelector((state: any) => state.auth?.user?._id);
@@ -53,6 +54,14 @@ const AppRoutes = () => {
               <PublicRoute>
                 <Login />
               </PublicRoute>
+            }
+          />
+           <Route
+            path="/share-app"
+            element={
+              // <PublicRoute>
+                <ScanQr />
+              // </PublicRoute>
             }
           />
           <Route
