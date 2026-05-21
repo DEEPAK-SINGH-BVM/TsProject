@@ -46,7 +46,7 @@ const Checkout = () => {
   const [stateName, setStateName] = useState("");
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"COD" | "Online">("COD");
-  console.log("CheckoutpayMentMethod", paymentMethod);
+  console.log("CheckoutPayMentMethod", paymentMethod);
 
   useEffect(() => {
     if (!buyNowProduct) {
