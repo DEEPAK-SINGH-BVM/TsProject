@@ -40,7 +40,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     default: "",
   },
-  profileImage:{
+  profileImage: {
     type: String,
     default: "",
   },

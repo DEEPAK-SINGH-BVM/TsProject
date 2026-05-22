@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { AppDispatch } from "../..";
 import api from "../../../api/axios";
 import {
-  blukUploadApi,
+  bulkUploadApi,
   deleteProductApi,
   getBuyProductApi,
   getMyProductsApi,
@@ -15,7 +15,7 @@ export const bulkUploadProductsAction =
   (formData: FormData) => async (dispatch: AppDispatch) => {
     try {
       dispatch(productActions.request());
-      const res = await blukUploadApi(formData);
+      const res = await bulkUploadApi(formData);
       dispatch(productActions.uploadSuccess(res.data));
     } catch (error: any) {
       dispatch(productActions.fail(error.response?.data?.message));
@@ -37,8 +37,6 @@ export const getBuyProductAction =
     try {
       dispatch(productActions.request());
       const res = await getBuyProductApi(productId);
-      console.log("getBuyProductActionRes", res);
-
       dispatch(productActions.getBuyProduct(res.data));
     } catch (error: any) {
       dispatch(productActions.fail(error.response?.data?.message));

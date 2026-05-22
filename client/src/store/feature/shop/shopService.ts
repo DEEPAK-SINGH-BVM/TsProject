@@ -9,7 +9,7 @@ export const getShopsApi = () => {
   return api.get(endpoint.shop.get);
 };
 
-export const craeteShopsApi = (data: any) => {
+export const createShopsApi = (data: any) => {
   return api.post(endpoint.shop.create, data);
 };
 

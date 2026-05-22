@@ -666,3 +666,138 @@ const Checkout = () => {
 };
 
 export default Checkout;
+//  My sql 
+{
+  /*
+  SQL (STRUCTURED QUERY LANGUAGE)
+SQL is used to interact with relational databases (RDBMS).
+Used for CRUD operations: Create, Read, Update, Delete
+
+DATABASE CONCEPTS
+Database → collection of data
+Table → rows + columns structure
+Row → single record
+Column → field/attribute
+
+DATABASE COMMANDS (DDL)
+CREATE DATABASE college;
+USE college;
+DROP DATABASE college;
+
+TABLE CREATION
+CREATE TABLE student (
+id INT PRIMARY KEY,
+name VARCHAR(50),
+age INT NOT NULL
+);
+
+INSERT DATA (DML)
+INSERT INTO student VALUES (1, 'AJEX', 26);
+SELECT DATA (DQL)
+SELECT * FROM student;
+DATA TYPES (MYSQL)
+CHAR(50) → fixed length string (0–255)
+VARCHAR(50) → variable length string (0–255)
+BLOB → large binary data
+INT → integer number
+TINYINT → -128 to 127 (signed), 0 to 255 (unsigned)
+BIGINT → large integer values
+BIT(1–64) → bit values (0 or 1)
+FLOAT → approximate decimal (~7 digits precision)
+DOUBLE → higher precision than FLOAT
+BOOLEAN → 0 (false), 1 (true)
+DATE → 1000-01-01 to 9999-12-31
+YEAR → 1901 to 2155
+SIGNED vs UNSIGNED
+Signed → allows positive and negative values
+Unsigned → only positive values
+SQL COMMAND TYPES
+DDL (Data Definition Language)
+CREATE, ALTER, DROP, TRUNCATE
+DQL (Data Query Language)
+SELECT
+DML (Data Manipulation Language)
+INSERT, UPDATE, DELETE
+DCL (Data Control Language)
+GRANT, REVOKE
+TCL (Transaction Control Language)
+START TRANSACTION, COMMIT, ROLLBACK
+  */
+}
+
+
+
+
+
+///////////
+{/*
+SQL 
+PASSWORD :MySqlBVM007@
+structure Query lanagauge
+SQL PL used to interact with relational database
+CRUD 
+SEQL structure English query language 
+setup Mysql 
+what is tabel row , column 
+create datatabsse drop databaase 
+COMMAND ===
+CREATE DATABASE college ,craete database 
+DROP DATABASE college , remove database 
+USE college , for use database
+
+create table 
+CREATE TABLE table (
+    column_name1 datatype constraint
+)
+
+CREATE TABLE student (
+   id INT PRIMARY KEY {unq key},
+   name VARCHAR(50)
+   age INT NOT NULL 
+)
+
+for instert data 
+INSERT INTO student VALUES (1,"AJEX",26)
+
+
+for print 
+SELECT * FROM student 
+
+
+DATA TYPE 
+CHAR(50) it reserver whole 50 (size 0-255)
+VARCHAR(50) it only reserve only needed (size 0-255)
+BLOB store large binnary object (size 0-65535)
+INT interger , number (??)
+TINYINT interger (-128 to 127)
+BIGINT interger for bigger values (??)
+BIT store X-bit values , X can range from 1 to 64 
+Example BIT(1) only one can store 0 , 1 
+FLOAT decimal number - A FLOAT is a floating-point number used to store decimal values, including positive,negative number
+DOUBLE - FLOAT but Big values 
+BOOLEAN - 0(false) - 1(true) 
+DATE - date format 1000-01-01 to 9999-12-31
+YEAR - 4 digits 1901 to 2155
+
+SQL DATATYPE 
+
+Signed(both value -, +) & Unsigned (we already know +)
+
+TINYINT UNSIGNED (0 to 255)
+TINYINT (-128 to 127)
+
+type of SQL Commands 
+DDL (Data Defination Langauge) : create , alter , rename , truncate & drop 
+DQL (Data Query language) : select
+DML (Data Manipulation language) : insert,update, delete
+DCL (Data control language ) : grant & revoke permission to user 
+TCL () :start transatction , commit , rollback 
+
+*/}
+
+
+
+
+
+
+

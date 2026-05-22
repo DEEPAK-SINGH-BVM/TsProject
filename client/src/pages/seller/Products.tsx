@@ -13,7 +13,8 @@ const Products = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const [editProduct, setEditProduct] = useState<any>(null);
-
+  console.log('EditProductEditProduct',editProduct);
+  
   const { products, loading } = useSelector((state: any) => state.product);
 
   console.log("ProductsData", products?.data);

@@ -4,7 +4,9 @@ import { io, Socket } from "socket.io-client";
 interface ISocketContext {
   socket: Socket | null;
 }
-
+// emit = bhejna;
+// on = receive / listen;
+// to = target select karna
 const SocketContext = createContext<ISocketContext>({ socket: null });
 
 export const SocketProvider: React.FC<{

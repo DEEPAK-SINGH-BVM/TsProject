@@ -24,7 +24,7 @@ const ProductShow = () => {
     if (shopId) {
       dispatch(getShopProductAction(shopId));
     }
-  }, [dispatch, shopId]);
+  }, [shopId]);
 
   // if(loading){
   //   return <ProductCardSkeleton/>

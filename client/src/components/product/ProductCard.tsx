@@ -31,7 +31,8 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const role = useSelector((state: RootState) => state.auth.user?.role);
-  console.log("ProductCart", role);
+  // console.log("ProductCart", role);
+  console.log("ProductCartProduct", product);
 
   const handleDelete = async () => {
     try {
@@ -62,6 +63,7 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
   };
   const inStock = product.stock > 0;
   const isBuyer = role === "buyer";
+
   return (
     <div
       style={{

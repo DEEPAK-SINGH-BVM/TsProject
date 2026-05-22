@@ -54,6 +54,7 @@ const Profile = () => {
               console.log("filefile", file);
               if (!file) return;
               const formData = new FormData();
+              console.log(formData, "formDataFormData");
               formData.append("image", file);
               dispatch(uploadProfileImageAction(formData));
             }}

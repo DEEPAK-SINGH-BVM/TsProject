@@ -2,12 +2,8 @@ import { AppDispatch } from "../..";
 import api from "../../../api/axios";
 import endpoint from "../../../api/endPoint";
 
-export const blukUploadApi = (formData: FormData) => {
-  return api.post(endpoint.products.bulkUpload, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const bulkUploadApi = (formData: FormData) => {
+  return api.post(endpoint.products.bulkUpload, formData);
 };
 
 export const getBuyProductApi = (productId:string)=>{

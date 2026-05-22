@@ -10,7 +10,6 @@ import {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6 py-10">
         <div className="max-w-6xl w-full grid md:grid-cols-2 gap-14 items-center">
           
-          {/* Left Side */}
           <div>
             
             <div className="flex items-center gap-4 mb-6">
@@ -98,14 +97,11 @@ import {
             </div>
           </div>
   
-          {/* Right Side */}
           <div className="flex justify-center">
             <div className="relative">
               
-              {/* Soft Glow */}
               <div className="absolute inset-0 bg-indigo-200 blur-3xl opacity-40 rounded-full"></div>
   
-              {/* QR Card */}
               <div className="relative bg-white border border-gray-200 rounded-3xl p-8 shadow-xl">
                 
                 <div className="w-[320px] h-[320px] bg-white rounded-2xl overflow-hidden border border-gray-200">

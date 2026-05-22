@@ -28,9 +28,9 @@ const Dashboard = () => {
   const { socket } = useSocket();
 
   const { product, order, auth } = useSelector((state: any) => state);
-  console.log("authAuth", auth);
+  // console.log("authAuth", auth);
   const sellerId = auth?.user?._id;
-  console.log("sellerIdSocket", sellerId);
+  // console.log("sellerIdSocket", sellerId);
 
   
   const totalProducts = getTotalProducts(product?.products?.data);

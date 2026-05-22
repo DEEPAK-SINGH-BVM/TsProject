@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 import { AppDispatch } from "../../index";
 import {
-  craeteShopsApi,
+  createShopsApi,
   getAllShopsApi,
   getShopsApi,
   updateShopsApi,
@@ -40,7 +40,7 @@ export const createShopAction =
   (data: any, goTo: any) => async (dispatch: AppDispatch) => {
     try {
       dispatch(shopAction.request());
-      const res = await craeteShopsApi(data);
+      const res = await createShopsApi(data);
 
       dispatch(shopAction.createShopSuccess(res.data.shop));
 

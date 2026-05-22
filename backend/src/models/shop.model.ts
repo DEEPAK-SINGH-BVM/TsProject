@@ -1,7 +1,7 @@
 
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface Ishop  {
+export interface IShop  {
   name: string;
   description: string;
   category: string;
@@ -13,7 +13,7 @@ export interface Ishop  {
   owner: mongoose.Types.ObjectId;
 }
 
-const shopSchema: Schema = new Schema<Ishop>(
+const shopSchema: Schema = new Schema<IShop>(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
@@ -23,10 +23,10 @@ const shopSchema: Schema = new Schema<Ishop>(
     city: { type: String, required: true },
     state: { type: String, required: true },
     logo: { type: String },
-    owner: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    owner: { type: mongoose.Types.ObjectId, required: true },
   }
 );
 
-const Shop = mongoose.model<Ishop>("Shop", shopSchema);
+const Shop = mongoose.model<IShop>("Shop", shopSchema);
 
 export default Shop;

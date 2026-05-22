@@ -4,6 +4,7 @@ import upload from "../middlewares/upload.middleware";
 import { bulkUploadProducts, buyProduct, deleteShopProduct, getMyProducts, getShopProducts, updateShopProduct } from "../controllers/product.controllers";
 
 const productRoute = express.Router();
+
 productRoute.get("/my-products",authMiddleware,getMyProducts)
 productRoute.get("/shops/:shopId/products", getShopProducts);
 productRoute.post("/buyProduct", authMiddleware, buyProduct);
