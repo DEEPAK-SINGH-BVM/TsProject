@@ -18,14 +18,21 @@ const SellerRoute = ({ children }: Props) => {
   const shop = useSelector(
     (state: any) => state.shop.shop,
   );
+  const isFetched = useSelector((state: any) => state.shop.isFetched);
+  const isChecking = token && role === "seller" && !isFetched;
+  const userId = useSelector(
+    (state: any) => state.auth.user?._id,
+  );
   if (!token) {
     return <Navigate to="/login" replace />;
   }
   if (role !== "seller") {
     return <Navigate to="/home" replace />;
   }
-
-  if (!shop) {
+  if (isChecking) {
+    return <div>Checking shop...</div>;
+  }
+  if (!shop || shop.owner !== userId) {
     return (
       <Navigate
         to="/seller/create-shop"
