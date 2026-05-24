@@ -40,7 +40,10 @@ const shopSlice = createSlice({
       state.loading = false;
       state.shop = action.payload;
     },
-
+    clearShop: (state) => {
+      state.shop = null;
+      state.isFetched = false;
+    },
     fail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
