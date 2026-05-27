@@ -22,7 +22,7 @@ export const getShop = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const shop = await Shop.findOne({ owner: userId });
-
+    
     if (!shop) {
     return res.status(404).json({ message: "Shop not found" });
     }

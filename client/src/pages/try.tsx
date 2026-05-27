@@ -234,13 +234,13 @@ Home Screen / QR Scan / Analytics – optional
 
 Step progress bar updates in real-time
 
-Both User Ui glitch
-Issue Code Strucuture
-ReUsable
-Share app QR code
-Insert Proper Date
-Validation
-repeated code make it dynamic
+Both User Ui glitch 
+Issue Code Strucuture 
+ReUsable 
+Share app QR code 
+Insert Proper Date 
+Validation 
+repeated code make it dynamic 
 
 Seller
 Dashboard:
@@ -669,6 +669,8 @@ export default Checkout;
 //  My sql 
 {
   /*
+  SQL 
+PASSWORD :MySqlBVM007@
   SQL (STRUCTURED QUERY LANGUAGE)
 SQL is used to interact with relational databases (RDBMS).
 Used for CRUD operations: Create, Read, Update, Delete

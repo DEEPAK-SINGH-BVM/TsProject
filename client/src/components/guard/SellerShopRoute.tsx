@@ -18,8 +18,8 @@ const SellerRoute = ({ children }: Props) => {
   const shop = useSelector(
     (state: any) => state.shop.shop,
   );
-  const isFetched = useSelector((state: any) => state.shop.isFetched);
-  const isChecking = token && role === "seller" && !isFetched;
+  // const isFetched = useSelector((state: any) => state.shop.isFetched);
+  // const isChecking = token && role === "seller" && !isFetched;
   const userId = useSelector(
     (state: any) => state.auth.user?._id,
   );
@@ -29,9 +29,9 @@ const SellerRoute = ({ children }: Props) => {
   if (role !== "seller") {
     return <Navigate to="/home" replace />;
   }
-  if (isChecking) {
-    return <div>Checking shop...</div>;
-  }
+  // if (isChecking) {
+  //   return <div>Checking shop...</div>;
+  // }
   if (!shop || shop.owner !== userId) {
     return (
       <Navigate
