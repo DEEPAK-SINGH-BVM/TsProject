@@ -7,38 +7,82 @@ import * as crypto from "crypto";
 import nodemailer from "nodemailer";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 import { sendEmail } from "../utils/sendEmail";
+import db from "../config/sqldb";
 dotenv.config();
 // & ts intersection type
 type AuthRequest = Request & { user?: { id?: string } };
+
+// export const signup = async (req: Request, res: Response) => {
+//   try {
+//     const { name, email, password, role } = req.body;
+
+//     const userExisting = await User.findOne({ email });
+//     if (userExisting) {
+//       return res.status(400).json({
+//         message: "User already exists",
+//       });
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const user = await User.create({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       role,
+//     });
+
+//     const token = jwt.sign(
+//       { id: user._id, role: user.role },
+//       process.env.JWT_SECRET as string,
+//       { expiresIn: "1d" },
+//     );
+
+//     const userData = user.toObject() as any;
+//     delete userData.password;
+
+//     return res.status(201).json({
+//       message: "Signup Successful",
+//       token,
+//       user: userData,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "Signup Error",
+//       error,
+//     });
+//   }
+// };
 
 export const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
 
-    const userExisting = await User.findOne({ email });
-
-    if (userExisting) {
+    const [user]: any = await db.query("SELECT * FROM users WHERE email = ?", [
+      email,
+    ]);
+    console.log("signupUser", user);
+    if (user && user.length > 0) {
       return res.status(400).json({
         message: "User already exists",
       });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-    });
+
+    const [result]: any = await db.query(
+      "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)",
+      [name, email, hashedPassword, role],
+    );
+
+    const insertId = result.insertId;
 
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: insertId, role },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
 
-    const userData = user.toObject() as any;
-    delete userData.password;
+    const userData = { id: insertId, name, email, role };
 
     return res.status(201).json({
       message: "Signup Successful",
@@ -53,11 +97,51 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
+// export const login = async (req: Request, res: Response) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ message: "user not Found" });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password);
+
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Password Not Match" });
+//     }
+
+//     const token = jwt.sign(
+//       { id: user._id, role: user.role },
+//       process.env.JWT_SECRET as string,
+//       { expiresIn: "1d" },
+//     );
+//     const userData = user.toObject() as any;
+//     delete userData.password;
+
+//     return res.status(201).json({
+//       message: "Login successful",
+//       token,
+//       user: userData,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "Login error",
+//       error,
+//     });
+//   }
+// };
+
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const [rows]: any = await db.query("SELECT * FROM users WHERE email = ?", [
+      email,
+    ]);
+    const user = rows[0];
+    console.log("loginUser", user);
     if (!user) {
       return res.status(400).json({ message: "user not Found" });
     }
@@ -69,18 +153,22 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user.id, role: user.role },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
-    const userData = user.toObject() as any;
-    delete userData.password;
 
     return res.status(201).json({
       message: "Login successful",
       token,
-      user: userData,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
+
   } catch (error) {
     return res.status(500).json({
       message: "Login error",
@@ -94,11 +182,12 @@ export const sendOtp = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
-    console.log('SendOtpUSER',user);
-    
+    console.log("SendOtpUSER", user);
+
     if (!user) {
       return res.status(400).json({ error: "Email Not Found " });
     }
+
     const otp: string = crypto.randomInt(100000, 999999).toString();
 
     user.otp = otp;
@@ -127,11 +216,10 @@ export const verifyOtp = async (req: Request, res: Response) => {
     const { user_id, otp } = req.body;
 
     const user = await User.findById(user_id);
-    
+
     if (!user) {
       return res.status(400).json({ error: "User Not Found" });
     }
-    
 
     if (!user.otp || user.otp !== otp) {
       return res.status(400).json({ error: "Invalid OTP !" });
@@ -185,15 +273,17 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-
+    
     const user = await User.findByIdAndUpdate(
       userId,
       { address },
       { new: true },
     );
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     return res
       .status(200)
       .json({ message: "Address updated successfully", user });
@@ -209,14 +299,17 @@ export const uploadProfileImage = async (req: any, res: any) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
+
     const result = await uploadToCloudinary(req.file.buffer);
     console.log("result", result);
 
     const imageUrl = result.secure_url;
     console.log("imageUrl", imageUrl);
+
     const user = await User.findByIdAndUpdate(
       userId,
       { profileImage: imageUrl },

@@ -29,6 +29,7 @@ export const addToCart = async (req: AuthRequest, res: Response) => {
         message: "Product not found",
       });
     }
+    
     const already = await Cart.findOne({
       userId,
       productId,

@@ -3,9 +3,9 @@ import http from "http";
 import dotenv from "dotenv";
 import cors from "cors";
 import apiRouter from "./routes/index.routes";
-import db from "./config/db";
-import { Server } from "socket.io";
-import { createServer } from "node:http";
+// import db from "./config/db";
+import db from "./config/sqldb";
+
 import { initSocket } from "./config/socket";
 
 dotenv.config();
@@ -23,6 +23,9 @@ const PORT = process.env.PORT || 1001;
 
 app.use("/", apiRouter);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the E-Commerce API");
+});
 // export const io = new Server(server, {
 //   cors: {
 //     origin: process.env.CLIENT_URL,
@@ -46,7 +49,9 @@ app.use("/", apiRouter);
 
 server.listen(PORT, async () => {
   try {
-    await db();
+    // await db(); 
+    const connection = await db.getConnection();
+    connection.release();
     console.log(`Server Running Port ${PORT}`);
   } catch (error) {
     console.log("DB connection failed", error);
