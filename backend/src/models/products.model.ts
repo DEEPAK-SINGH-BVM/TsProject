@@ -33,3 +33,4 @@ const productSchema = new Schema<IProduct>(
 );
 const Product = mongoose.model<IProduct>("Product",productSchema)
 export default Product
+

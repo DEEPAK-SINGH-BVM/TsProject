@@ -1,6 +1,63 @@
 {
   /*
-C:.
+  // backend file structure
+  C:.
+│   .env
+│   .gitignore
+│   env
+│   package-lock.json
+│   package.json
+│   tsconfig.json
+│   
+└───src
+    │   index.ts
+    │   
+    ├───config
+    │       cloudinary.ts
+    │       db.ts
+    │       mailer.ts
+    │       socket.ts
+    │       sqldb.ts
+    │       
+    ├───controllers
+    │       cart.controllers.ts
+    │       order.controllers.ts
+    │       product.controllers.ts
+    │       shop.controllers.ts
+    │       user.controllers.ts
+    │       
+    ├───middlewares
+    │       auth.middleware.ts
+    │       multer.middleware.ts
+    │       shop.middleware.ts
+    │       upload.middleware.ts
+    │       validate.middleware.ts
+    │       
+    ├───models
+    │       cart.model.ts
+    │       order.model.ts
+    │       products.model.ts
+    │       shop.model.ts
+    │       user.model.ts
+    │       
+    ├───routes
+    │       cart.routes.ts
+    │       index.routes.ts
+    │       order.routes.ts
+    │       product.routes.ts
+    │       shop.routes.ts
+    │       user.routes.ts
+    │       
+    ├───utils
+    │       cartUtils.ts
+    │       sendEmail.ts
+    │       uploadToCloudinary.ts
+    │       
+    └───validators
+            auth.validator.ts
+            shop.validator.ts
+    // Frontend file structure
+    C:.
 │   .env
 │   .gitignore
 │   eslint.config.js
@@ -27,6 +84,7 @@ C:.
     │   global.d.ts
     │   main.css
     │   main.tsx
+    │   Root.tsx
     │   vite-env.d.ts
     │   
     ├───api
@@ -59,6 +117,7 @@ C:.
     │           
     ├───context
     │       AuthContext.tsx
+    │       SocketContext.tsx
     │       
     ├───hook
     │       useAuth.ts
@@ -93,117 +152,11 @@ C:.
     │   │       
     │   ├───shared
     │   │       NotFound.tsx
+    │   │       ScanQr.tsx
     │   │       
     │   └───user
     │           Profile.tsx
-    │           
-    ├───routes
-    │       AppRoutes.tsx
-    │       
-    ├───store
-    │   │   index.ts
-    │   │   
-    │   └───feature
-    │       ├───auth
-    │       │       authAction.ts
-    │       │       authService.ts
-    │       │       authSlice.ts
-    │       │       
-    │       ├───cart
-    │       │       cartAction.ts
-    │       │       cartService.ts
-    │       │       cartSlice.ts
-    │       │       
-    │       ├───order
-    │       │       orderAction.ts
-    │       │       orderService.ts
-    │       │       orderSlice.ts
-    │       │       
-    │       ├───products
-    │       │       productAction.ts
-    │       │       productService.ts
-    │       │       productSlice.ts
-    │       │       
-    │       ├───shop
-    │       │       shopAction.ts
-    │       │       shopService.ts
-    │       │       shopSlice.ts
-    │       │       
-    │       └───unused
-    │               action.ts
-    │               auth.types.ts
-    │               constant.ts
-    │               index.ts
-    │               proAction.ts
-    │               proConstant.ts
-    │               proReducer.ts
-    │               reducer.ts
-    │               shaction.ts
-    │               shconstant.ts
-    │               shindex.ts
-    │               shreducer.ts
-    │               
-    ├───styles
-    │       auth.styles.ts
-    │       card.styles.ts
-    │       product.styles.ts
-    │       
-    └───utils
-            calcHelpers.ts
-   Backend
-   C:.
-   │   .env
-   │   .gitignore
-   │   package-lock.json
-   │   package.json
-   │   tsconfig.json
-   │   
-   └───src
-       │   index.ts
-       │   
-       ├───config
-       │       cloudinary.ts
-       │       db.ts
-       │       mailer.ts
-       │       
-       ├───controllers
-       │       cart.controllers.ts
-       │       order.controllers.ts
-       │       product.controllers.ts
-       │       shop.controllers.ts
-       │       user.controllers.ts
-       │       
-       ├───middlewares
-       │       auth.middleware.ts
-       │       multer.middleware.ts
-       │       shop.middleware.ts
-       │       upload.middleware.ts
-       │       validate.middleware.ts
-       │       
-       ├───models
-       │       cart.model.ts
-       │       order.model.ts
-       │       products.model.ts
-       │       shop.model.ts
-       │       user.model.ts
-       │       
-       ├───routes
-       │       cart.routes.ts
-       │       index.routes.ts
-       │       order.routes.ts
-       │       product.routes.ts
-       │       shop.routes.ts
-       │       user.routes.ts
-       │       
-       ├───utils
-       │       cartUtils.ts
-       │       sendEmail.ts
-       │       uploadToCloudinary.ts
-       │       
-       └───validators
-               auth.validator.ts
-               shop.validator.ts
-            
+    │
                Diagram url = https://dbdiagram.io/d/667527b45a764b3c720d75da
                Product Url = https://drive.google.com/drive/folders/1fi_QTn6ANqPLUS6EytYp_PFJbFJZiJ0Q
 */

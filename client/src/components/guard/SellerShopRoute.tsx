@@ -21,8 +21,9 @@ const SellerRoute = ({ children }: Props) => {
   // const isFetched = useSelector((state: any) => state.shop.isFetched);
   // const isChecking = token && role === "seller" && !isFetched;
   const userId = useSelector(
-    (state: any) => state.auth.user?._id,
-  );
+    // (state: any) => state.auth.user?._id,
+    (state: any) => state.auth.user?.id,
+  );  
   if (!token) {
     return <Navigate to="/login" replace />;
   }

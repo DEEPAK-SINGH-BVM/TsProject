@@ -177,11 +177,45 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// export const sendOtp = async (req: Request, res: Response) => {
+//   try {
+//     const { email } = req.body;
+
+//     const user = await User.findOne({ email });
+//     console.log("SendOtpUSER", user);
+
+//     if (!user) {
+//       return res.status(400).json({ error: "Email Not Found " });
+//     }
+
+//     const otp: string = crypto.randomInt(100000, 999999).toString();
+
+//     user.otp = otp;
+//     user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
+//     await user.save();
+
+//     await sendEmail({
+//       to: email,
+//       subject: "Password Reset OTP",
+//       text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
+//     });
+
+//     return res.status(200).json({
+//       message: "OTP sent successfully",
+//       user_id: user._id,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       error: "Failed to send OTP",
+//     });
+//   }
+// };
 export const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
-    const user = await User.findOne({ email });
+    const [results]:any = await db.query("SELECT * FROM users WHERE email = ?",[email]);
+    const user = results[0];
     console.log("SendOtpUSER", user);
 
     if (!user) {
@@ -190,9 +224,15 @@ export const sendOtp = async (req: Request, res: Response) => {
 
     const otp: string = crypto.randomInt(100000, 999999).toString();
 
-    user.otp = otp;
-    user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
-    await user.save();
+    // user.otp = otp;
+    // user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
+    // await user.save();
+
+    await db.query("UPDATE users SET otp = ?,otpExpires = ? WHERE id = ?", [
+      otp,
+      new Date(Date.now() + 2 * 60 * 1000),
+      user.id
+    ]);
 
     await sendEmail({
       to: email,
@@ -202,7 +242,7 @@ export const sendOtp = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "OTP sent successfully",
-      user_id: user._id,
+      user_id: user.id,
     });
   } catch (error) {
     return res.status(500).json({
@@ -210,13 +250,17 @@ export const sendOtp = async (req: Request, res: Response) => {
     });
   }
 };
-
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { user_id, otp } = req.body;
 
-    const user = await User.findById(user_id);
-
+    // const user = await User.findById(user_id);
+    const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [
+      user_id,
+    ]);
+    console.log("verifyOtpResults", results);
+    const user = results[0];
+    console.log("verifyOtpUser", user);
     if (!user) {
       return res.status(400).json({ error: "User Not Found" });
     }
@@ -242,19 +286,23 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { user_id, new_password } = req.body;
+    const { user_id, new_password } = req.body; 
 
-    const user = await User.findById(user_id);
-
+    const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [user_id]);
+    console.log("resetPasswordResults", results);
+    const user = results[0];
+    console.log("resetPasswordUser", user);
     if (!user) {
       return res.status(400).json({ error: "User Not Found" });
     }
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
     user.password = hashedPassword;
-    delete user.otp;
-    delete user.otpExpires;
-    await user.save();
+
+    await db.query("UPDATE users SET password = ?,otp = NULL,otpExpires = NULL WHERE id = ?", [
+      hashedPassword,
+      user_id
+    ]);
 
     return res.status(200).json({
       message: "Password Reset SuccessFully",
