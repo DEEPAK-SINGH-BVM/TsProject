@@ -685,7 +685,8 @@ START TRANSACTION, COMMIT, ROLLBACK
 
 
 ///////////
-{/*
+{
+  /*
 SQL 
 PASSWORD :MySqlBVM007@
 structure Query lanagauge
@@ -748,7 +749,74 @@ DML (Data Manipulation language) : insert,update, delete
 DCL (Data control language ) : grant & revoke permission to user 
 TCL () :start transatction , commit , rollback 
 
-*/}
+export const bulkUploadProducts = async (req: AuthRequest, res: Response) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ message: "Excel file is required" });
+    }
+
+    const workBook = XLSX.read(file.buffer, { type: "buffer" });
+    const sheetName = workBook.SheetNames?.[0];
+    if (!sheetName) {
+      return res.status(400).json({ message: "No sheet found in Excel file" });
+    }
+
+    const sheet = workBook.Sheets[sheetName];
+    if (!sheet) {
+      return res.status(400).json({ message: "Invalid sheet data" });
+    }
+
+    const data: any[] = XLSX.utils.sheet_to_json(sheet);
+    if (!data.length) {
+      return res.status(400).json({ message: "Empty Excel file" });
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ message: "Shop id not found" });
+    }
+
+    const [shopRows]: any = await db.query("SELECT * FROM shops WHERE owner = ?", [userId]);
+    const shop = shopRows[0];
+    if (!shop) {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+
+    let inserted = 0;
+    let updated = 0;
+
+    for (const item of data) {
+      const [result]: any = await db.query(
+        `INSERT INTO products (name, price, stock, category, subCategory, unit, description, image, shopId)
+         VALUES (?,?,?,?,?,?,?,?,?)
+         ON DUPLICATE KEY UPDATE
+         price=VALUES(price),
+         stock=VALUES(stock),
+         category=VALUES(category),
+         subCategory=VALUES(subCategory),
+         unit=VALUES(unit),
+         description=VALUES(description),
+         image=VALUES(image)`,
+        [item.name, item.price, item.stock, item.category, item.subCategory, item.unit, item.description, JSON.stringify(item.image ? [item.image] : []), shop.id]
+      );
+      result.affectedRows === 1 ? inserted++ : updated++;
+    }
+
+    return res.status(200).json({
+      message: "Product Upload SuccessFully",
+      inserted,
+      updated,
+      total: data.length,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || "Bulk upload failed",
+    });
+  }
+};
+*/
+}
 
 
 
