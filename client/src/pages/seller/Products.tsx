@@ -8,6 +8,7 @@ import ProductCard from "../../components/product/ProductCard.tsx";
 import { productStyles } from "../../styles/product.styles.ts";
 import { updateProductAction } from "../../store/feature/products/productAction";
 import { ProductCardSkeleton } from "../../components/common/ProductCardSkeleton.tsx";
+import { useCallback } from "react";
 
 const Products = () => {
 
@@ -29,7 +30,7 @@ const Products = () => {
     setOpen(false);
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = useCallback(async () => {
     await dispatch(
       updateProductAction(
         editProduct._id,
@@ -40,7 +41,11 @@ const Products = () => {
     dispatch(getMyProductsAction());
 
     setEditProduct(null);
-  };
+  },[editProduct]);
+
+  const handleEdit = useCallback((product: any) => {
+    setEditProduct(product);
+  }, []);
 
   return (
     <div className="products-page">
@@ -144,7 +149,7 @@ const Products = () => {
             <ProductCard
               key={product._id}
               product={product}
-              onEdit={(product: any) => setEditProduct(product)}
+              onEdit={handleEdit}
             />
           ))}
       </div>

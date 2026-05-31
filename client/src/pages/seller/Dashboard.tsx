@@ -15,6 +15,7 @@ import { getMyProductsAction } from "../../store/feature/products/productAction"
 import { AppDispatch } from "../../store";
 import { getSellerOrdersAction } from "../../store/feature/order/orderAction";
 import DashboardSkeleton from "../../components/common/DashboardSkeleton";
+import { useMemo } from "react";
 import {
   getTotalEarnings,
   getTotalOrders,
@@ -32,23 +33,34 @@ const Dashboard = () => {
   const sellerId = auth?.user?._id;
   // console.log("sellerIdSocket", sellerId);
 
-  
-  const totalProducts = getTotalProducts(product?.products?.data);
-  const totalOrders = getTotalOrders(order.orders);
-  
-  const totalEarnings = getTotalEarnings(order.orders);
-  
+
+  const totalProducts = useMemo(() => {
+    return getTotalProducts(product?.products?.data);
+  }, [product?.products?.data]);
+
+  const totalOrders = useMemo(() => {
+    return getTotalOrders(order.orders)
+  }, [order.orders]);
+
+  const totalEarnings = useMemo(() => {
+    return getTotalEarnings(order.orders);
+  }, [order.orders]);
+
   const isLoading = order.loading || product.loading;
 
   const orderStatus = order.orders;
 
-  const orderPending = orderStatus.filter(
-    (ord: any) => ord.orderStatus == "Pending",
+  const orderPending = useMemo(() => {
+  return order.orders.filter(
+    (ord: any) => ord.orderStatus === "Pending"
   ).length;
-  
-  const orderComplete = orderStatus.filter(
-    (ord: any) => ord.orderStatus == "Complete",
+}, [order.orders]);
+
+const orderComplete = useMemo(() => {
+  return order.orders.filter(
+    (ord: any) => ord.orderStatus === "Complete"
   ).length;
+}, [order.orders]);
 
   useEffect(() => {
     dispatch(getMyProductsAction());

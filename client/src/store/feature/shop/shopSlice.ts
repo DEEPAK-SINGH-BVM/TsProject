@@ -24,6 +24,7 @@ const shopSlice = createSlice({
     getShopSuccess: (state, action) => {
       state.loading = false;
       state.shop = action.payload;
+      state.isFetched = true;
     },
     createShopSuccess: (state, action) => {
       state.loading = false;

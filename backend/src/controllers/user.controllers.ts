@@ -8,81 +8,38 @@ import nodemailer from "nodemailer";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 import { sendEmail } from "../utils/sendEmail";
 import db from "../config/sqldb";
+
 dotenv.config();
 // & ts intersection type
 type AuthRequest = Request & { user?: { id?: string } };
-
-// export const signup = async (req: Request, res: Response) => {
-//   try {
-//     const { name, email, password, role } = req.body;
-
-//     const userExisting = await User.findOne({ email });
-//     if (userExisting) {
-//       return res.status(400).json({
-//         message: "User already exists",
-//       });
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const user = await User.create({
-//       name,
-//       email,
-//       password: hashedPassword,
-//       role,
-//     });
-
-//     const token = jwt.sign(
-//       { id: user._id, role: user.role },
-//       process.env.JWT_SECRET as string,
-//       { expiresIn: "1d" },
-//     );
-
-//     const userData = user.toObject() as any;
-//     delete userData.password;
-
-//     return res.status(201).json({
-//       message: "Signup Successful",
-//       token,
-//       user: userData,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: "Signup Error",
-//       error,
-//     });
-//   }
-// };
 
 export const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
 
-    const [user]: any = await db.query("SELECT * FROM users WHERE email = ?", [
-      email,
-    ]);
-    console.log("signupUser", user);
-    if (user && user.length > 0) {
+    const userExisting = await User.findOne({ email });
+    if (userExisting) {
       return res.status(400).json({
         message: "User already exists",
       });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const [result]: any = await db.query(
-      "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)",
-      [name, email, hashedPassword, role],
-    );
-
-    const insertId = result.insertId;
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
 
     const token = jwt.sign(
-      { id: insertId, role },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
 
-    const userData = { id: insertId, name, email, role };
+    const userData = user.toObject() as any;
+    delete userData.password;
 
     return res.status(201).json({
       message: "Signup Successful",
@@ -97,37 +54,45 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-// export const login = async (req: Request, res: Response) => {
+// export const signup = async (req: Request, res: Response) => {
 //   try {
-//     const { email, password } = req.body;
+//     const { name, email, password, role } = req.body;
 
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(400).json({ message: "user not Found" });
+//     const [user]: any = await db.query("SELECT * FROM users WHERE email = ?", [
+//       email,
+//     ]);
+//     console.log("signupUser", user);
+//     if (user && user.length > 0) {
+//       return res.status(400).json({
+//         message: "User already exists",
+//       });
 //     }
 
-//     const isMatch = await bcrypt.compare(password, user.password);
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-//     if (!isMatch) {
-//       return res.status(400).json({ message: "Password Not Match" });
-//     }
+//     const [result]: any = await db.query(
+//       "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)",
+//       [name, email, hashedPassword, role],
+//     );
+
+//     const insertId = result.insertId;
 
 //     const token = jwt.sign(
-//       { id: user._id, role: user.role },
+//       { id: insertId, role },
 //       process.env.JWT_SECRET as string,
 //       { expiresIn: "1d" },
 //     );
-//     const userData = user.toObject() as any;
-//     delete userData.password;
+
+//     const userData = { id: insertId, name, email, role };
 
 //     return res.status(201).json({
-//       message: "Login successful",
+//       message: "Signup Successful",
 //       token,
 //       user: userData,
 //     });
 //   } catch (error) {
 //     return res.status(500).json({
-//       message: "Login error",
+//       message: "Signup Error",
 //       error,
 //     });
 //   }
@@ -137,11 +102,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const [rows]: any = await db.query("SELECT * FROM users WHERE email = ?", [
-      email,
-    ]);
-    const user = rows[0];
-    console.log("loginUser", user);
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "user not Found" });
     }
@@ -153,22 +114,18 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
+    const userData = user.toObject() as any;
+    delete userData.password;
 
     return res.status(201).json({
       message: "Login successful",
       token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: userData,
     });
-
   } catch (error) {
     return res.status(500).json({
       message: "Login error",
@@ -177,45 +134,55 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-// export const sendOtp = async (req: Request, res: Response) => {
+// export const login = async (req: Request, res: Response) => {
 //   try {
-//     const { email } = req.body;
+//     const { email, password } = req.body;
 
-//     const user = await User.findOne({ email });
-//     console.log("SendOtpUSER", user);
-
+//     const [rows]: any = await db.query("SELECT * FROM users WHERE email = ?", [
+//       email,
+//     ]);
+//     const user = rows[0];
+//     console.log("loginUser", user);
 //     if (!user) {
-//       return res.status(400).json({ error: "Email Not Found " });
+//       return res.status(400).json({ message: "user not Found" });
 //     }
 
-//     const otp: string = crypto.randomInt(100000, 999999).toString();
+//     const isMatch = await bcrypt.compare(password, user.password);
 
-//     user.otp = otp;
-//     user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
-//     await user.save();
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Password Not Match" });
+//     }
 
-//     await sendEmail({
-//       to: email,
-//       subject: "Password Reset OTP",
-//       text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
+//     const token = jwt.sign(
+//       { id: user.id, role: user.role },
+//       process.env.JWT_SECRET as string,
+//       { expiresIn: "1d" },
+//     );
+
+//     return res.status(201).json({
+//       message: "Login successful",
+//       token,
+//       user: {
+//         id: user.id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//       },
 //     });
 
-//     return res.status(200).json({
-//       message: "OTP sent successfully",
-//       user_id: user._id,
-//     });
 //   } catch (error) {
 //     return res.status(500).json({
-//       error: "Failed to send OTP",
+//       message: "Login error",
+//       error,
 //     });
 //   }
 // };
+
 export const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
-    const [results]:any = await db.query("SELECT * FROM users WHERE email = ?",[email]);
-    const user = results[0];
+    const user = await User.findOne({ email });
     console.log("SendOtpUSER", user);
 
     if (!user) {
@@ -224,15 +191,9 @@ export const sendOtp = async (req: Request, res: Response) => {
 
     const otp: string = crypto.randomInt(100000, 999999).toString();
 
-    // user.otp = otp;
-    // user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
-    // await user.save();
-
-    await db.query("UPDATE users SET otp = ?,otpExpires = ? WHERE id = ?", [
-      otp,
-      new Date(Date.now() + 2 * 60 * 1000),
-      user.id
-    ]);
+    user.otp = otp;
+    user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
+    await user.save();
 
     await sendEmail({
       to: email,
@@ -242,7 +203,7 @@ export const sendOtp = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "OTP sent successfully",
-      user_id: user.id,
+      user_id: user._id,
     });
   } catch (error) {
     return res.status(500).json({
@@ -250,17 +211,57 @@ export const sendOtp = async (req: Request, res: Response) => {
     });
   }
 };
+// export const sendOtp = async (req: Request, res: Response) => {
+//   try {
+//     const { email } = req.body;
+
+//     const [results]:any = await db.query("SELECT * FROM users WHERE email = ?",[email]);
+//     const user = results[0];
+//     console.log("SendOtpUSER", user);
+
+//     if (!user) {
+//       return res.status(400).json({ error: "Email Not Found " });
+//     }
+
+//     const otp: string = crypto.randomInt(100000, 999999).toString();
+
+//     // user.otp = otp;
+//     // user.otpExpires = new Date(Date.now() + 2 * 60 * 1000);
+//     // await user.save();
+
+//     await db.query("UPDATE users SET otp = ?,otpExpires = ? WHERE id = ?", [
+//       otp,
+//       new Date(Date.now() + 2 * 60 * 1000),
+//       user.id
+//     ]);
+
+//     await sendEmail({
+//       to: email,
+//       subject: "Password Reset OTP",
+//       text: `Your OTP is ${otp}. It will expire in 2 minutes.`,
+//     });
+
+//     return res.status(200).json({
+//       message: "OTP sent successfully",
+//       user_id: user.id,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       error: "Failed to send OTP",
+//     });
+//   }
+// };
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { user_id, otp } = req.body;
 
-    // const user = await User.findById(user_id);
-    const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [
-      user_id,
-    ]);
-    console.log("verifyOtpResults", results);
-    const user = results[0];
-    console.log("verifyOtpUser", user);
+    const user = await User.findById(user_id);
+    // const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [
+    //   user_id,
+    // ]);
+    // console.log("verifyOtpResults", results);
+    // const user = results[0];
+    // console.log("verifyOtpUser", user);
     if (!user) {
       return res.status(400).json({ error: "User Not Found" });
     }
@@ -286,33 +287,70 @@ export const verifyOtp = async (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { user_id, new_password } = req.body; 
+    const { user_id, new_password } = req.body;
 
-    const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [user_id]);
-    console.log("resetPasswordResults", results);
-    const user = results[0];
-    console.log("resetPasswordUser", user);
+    const user = await User.findById(user_id);
+
     if (!user) {
-      return res.status(400).json({ error: "User Not Found" });
+      return res.status(400).json({
+        error: "User Not Found",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
-    user.password = hashedPassword;
 
-    await db.query("UPDATE users SET password = ?,otp = NULL,otpExpires = NULL WHERE id = ?", [
-      hashedPassword,
-      user_id
-    ]);
+    await User.findByIdAndUpdate(
+      user_id,
+      {
+        password: hashedPassword,
+        otp: null,
+        otpExpires: null,
+      },
+      { new: true }
+    );
 
     return res.status(200).json({
       message: "Password Reset SuccessFully",
     });
   } catch (error) {
+    console.log("resetPasswordError", error);
+
     return res.status(500).json({
       message: "OTP Verification Failed",
     });
   }
 };
+// export const resetPassword = async (req: Request, res: Response) => {
+//   try {
+//     const { user_id, new_password } = req.body; 
+
+//     const [results]: any = await db.query("SELECT * FROM users WHERE id = ?", [user_id]);
+//     console.log("resetPasswordResults", results);
+//     const user = results[0];
+
+//     console.log("resetPasswordUser", user);
+//     if (!user) {
+//       return res.status(400).json({ error: "User Not Found" });
+//     }
+
+//     const hashedPassword = await bcrypt.hash(new_password, 10);
+//     user.password = hashedPassword;
+
+//     await db.query("UPDATE users SET password = ?,otp = NULL,otpExpires = NULL WHERE id = ?", [
+//       hashedPassword,
+//       user_id
+//     ]);
+
+//     return res.status(200).json({
+//       message: "Password Reset SuccessFully",
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "OTP Verification Failed",
+//     });
+//   }
+// };
+
 export const updateAddress = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
@@ -339,6 +377,7 @@ export const updateAddress = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ message: "Error updating address", error });
   }
 };
+
 export const uploadProfileImage = async (req: any, res: any) => {
   try {
     const userId = req.user?.id;

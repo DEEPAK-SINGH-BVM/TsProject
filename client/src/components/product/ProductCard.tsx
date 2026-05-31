@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "../../store";
 import { MdBolt } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { addToCartAction } from "../../store/feature/cart/cartAction";
+import React, { useCallback } from "react";
 
 interface ProductProps {
   product: {
@@ -34,14 +35,14 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
   // console.log("ProductCart", role);
   console.log("ProductCartProduct", product);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     try {
       await dispatch(deleteProductAction(product._id));
       dispatch(getMyProductsAction());
     } catch (error) {
       console.log("Delete failed:", error);
     }
-  };
+  }, [product._id]);
 
   /*
     const handleBuyCart = async() => {
@@ -58,9 +59,10 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
   const handleBuyCart = () => {
     navigate("/checkout", { state: product });
   };
-  const handleEdit = () => {
+  const handleEdit = useCallback(() => {
     onEdit?.(product);
-  };
+  }, [onEdit]);
+
   const inStock = product.stock > 0;
   const isBuyer = role === "buyer";
 
@@ -174,4 +176,4 @@ const ProductCard = ({ product, onEdit }: ProductProps) => {
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

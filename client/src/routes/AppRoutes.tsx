@@ -29,7 +29,7 @@ import Invoice from "../pages/buyer/Invoice.js";
 import MyOrders from "../pages/buyer/MyOrder.js";
 import { useSelector } from "react-redux";
 import ScanQr from "../pages/shared/ScanQr.js";
-import ProductShow from "../pages/buyer/ProductShow.js";
+import ProductShow from "../pages/buyer/Productshow.js";
 
 const AppRoutes = () => {
   const userId = useSelector((state: any) => state.auth?.user?._id);

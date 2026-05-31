@@ -10,19 +10,27 @@ interface Props {
 const SellerRoute = ({ children }: Props) => {
   const { token } = useAuth();
   
-  const wholeState = useSelector((state: any) => state);
-  console.log("wholeStateShop", wholeState);
-  const role = useSelector(
+  const role = useSelector( 
     (state: any) => state.auth.user?.role,
   );
+
+  const isFetched = useSelector( 
+    (state: any) => state.shop.isFetched
+  );
+  console.log('isFetchedseller',isFetched);
+  
+  if (!isFetched) {
+    return <div>Loading...</div>;
+  }
+
   const shop = useSelector(
     (state: any) => state.shop.shop,
   );
   // const isFetched = useSelector((state: any) => state.shop.isFetched);
   // const isChecking = token && role === "seller" && !isFetched;
   const userId = useSelector(
-    // (state: any) => state.auth.user?._id,
-    (state: any) => state.auth.user?.id,
+    (state: any) => state.auth.user?._id,
+    // (state: any) => state.auth.user?.id,
   );  
   if (!token) {
     return <Navigate to="/login" replace />;

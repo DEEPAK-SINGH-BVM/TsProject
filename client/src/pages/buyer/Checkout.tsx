@@ -7,7 +7,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCartProductsAction } from "../../store/feature/cart/cartAction";
 import { AppDispatch } from "../../store";
@@ -36,10 +36,17 @@ const Checkout = () => {
     : cart.map((item: any) => ({ ...item.productId, quantity: item.quantity }));
   console.log(products, "productsProducts");
 
-  const subtotalProduct = buyNowProduct ? buyNowProduct.price : subtotal;
+  const subtotalProduct = useMemo(() => {
+    return buyNowProduct ? buyNowProduct.price : subtotal;
+  }, [buyNowProduct, subtotal]);
   const deliveryFeeProduct = buyNowProduct ? 50 : deliveryFee;
-  const totalProduct = buyNowProduct ? buyNowProduct.price + 50 : total;
-
+  
+  const totalProduct = useMemo(() => {
+    return buyNowProduct
+      ? buyNowProduct.price + 50
+      : total;
+  }, [buyNowProduct, total]);
+  
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -54,14 +61,16 @@ const Checkout = () => {
     }
   }, [dispatch, buyNowProduct]);
 
-  const orderItems = products.map((product: any) => ({
-    productId: product._id,
-    sellerId: product.shopId.owner,
-    name: product.name,
-    price: product.price,
-    quantity: product.quantity,
-    image: product.image[0],
-  }));
+  const orderItems = useMemo(() => {
+    return products.map((product: any) => ({
+      productId: product._id,
+      sellerId: product.shopId.owner,
+      name: product.name,
+      price: product.price,
+      quantity: product.quantity,
+      image: product.image[0],
+    }));
+  }, [products])
   console.log("orderItems", orderItems);
 
   // const orderItems = isBuyNow
@@ -247,9 +256,8 @@ const Checkout = () => {
             {/* COD */}
             <div className="space-y-5">
               <div
-                className={`border border-gray-200 rounded-xl p-4 flex items-center justify-between cursor-pointer  ${
-                  paymentMethod === "COD" ? "border-2 border-gray-500" : ""
-                }`}
+                className={`border border-gray-200 rounded-xl p-4 flex items-center justify-between cursor-pointer  ${paymentMethod === "COD" ? "border-2 border-gray-500" : ""
+                  }`}
                 onClick={() => setPaymentMethod("COD")}
               >
                 <div>
@@ -265,9 +273,8 @@ const Checkout = () => {
 
               {/* Online */}
               <div
-                className={`border border-gray-200 rounded-xl p-4 flex items-center justify-between cursor-pointer ${
-                  paymentMethod === "Online" ? "border-2 border-gray-500" : ""
-                }`}
+                className={`border border-gray-200 rounded-xl p-4 flex items-center justify-between cursor-pointer ${paymentMethod === "Online" ? "border-2 border-gray-500" : ""
+                  }`}
                 onClick={() => setPaymentMethod("Online")}
               >
                 <div>
