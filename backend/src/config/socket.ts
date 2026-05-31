@@ -29,7 +29,6 @@ export const initSocket = (server: http.Server) => {
   });
   return io;
 };
-
 export const getIO = () => {
   if (!io) {
     throw new Error("socket initSocket not Initialize");
