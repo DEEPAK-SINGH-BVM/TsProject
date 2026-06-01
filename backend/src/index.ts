@@ -13,15 +13,10 @@ const app = express();
 const server = http.createServer(app);
 initSocket(server);
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: process.env.CLIENT_URL,
-//     credentials: true,
-//   }),
-// );
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CLIENT_URL,
+    credentials: true,
   }),
 );
 const PORT = process.env.PORT || 1001;
