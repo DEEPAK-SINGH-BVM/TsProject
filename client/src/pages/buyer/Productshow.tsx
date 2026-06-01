@@ -6,7 +6,7 @@ import { getShopProductAction } from "../../store/feature/products/productAction
 import ProductCard from "../../components/product/ProductCard";
 import { productStyles } from "../../styles/product.styles";
 import { ProductCardSkeleton } from "../../components/common/ProductCardSkeleton";
-
+// C:\E-Com\ShopProject\client\src\pages\buyer\Productshow.tsx
 const ProductShow = () => {
   const { shopId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
