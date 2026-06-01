@@ -1,7 +1,7 @@
 import axios from "axios";
-
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL || "http://localhost:1001",
+  baseURL:
+    import.meta.env.VITE_BASE_API_URL || "https://tsproject-d7iu.onrender.com",
 });
 // An Axios request interceptor is a function that runs before every API call.
 // It automatically adds the saved login token to the request header if it exists.
